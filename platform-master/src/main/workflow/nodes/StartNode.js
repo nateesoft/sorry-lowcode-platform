@@ -14,7 +14,6 @@ const handleStyle = {
 }
 
 function StartNode({ data }) {
-  console.log('start node: ', data)
   const onChange = useCallback((evt) => {
     console.log(evt.target.value)
   }, [])

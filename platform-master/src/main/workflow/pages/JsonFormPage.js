@@ -1,7 +1,4 @@
-import React, { Fragment, useState } from "react"
-import Fab from "@mui/material/Fab"
-import CloseIcon from "@mui/icons-material/ExpandMore"
-
+import React, { useState } from "react"
 import { materialRenderers, materialCells } from "@jsonforms/material-renderers"
 import { JsonForms } from "@jsonforms/react"
 
@@ -23,16 +20,7 @@ function JsonFormPage(props) {
   const [data, setData] = useState(initialData)
 
   return (
-    <Fragment>
-      <Fab
-        variant="extended"
-        color="info"
-        style={{ position: "absolute", bottom: 16, right: 16 }}
-        onClick={props.onClose}
-      >
-        <CloseIcon />
-        Back to Flow
-      </Fab>
+    <Grid container spacing={1}>
       <div style={{width: '100%', margin: '1.5rem', marginTop: '1.5rem'}}>
         <div style={{margin: 'auto'}}>
           <JsonForms
@@ -45,7 +33,7 @@ function JsonFormPage(props) {
           />
         </div>
       </div>
-    </Fragment>
+    </Grid>
   )
 }
 

@@ -35,7 +35,7 @@ const nodeTypes = {
   page: PageNode,
   message: MegessaNode,
   database: DatabaseNode,
-  server: ServerNode,
+  server: ServerNode
 }
 
 const DnDFlow = () => {
@@ -185,7 +185,11 @@ const DnDFlow = () => {
     <div className="dndflow">
       <LeftMenu />
       <ReactFlowProvider>
-        <div className="reactflow-wrapper" ref={reactFlowWrapper}>
+        <div
+          className="reactflow-wrapper"
+          ref={reactFlowWrapper}
+          style={{ height: "100vh" }}
+        >
           <ReactFlow
             nodes={nodes}
             edges={edges}

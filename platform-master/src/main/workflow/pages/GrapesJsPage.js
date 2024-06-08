@@ -1,7 +1,8 @@
-import * as React from "react"
+import React from "react"
 import GjsEditor from "@grapesjs/react"
 import Fab from "@mui/material/Fab"
 import CloseIcon from "@mui/icons-material/ExpandMore"
+import { Grid } from "@mui/material"
 
 const gjsOptions = {
   height: "auto",
@@ -31,7 +32,7 @@ const GrapesJsPage = (props) => {
   }
 
   return (
-    <>
+    <Grid container spacing={1}>
       <Fab
         variant="extended"
         color="info"
@@ -94,7 +95,7 @@ const GrapesJsPage = (props) => {
         ]}
         onEditor={onEditor}
       />
-    </>
+    </Grid>
   )
 }
 
