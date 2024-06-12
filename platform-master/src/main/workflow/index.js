@@ -10,6 +10,8 @@ import ReactFlow, {
   MarkerType,
   Panel
 } from "reactflow"
+// import axios from "axios"
+
 import "reactflow/dist/style.css"
 
 import LeftMenu from "./LeftMenu"
@@ -162,6 +164,19 @@ const DnDFlow = () => {
     if (reactFlowInstance) {
       const flow = reactFlowInstance.toObject()
       localStorage.setItem(flowKey, JSON.stringify(flow))
+
+      // const data = {
+      //   created_user: "natheep",
+      //   name: "overview",
+      //   template: JSON.stringify(flow),
+      //   project_id: "project01",
+      //   version: "0"
+      // }
+
+      //// save to database
+      // axios.post("/apis/flow-main", data).then((response) => {
+      //   console.log(response)
+      // })
     }
   }, [reactFlowInstance])
 
@@ -234,6 +249,7 @@ const DnDFlow = () => {
         condition={showPage}
         property={setProperty}
         onClose={() => setShowPage({ show: false, page: null })}
+        {...property}
       />
     </div>
   )
