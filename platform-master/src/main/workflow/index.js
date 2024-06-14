@@ -28,7 +28,7 @@ import ServerNode from "./nodes/ServerNode"
 
 import "./index.css"
 
-const flowKey = "myflow_state"
+const flowKey = "template"
 
 const nodeTypes = {
   actor: ActorNode,
