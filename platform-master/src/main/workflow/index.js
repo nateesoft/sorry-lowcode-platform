@@ -40,7 +40,7 @@ const nodeTypes = {
   server: ServerNode
 }
 
-const DnDFlow = () => {
+const WorkFlowMain = () => {
   const reactFlowWrapper = useRef(null)
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
@@ -255,4 +255,4 @@ const DnDFlow = () => {
   )
 }
 
-export default DnDFlow
+export default WorkFlowMain

@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react"
-import { materialRenderers, materialCells } from "@jsonforms/material-renderers"
+import React, { useState, useRef, useEffect } from "react"
+import { materialCells } from "@jsonforms/material-renderers"
 import { JsonForms } from "@jsonforms/react"
 import Box from "@mui/material/Box"
 import Tab from "@mui/material/Tab"
@@ -8,6 +8,8 @@ import TabList from "@mui/lab/TabList"
 import TabPanel from "@mui/lab/TabPanel"
 import Editor from "@monaco-editor/react"
 import { Button, Grid, Stack, Typography } from "@mui/material"
+
+import { renderers } from './components/renderers'
 
 import uischema from "./uischema.json"
 import schema from "./schema.json"
@@ -46,7 +48,7 @@ function JsonFormPage(props) {
       JSON.parse(data)
       callFunc(data)
     } catch (e) {
-      console.error(e)
+      // console.error(e)
     }
   }
 
@@ -56,15 +58,21 @@ function JsonFormPage(props) {
 
   function handleEditorDidMount1(editor, monaco) {
     editorRef1.current = editor
-    editor.getAction("editor.action.formatDocument")?.run()
+    setTimeout(function() {
+      editor.getAction('editor.action.formatDocument').run();
+    }, 300);
   }
   function handleEditorDidMount2(editor, monaco) {
     editorRef2.current = editor
-    editor.getAction("editor.action.formatDocument")?.run()
+    setTimeout(function() {
+      editor.getAction('editor.action.formatDocument').run();
+    }, 300);
   }
   function handleEditorDidMount3(editor, monaco) {
     editorRef3.current = editor
-    editor.getAction("editor.action.formatDocument")?.run()
+    setTimeout(function() {
+      editor.getAction('editor.action.formatDocument').run();
+    }, 300);
   }
 
   function handleEditorValidation(markers) {
@@ -84,6 +92,10 @@ function JsonFormPage(props) {
     localStorage.setItem(id + "_template_data", dataForm)
     onClose()
   }
+
+  useEffect(()=>{
+    console.log('JsonFormPage load')
+  }, [])
 
   return (
     <Grid container>
@@ -105,7 +117,7 @@ function JsonFormPage(props) {
           <TabContext value="1">
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <TabList onChange={handleChange}>
-                <Tab label="Demo" value="1" />
+                <Tab label="Preview" value="1" />
               </TabList>
             </Box>
             <TabPanel value="1">
@@ -113,11 +125,8 @@ function JsonFormPage(props) {
                 schema={JSON.parse(schemaData)}
                 uischema={JSON.parse(uiSchemaData)}
                 data={JSON.parse(dataForm)}
-                renderers={materialRenderers}
+                renderers={renderers}
                 cells={materialCells}
-                onChange={({ data, _errors }) =>
-                  setDataForm(JSON.stringify(data))
-                }
               />
             </TabPanel>
           </TabContext>
@@ -197,7 +206,7 @@ function JsonFormPage(props) {
           spacing={1}
           direction="row"
           padding={2}
-          sx={{ justifyContent: "center" }}
+          sx={{ justifyContent: "flex-end", background: "#aed6f1", color: "white" }}
         >
           <Button variant="contained" onClick={handleSaveLocalStorage}>
             Save Page

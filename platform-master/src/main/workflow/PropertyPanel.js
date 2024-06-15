@@ -8,6 +8,7 @@ import JsonFormPage from "./pages/JsonFormPage"
 
 const PropertyPanel = memo(({ props, onComponentChange }) => {
   const [label, setLabel] = useState("")
+  const [uri, setUri] = useState("")
   const [page, setPage] = useState("")
 
   const [open, setOpen] = useState(false)
@@ -74,6 +75,14 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
               <FormControl variant="standard">
                 <Typography variant="caption">#Type</Typography>
                 <TextField variant="standard" value={props.type} />
+              </FormControl>
+              <FormControl variant="standard">
+                <Typography variant="caption">#URI</Typography>
+                <TextField
+                  value={uri}
+                  onChange={(data) => setUri(data.target.value)}
+                  onKeyUp={handleKeyUp}
+                />
               </FormControl>
             </Box>
             {props.type === "page" && (
