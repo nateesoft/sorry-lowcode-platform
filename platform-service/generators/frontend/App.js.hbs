@@ -1,0 +1,17 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+
+/* PLOP_INJECT_IMPORT */
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/{{ projectId }}">
+          {/* inject route */}
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
+export default App
