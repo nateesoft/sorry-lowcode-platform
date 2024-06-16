@@ -5,7 +5,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/">
+        <Route path="/workflow/:id">
           <Route index element={<MainApp />} />
         </Route>
       </Routes>

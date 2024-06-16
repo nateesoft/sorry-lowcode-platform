@@ -18,7 +18,7 @@ function MessageNode({ data }) {
           cursor: "grab"
         }}
       >
-        <img src="images/message.png" alt="" onChange={onChange} />
+        <img src="/images/message.png" alt="" onChange={onChange} />
       </div>
       {/* <Handle type="target" position={Position.Top} /> */}
       {/* <Handle type="source" position={Position.Bottom} style={{bottom: "-30px"}} /> */}

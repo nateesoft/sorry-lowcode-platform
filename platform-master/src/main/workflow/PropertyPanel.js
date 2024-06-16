@@ -5,14 +5,20 @@ import Grid from "@mui/material/Unstable_Grid2"
 import { Box, FormControl, TextField, Typography } from "@mui/material"
 
 import JsonFormPage from "./pages/JsonFormPage"
+import WorkflowLogic from "./modal/WorkflowLogic"
 
 const PropertyPanel = memo(({ props, onComponentChange }) => {
   const [label, setLabel] = useState("")
+  const [folder, setFolder] = useState("")
   const [uri, setUri] = useState("")
+  const [processService1, setProcessService1] = useState("")
+  const [processService2, setProcessService2] = useState("")
   const [page, setPage] = useState("")
 
   const [open, setOpen] = useState(false)
+  const [logicOpen, setLogicOpen] = useState(false)
   const handleClose = () => setOpen(false)
+  const handleLogicClose = () => setLogicOpen(false)
 
   const handleKeyUp = (evt) => {
     if (evt.keyCode === 13) {
@@ -41,6 +47,10 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
     setPage(page)
   }
 
+  function handleSave() {
+    console.log('Save source code to API')
+  }
+
   return (
     <>
       <div className="ppanel">
@@ -58,14 +68,22 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
               autoComplete="off"
             >
               <FormControl variant="standard">
-                <Typography variant="caption">#Id</Typography>
+                <Typography variant="caption">Index</Typography>
                 <TextField
                   variant="standard"
                   value={props.type + "_" + props.id}
                 />
               </FormControl>
               <FormControl variant="standard">
-                <Typography variant="caption">#Label</Typography>
+                <Typography variant="caption">Folder</Typography>
+                <TextField
+                  value={folder}
+                  onChange={(data) => setFolder(data.target.value)}
+                  onKeyUp={handleKeyUp}
+                />
+              </FormControl>
+              <FormControl variant="standard">
+                <Typography variant="caption">Name</Typography>
                 <TextField
                   value={label}
                   onChange={(data) => setLabel(data.target.value)}
@@ -73,26 +91,93 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                 />
               </FormControl>
               <FormControl variant="standard">
-                <Typography variant="caption">#Type</Typography>
+                <Typography variant="caption">Type</Typography>
                 <TextField variant="standard" value={props.type} />
               </FormControl>
               <FormControl variant="standard">
-                <Typography variant="caption">#URI</Typography>
+                <Typography variant="caption">URI</Typography>
                 <TextField
                   value={uri}
                   onChange={(data) => setUri(data.target.value)}
                   onKeyUp={handleKeyUp}
                 />
               </FormControl>
+              <FormControl variant="standard">
+                <Typography variant="caption">Process Service#1</Typography>
+                <Grid container alignItems="center">
+                  <Grid item xs={10}>
+                    <TextField
+                      value={processService1}
+                      onChange={(data) => setProcessService1(data.target.value)}
+                      onKeyUp={handleKeyUp}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        bgcolor: "snow",
+                        color: "black",
+                        ":hover": {
+                          bgcolor: "#eee"
+                        }
+                      }}
+                      onClick={() => setLogicOpen(true)}
+                    >
+                      Open
+                    </Button>
+                  </Grid>
+                </Grid>
+              </FormControl>
+              <FormControl variant="standard">
+                <Typography variant="caption">Process Service#2</Typography>
+                <Grid container alignItems="center">
+                  <Grid item xs={10}>
+                    <TextField
+                      value={processService2}
+                      onChange={(data) => setProcessService2(data.target.value)}
+                      onKeyUp={handleKeyUp}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        bgcolor: "snow",
+                        color: "black",
+                        ":hover": {
+                          bgcolor: "#eee"
+                        }
+                      }}
+                      onClick={() => setLogicOpen(true)}
+                    >
+                      Open
+                    </Button>
+                  </Grid>
+                </Grid>
+              </FormControl>
             </Box>
-            {props.type === "page" && (
-              <Button
-                onClick={() => handlePage("jsonform")}
-                variant="contained"
-              >
-                Preview Page
-              </Button>
-            )}
+            <Grid container spacing={1} padding={1}>
+              <Grid item>
+                <Button
+                  onClick={handleSave}
+                  variant="contained"
+                >
+                  Save Source
+                </Button>
+              </Grid>
+              {props.type === "page" && (
+                <Grid item>
+                  <Button
+                    onClick={() => handlePage("jsonform")}
+                    variant="contained"
+                    color="success"
+                  >
+                    Preview Page
+                  </Button>
+                </Grid>
+              )}
+            </Grid>
           </Grid>
         )}
       </div>
@@ -112,6 +197,21 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                   id={props.type + "_" + props.id}
                 />
               )}
+            </Box>
+          </Grid>
+        </Grid>
+      </Modal>
+
+      <Modal
+        open={logicOpen}
+        onClose={handleLogicClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Grid container spacing={1} padding={5}>
+          <Grid xs={12}>
+            <Box sx={{ bgcolor: "snow" }}>
+              <WorkflowLogic onClose={handleLogicClose} />
             </Box>
           </Grid>
         </Grid>

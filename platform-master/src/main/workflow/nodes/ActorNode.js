@@ -17,7 +17,7 @@ function ActorNode({ data }) {
           cursor: "grab"
         }}
       >
-        <img src="images/actor.png" alt="" onChange={onChange} />
+        <img src="/images/actor.png" alt="" onChange={onChange} />
       </div>
       <Handle type="source" position={Position.Right} style={{backgroundColor: 'blue', width: '10px', height: '10px'}} />
     </>

@@ -18,7 +18,7 @@ function ServerNode({ data }) {
           borderRadius: '5px'
         }}
       >
-        <img src="images/server.png" alt="" onChange={onChange} />
+        <img src="/images/server.png" alt="" onChange={onChange} />
       </div>
     </div>
   )

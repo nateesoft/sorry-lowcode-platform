@@ -20,7 +20,7 @@ function PageNode({ data }) {
           borderRadius: '5px'
         }}
       >
-        <img src="images/pages.png" alt="" onChange={onChange} />
+        <img src="/images/pages.png" alt="" onChange={onChange} />
       </div>
       <Handle type="target" position={Position.Top} style={{backgroundColor: 'green', width: '10px', height: '10px'}} />
       <Handle type="source" position={Position.Bottom} style={{bottom: "-30px", backgroundColor: 'blue', width: '10px', height: '10px'}} />

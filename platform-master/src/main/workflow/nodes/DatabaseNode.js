@@ -18,7 +18,7 @@ function DatabaseNode({ data }) {
           borderRadius: '5px'
         }}
       >
-        <img src="images/database.png" alt="" onChange={onChange} />
+        <img src="/images/database.png" alt="" onChange={onChange} />
       </div>
     </div>
   )
