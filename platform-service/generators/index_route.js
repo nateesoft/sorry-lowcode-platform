@@ -4,7 +4,7 @@
  * Exports the generators so plop knows them
  */
 
-const newFrontEndGenerator = require("./frontend")
+const addRouteGenerator = require("./frontend/addRoute")
 
 /**
  * Every generated backup file gets this extension
@@ -12,5 +12,5 @@ const newFrontEndGenerator = require("./frontend")
  */
 
 module.exports = plop => {
-  plop.setGenerator("newFrontEnd", newFrontEndGenerator)
+  plop.setGenerator("addRoute", addRouteGenerator)
 }

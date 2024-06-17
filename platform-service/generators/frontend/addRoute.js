@@ -1,5 +1,5 @@
 /**
- * Frontend Generator
+ * Add route Generator
  */
 
 /* eslint strict: ["off"] */
@@ -7,14 +7,8 @@
 "use strict"
 
 module.exports = {
-  description: "Create new frontend source",
+  description: "Add source code and new route",
   prompts: [
-    {
-      type: "input",
-      name: "projectId",
-      message: "What is project id?",
-      default: "app1"
-    },
     {
       type: "input",
       name: "name",
@@ -25,7 +19,7 @@ module.exports = {
       type: "input",
       name: "uri",
       message: "What is uri path?",
-      default: ""
+      default: "/"
     }
   ],
   actions: (data) => {
@@ -35,12 +29,6 @@ module.exports = {
         type: "add",
         path: "../frontend-app/src/pages/{{name}}/index.js",
         templateFile: "./frontend/pages/index.js.hbs",
-        abortOnFail: true
-      },
-      {
-        type: "add",
-        path: "../frontend-app/src/App.js",
-        templateFile: "./frontend/App.js.hbs",
         abortOnFail: true
       },
       {

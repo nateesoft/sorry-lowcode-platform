@@ -8,16 +8,14 @@ import React from 'react'
 import { materialCells, materialRenderers } from "@jsonforms/material-renderers"
 import { JsonForms } from "@jsonforms/react"
 
-import schema from './schema.json'
-import uischema from './uischema.json'
-import data from './uischema.json'
+import appConfig from '../../appConfig.json'
 
 function {{ properCase name }}() {
   return (
     <JsonForms
-      schema={schema}
-      uischema={uischema}
-      data={data}
+      schema={appConfig.application.{{ projectId }}.page.{{ name }}.schema}
+      uischema={appConfig.application.{{ projectId }}.page.{{ name }}.uischema}
+      data={appConfig.application.{{ projectId }}.page.{{ name }}.data}
       renderers={materialRenderers}
       cells={materialCells}
     />
