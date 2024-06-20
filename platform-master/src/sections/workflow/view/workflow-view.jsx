@@ -1,7 +1,5 @@
 import { useState } from "react"
 
-import { Link as RouterLink } from "react-router-dom"
-import Link from "@mui/material/Link"
 import Card from "@mui/material/Card"
 import Stack from "@mui/material/Stack"
 import Table from "@mui/material/Table"
@@ -98,16 +96,13 @@ export default function WorkFlowPage() {
         mb={5}
       >
         <Typography variant="h4">WorkFlows</Typography>
-
-        <Link component={RouterLink} to="/workflows/1">
-          <Button
-            variant="contained"
-            color="inherit"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-          >
-            New WorkFlow
-          </Button>
-        </Link>
+        <Button
+          variant="contained"
+          color="inherit"
+          startIcon={<Iconify icon="eva:plus-fill" />}
+        >
+          New WorkFlow
+        </Button>
       </Stack>
 
       <Card>
@@ -128,10 +123,11 @@ export default function WorkFlowPage() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: "name", label: "Name" },
-                  { id: "company", label: "Company" },
-                  { id: "role", label: "Role" },
-                  { id: "isVerified", label: "Verified", align: "center" },
+                  { id: "id", label: "Id" },
+                  { id: "projectName", label: "Project Name" },
+                  { id: "workFlowName", label: "Workflow Name" },
+                  { id: "updatedDate", label: "Update Date" },
+                  { id: "version", label: "Version" },
                   { id: "status", label: "Status" },
                   { id: "" }
                 ]}
@@ -142,14 +138,18 @@ export default function WorkFlowPage() {
                   .map(row =>
                     <WorkFlowTableRow
                       key={row.id}
-                      name={row.name}
-                      role={row.role}
+                      id={row.id}
+                      projectName={row.projectName}
+                      workFlowName={row.workFlowName}
+                      createdDate={row.createdDate}
+                      updatedDate={row.updatedDate}
+                      version={row.version}
+                      manager={row.manager}
                       status={row.status}
-                      company={row.company}
-                      avatarUrl={row.avatarUrl}
-                      isVerified={row.isVerified}
-                      selected={selected.indexOf(row.name) !== -1}
-                      handleClick={event => handleClick(event, row.name)}
+                      projectUrl={row.projectUrl}
+                      workFlowUrl={row.workFlowUrl}
+                      handleClick={event =>
+                        handleClick(event, row.workFlowName)}
                     />
                   )}
 

@@ -10,9 +10,12 @@ import ReactFlow, {
   MarkerType,
   Panel
 } from "reactflow"
+import { useParams } from 'react-router-dom';
 // import axios from "axios"
 
 import "reactflow/dist/style.css"
+
+import { Button, Grid } from "@mui/material"
 
 import LeftMenu from "./LeftMenu"
 import PropertyPanel from "./PropertyPanel"
@@ -27,7 +30,6 @@ import DatabaseNode from "./nodes/DatabaseNode"
 import ServerNode from "./nodes/ServerNode"
 
 import "./index.css"
-import { Button, Grid } from "@mui/material"
 
 const flowKey = "template"
 
@@ -42,6 +44,7 @@ const nodeTypes = {
 }
 
 const WorkFlowMain = () => {
+  const { id: workFlowId } = useParams()
   const reactFlowWrapper = useRef(null)
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
@@ -164,7 +167,7 @@ const WorkFlowMain = () => {
   const onSave = useCallback(() => {
     if (reactFlowInstance) {
       const flow = reactFlowInstance.toObject()
-      localStorage.setItem(flowKey, JSON.stringify(flow))
+      localStorage.setItem(flowKey+"_"+workFlowId, JSON.stringify(flow))
 
       // const data = {
       //   created_user: "natheep",
@@ -179,11 +182,11 @@ const WorkFlowMain = () => {
       //   console.log(response)
       // })
     }
-  }, [reactFlowInstance])
+  }, [reactFlowInstance, workFlowId])
 
   const onRestore = useCallback(() => {
     const restoreFlow = async () => {
-      const flow = JSON.parse(localStorage.getItem(flowKey))
+      const flow = JSON.parse(localStorage.getItem(flowKey+"_"+workFlowId))
       if (flow) {
         setNodes(flow.nodes || [])
         setEdges(flow.edges || [])
@@ -191,7 +194,7 @@ const WorkFlowMain = () => {
     }
 
     restoreFlow()
-  }, [setNodes, setEdges])
+  }, [setNodes, setEdges, workFlowId])
 
   const onPreview = () => {
     window.open("http://localhost:3000/app1")
@@ -202,83 +205,83 @@ const WorkFlowMain = () => {
   }, [onRestore])
 
   return (
-    <div className="dndflow">
-      <LeftMenu />
-      <ReactFlowProvider>
-        <div
-          className="reactflow-wrapper"
-          ref={reactFlowWrapper}
-          style={{ height: "88vh" }}
-        >
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            onInit={setReactFlowInstance}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
-            onNodeClick={onNodeClick}
-            onEdgeClick={onEdgeClick}
-            onPaneClick={() => setProperty({})}
-            nodeTypes={nodeTypes}
-            fitView
+      <div className="dndflow">
+        <LeftMenu />
+        <ReactFlowProvider>
+          <div
+            className="reactflow-wrapper"
+            ref={reactFlowWrapper}
+            style={{ height: "88vh" }}
           >
-            <Panel position="top-right">
-              <Grid container spacing={1}>
-                <Grid item>
-                  <Button variant="contained" color="info" onClick={onSave}>
-                    Save
-                  </Button>
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onConnect={onConnect}
+              onInit={setReactFlowInstance}
+              onDrop={onDrop}
+              onDragOver={onDragOver}
+              onNodeClick={onNodeClick}
+              onEdgeClick={onEdgeClick}
+              onPaneClick={() => setProperty({})}
+              nodeTypes={nodeTypes}
+              fitView
+            >
+              <Panel position="top-right">
+                <Grid container spacing={1}>
+                  <Grid item>
+                    <Button variant="contained" color="info" onClick={onSave}>
+                      Save
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      variant="contained"
+                      Click={onRestore}
+                      sx={{
+                        bgcolor: "snow",
+                        color: "black",
+                        ":hover": {
+                          bgcolor: "#eee"
+                        }
+                      }}
+                    >
+                      Restore
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={onPreview}
+                    >
+                      Run
+                    </Button>
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    Click={onRestore}
-                    sx={{
-                      bgcolor: "snow",
-                      color: "black",
-                      ":hover": {
-                        bgcolor: "#eee"
-                      }
-                    }}
-                  >
-                    Restore
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    color="success"
-                    onClick={onPreview}
-                  >
-                    Run
-                  </Button>
-                </Grid>
-              </Grid>
-            </Panel>
-            <Controls />
-            <MiniMap zoomable pannable />
-            <Background />
-          </ReactFlow>
-        </div>
-      </ReactFlowProvider>
-      {!showPage.show && (
-        <PropertyPanel
-          props={property}
-          onComponentChange={onPropertyChange}
-          onShowPage={setShowPage}
-          display={setProperty}
+              </Panel>
+              <Controls />
+              <MiniMap zoomable pannable />
+              <Background />
+            </ReactFlow>
+          </div>
+        </ReactFlowProvider>
+        {!showPage.show && (
+          <PropertyPanel
+            props={property}
+            onComponentChange={onPropertyChange}
+            onShowPage={setShowPage}
+            display={setProperty}
+          />
+        )}
+        <PagePanel
+          condition={showPage}
+          property={setProperty}
+          onClose={() => setShowPage({ show: false, page: null })}
+          {...property}
         />
-      )}
-      <PagePanel
-        condition={showPage}
-        property={setProperty}
-        onClose={() => setShowPage({ show: false, page: null })}
-        {...property}
-      />
-    </div>
+      </div>
   )
 }
 

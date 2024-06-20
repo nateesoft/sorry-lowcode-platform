@@ -1,25 +1,14 @@
-import { sample } from 'lodash';
-import { faker } from '@faker-js/faker';
 
 // ----------------------------------------------------------------------
-
-export const workflows = [...Array(1)].map((_, index) => ({
-  id: faker.string.uuid(),
-  avatarUrl: `/assets/images/avatars/avatar_${index + 1}.jpg`,
-  name: faker.person.fullName(),
-  company: faker.company.name(),
-  isVerified: faker.datatype.boolean(),
-  status: sample(['active', 'banned']),
-  role: sample([
-    'Leader',
-    'Hr Manager',
-    'UI Designer',
-    'UX Designer',
-    'UI/UX Designer',
-    'Project Manager',
-    'Backend Developer',
-    'Full Stack Designer',
-    'Front End Developer',
-    'Full Stack Developer',
-  ]),
+export const workflows = [...Array(2)].map((_, index) => ({
+  id: "id-workflow-00" + (index+1),
+  projectName: "POS Resturant",
+  workFlowName: "WorkFlow-0" + (index+1),
+  createdDate: "18/01/2024",
+  updatedDate: "18/06/2024",
+  version: "0.0.1",
+  manager: "Nathee Phuwong",
+  status: "active",
+  projectUrl: "/assets/icons/navbar/ic_project.svg",
+  workFlowUrl: "/assets/icons/navbar/ic_workflow.svg",
 }));

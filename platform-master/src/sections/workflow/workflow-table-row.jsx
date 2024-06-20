@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link as RouterLink } from "react-router-dom"
+import Link from "@mui/material/Link"
 
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Popover from '@mui/material/Popover';
 import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
 import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
@@ -16,13 +17,16 @@ import Iconify from '../../components/iconify';
 
 // ----------------------------------------------------------------------
 export default function WorkFlowTableRow({
-  selected,
-  name,
-  avatarUrl,
-  company,
-  role,
-  isVerified,
+  id,
+  projectName,
+  workFlowName,
+  createdDate,
+  updatedDate,
+  version,
+  manager,
   status,
+  projectUrl,
+  workFlowUrl,
   handleClick,
 }) {
   const [open, setOpen] = useState(null);
@@ -37,30 +41,34 @@ export default function WorkFlowTableRow({
 
   return (
     <>
-      <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
-        <TableCell padding="checkbox">
-          <Checkbox disableRipple checked={selected} onChange={handleClick} />
-        </TableCell>
+      <TableRow hover tabIndex={-1} role="checkbox">
+        <TableCell>{id}</TableCell>
 
         <TableCell component="th" scope="row" padding="none">
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <Avatar alt={name} src={avatarUrl} />
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Avatar alt={projectName} src={projectUrl} sx={{ width: 24, height: 24 }} />
             <Typography variant="subtitle2" noWrap>
-              {name}
+              {projectName}
             </Typography>
           </Stack>
         </TableCell>
 
-        <TableCell>{company}</TableCell>
+        <TableCell component="th" scope="row" padding="none">
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Avatar alt={workFlowName} src={workFlowUrl} sx={{ width: 24, height: 24 }} />
+            <Link component={RouterLink} to={`/workflows/${id}`} sx={{ textDecoration: 0 }}>
+              <Typography variant="subtitle2" noWrap>
+                {workFlowName}
+              </Typography>
+            </Link>
+          </Stack>
+        </TableCell>
 
-        <TableCell>{role}</TableCell>
-
-        <TableCell align="center">{isVerified ? 'Yes' : 'No'}</TableCell>
-
+        <TableCell>{updatedDate}</TableCell>
+        <TableCell>{version}</TableCell>
         <TableCell>
           <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
         </TableCell>
-
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
             <Iconify icon="eva:more-vertical-fill" />
@@ -77,11 +85,13 @@ export default function WorkFlowTableRow({
         PaperProps={{
           sx: { width: 140 },
         }}
-      >
-        <MenuItem onClick={handleCloseMenu}>
-          <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
+      > 
+        <Link component={RouterLink} to={`/workflows/${id}`} sx={{ textDecoration: 0 }}>
+          <MenuItem>
+            <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
+            Edit
+          </MenuItem>
+        </Link>
 
         <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />

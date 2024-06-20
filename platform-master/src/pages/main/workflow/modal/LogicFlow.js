@@ -16,6 +16,10 @@ import "reactflow/dist/style.css"
 import LeftMenu from "./LeftMenu"
 import StartNode from "./nodes/StartNode"
 import ProcessNode from "./nodes/ProcessNode"
+import PayloadNode from "./nodes/PayloadNode"
+import QueryNode from "./nodes/QueryNode"
+import MappingNode from "./nodes/MappingNode"
+import ResponseNode from "./nodes/ResponseNode"
 import EndNode from "./nodes/EndNode"
 
 import "./index.css"
@@ -25,6 +29,10 @@ const logicFlowKey = "logicTemplate"
 
 const nodeTypes = {
   start: StartNode,
+  payload: PayloadNode,
+  query: QueryNode,
+  mapping: MappingNode,
+  response: ResponseNode,
   process: ProcessNode,
   end: EndNode
 }
@@ -72,6 +80,14 @@ const LogicFlow = (props) => {
       let label = ""
       if (type === "start") {
         label = "Start"
+      } else if (type === "payload") {
+        label = "Payload"
+      } else if (type === "query") {
+        label = "Query"
+      } else if (type === "mapping") {
+        label = "Mapping"
+      } else if (type === "response") {
+        label = "Response"
       } else if (type === "process") {
         label = "Process"
       } else if (type === "end") {

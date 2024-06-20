@@ -39,6 +39,7 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null);
+    window.location.href = '/login'
   };
 
   return (

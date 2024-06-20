@@ -11,6 +11,7 @@ const LeftMenu = memo(() => {
       <div className="description">Logic Flow</div>
       <div
         className="dndnode"
+        style={{height: "65px"}}
         onDragStart={(event) => onDragStart(event, "start")}
         draggable
       >
@@ -18,6 +19,15 @@ const LeftMenu = memo(() => {
       </div>
       <div
         className="dndnode"
+        style={{height: "80px"}}
+        onDragStart={(event) => onDragStart(event, "payload")}
+        draggable
+      >
+        Payload
+      </div>
+      <div
+        className="dndnode"
+        style={{height: "80px"}}
         onDragStart={(event) => onDragStart(event, "process")}
         draggable
       >
@@ -25,6 +35,31 @@ const LeftMenu = memo(() => {
       </div>
       <div
         className="dndnode"
+        style={{height: "80px"}}
+        onDragStart={(event) => onDragStart(event, "query")}
+        draggable
+      >
+        Query
+      </div>
+      <div
+        className="dndnode"
+        style={{height: "80px"}}
+        onDragStart={(event) => onDragStart(event, "mapping")}
+        draggable
+      >
+        Mapping
+      </div>
+      <div
+        className="dndnode"
+        style={{height: "80px"}}
+        onDragStart={(event) => onDragStart(event, "response")}
+        draggable
+      >
+        Response
+      </div>
+      <div
+        className="dndnode"
+        style={{height: "65px"}}
         onDragStart={(event) => onDragStart(event, "end")}
         draggable
       >

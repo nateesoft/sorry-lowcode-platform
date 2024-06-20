@@ -1,6 +1,11 @@
 import React, { memo } from "react"
+// import { useParams } from 'react-router-dom';
+import { Link as RouterLink } from "react-router-dom"
+import Link from "@mui/material/Link"
 
 const LeftMenu = memo(() => {
+  // const { id } = useParams();
+
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType)
     event.dataTransfer.effectAllowed = "move"
@@ -8,7 +13,11 @@ const LeftMenu = memo(() => {
 
   return (
     <aside>
-      <div className="description">Work Flow</div>
+      <div className="description">
+        <Link component={RouterLink} to="/workflows">
+          Work Flow
+        </Link>
+      </div>
       <div
         className="flowchart"
         onDragStart={(event) => onDragStart(event, "actor")}
