@@ -3,11 +3,6 @@ const express = require("express")
 const fs = require("fs"); 
 const router = express.Router()
 
-/* GET home page. */
-router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" })
-})
-
 router.get("/genapp", function (req, res, next) {
   // console.log("test service")
   // exec('sh gen_source.sh', (err, output) => {
@@ -21,121 +16,80 @@ router.get("/genapp", function (req, res, next) {
 
   // add page1
   const pageId1 = "login" 
-  appConfig.application[projectId].page[pageId1] = {}
+  appConfig.application[projectId].page[pageId1] = {
+    uri: "/login"
+  }
   appConfig.application[projectId].page[pageId1].schema = {
-    type: "object",
-    properties: {
-      name: {
-        type: "string",
-        minLength: 3,
-        description: "Please enter your name"
-      },
-      vegetarian: {
-        type: "boolean"
-      },
-      birthDate: {
-        type: "string",
-        format: "date"
-      },
-      nationality: {
-        type: "string",
-        enum: ["DE", "IT", "JP", "US", "RU", "Other"]
-      },
-      personalData: {
-        type: "object",
-        properties: {
-          age: {
-            type: "integer",
-            description: "Please enter your age."
-          },
-          height: {
-            type: "number"
-          },
-          drivingSkill: {
-            type: "number",
-            maximum: 10,
-            minimum: 1,
-            default: 7
-          }
+    "type": "object",
+    "properties": {
+        "username": {
+            "type": "string"
         },
-        required: ["age", "height"]
-      },
-      occupation: {
-        type: "string"
-      },
-      postalCode: {
-        type: "string",
-        maxLength: 5
-      }
+        "password": {
+            "type": "string",
+            "options": {
+                "format": "password"
+            }
+        }
     },
-    required: ["occupation", "nationality"]
-  }
-  appConfig.application[projectId].page[pageId1].uischema = {
-    type: "VerticalLayout",
-    elements: [
-      {
-        type: "HorizontalLayout",
-        elements: [
-          {
-            type: "Control",
-            scope: "#/properties/name"
-          },
-          {
-            type: "Control",
-            scope: "#/properties/personalData/properties/age"
-          },
-          {
-            type: "Control",
-            scope: "#/properties/birthDate"
-          }
-        ]
-      },
-      {
-        type: "Label",
-        text: "Additional Information"
-      },
-      {
-        type: "HorizontalLayout",
-        elements: [
-          {
-            type: "Control",
-            scope: "#/properties/personalData/properties/height"
-          },
-          {
-            type: "Control",
-            scope: "#/properties/nationality"
-          },
-          {
-            type: "Control",
-            scope: "#/properties/occupation",
-            suggestion: [
-              "Accountant",
-              "Engineer",
-              "Freelancer",
-              "Journalism",
-              "Physician",
-              "Student",
-              "Teacher",
-              "Other"
-            ]
-          }
-        ]
-      }
+    "required": [
+        "username",
+        "password"
     ]
-  }
+}
+  appConfig.application[projectId].page[pageId1].uischema = {
+    "type": "Group",
+    "label": "Login Form",
+    "elements": [
+        {
+            "type": "Control",
+            "scope": "#/properties/username"
+        },
+        {
+            "type": "Control",
+            "scope": "#/properties/password",
+            "options": {
+                "format": "password"
+            }
+        },
+        {
+            "type": "GridLayout",
+            "options": {
+                "style": {
+                    "direction": "row",
+                    "spacing": 1,
+                    "justifyContent": "flex-end"
+                }
+            },
+            "elements": [
+                {
+                    "type": "ActionButton",
+                    "label": "Reset"
+                },
+                {
+                    "type": "ActionButton",
+                    "label": "Login",
+                    "action": "#LoginService",
+                    "options": {
+                        "style": {
+                            "variant": "contained"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
   appConfig.application[projectId].page[pageId1].data = {
-    name: "John Doe",
-    vegetarian: false,
-    birthDate: "1985-06-02",
-    personalData: {
-      age: 34
-    },
-    postalCode: "12345"
-  }
+    "username": "admin",
+    "password": 12345
+}
 
   // add page2
   const pageId2 = "main"
-  appConfig.application[projectId].page[pageId2] = {}
+  appConfig.application[projectId].page[pageId2] = {
+    uri: "/main"
+  }
   appConfig.application[projectId].page[pageId2].schema = {
     type: "object",
     properties: {

@@ -8,6 +8,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="" element={<h1>Welcome to Frontend Page</h1>} />
         <Route path="/app1">
           {/* inject route */}
           <Route path="home" element={<HomePage />} />

@@ -5,20 +5,24 @@
  */
 
 import React from 'react'
-import { materialCells, materialRenderers } from "@jsonforms/material-renderers"
+import { materialCells } from "@jsonforms/material-renderers"
 import { JsonForms } from "@jsonforms/react"
 
-import appConfig from '../../appConfig.json'
+import { renderers } from '../components/renderers'
+
+import uischema from "./uischema.json"
+import schema from "./schema.json"
+import data from "./data.json"
 
 function Home() {
   return (
     <JsonForms
-      schema={appConfig.application.app1.page.home.schema}
-      uischema={appConfig.application.app1.page.home.uischema}
-      data={appConfig.application.app1.page.home.data}
-      renderers={materialRenderers}
-      cells={materialCells}
-    />
+        schema={schema}
+        uischema={uischema}
+        data={data}
+        renderers={renderers}
+        cells={materialCells}
+      />
   );
 }
 

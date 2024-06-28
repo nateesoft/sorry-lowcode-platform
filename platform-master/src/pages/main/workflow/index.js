@@ -10,8 +10,8 @@ import ReactFlow, {
   MarkerType,
   Panel
 } from "reactflow"
-import { useParams } from 'react-router-dom';
-// import axios from "axios"
+import { useParams } from "react-router-dom"
+import axios from "axios"
 
 import "reactflow/dist/style.css"
 
@@ -167,7 +167,7 @@ const WorkFlowMain = () => {
   const onSave = useCallback(() => {
     if (reactFlowInstance) {
       const flow = reactFlowInstance.toObject()
-      localStorage.setItem(flowKey+"_"+workFlowId, JSON.stringify(flow))
+      localStorage.setItem(flowKey + "_" + workFlowId, JSON.stringify(flow))
 
       // const data = {
       //   created_user: "natheep",
@@ -186,7 +186,7 @@ const WorkFlowMain = () => {
 
   const onRestore = useCallback(() => {
     const restoreFlow = async () => {
-      const flow = JSON.parse(localStorage.getItem(flowKey+"_"+workFlowId))
+      const flow = JSON.parse(localStorage.getItem(flowKey + "_" + workFlowId))
       if (flow) {
         setNodes(flow.nodes || [])
         setEdges(flow.edges || [])
@@ -197,7 +197,17 @@ const WorkFlowMain = () => {
   }, [setNodes, setEdges, workFlowId])
 
   const onPreview = () => {
-    window.open("http://localhost:3000/app1")
+    // window.open("http://localhost:3000/app1")
+    axios
+      .get("/api/frontend")
+      .then(({ data }) => {
+        if (data.redirectUrl) {
+          window.open(data.redirectUrl)
+        }
+      })
+      .catch((error) => {
+        alert(error.message)
+      })
   }
 
   useEffect(() => {
@@ -205,83 +215,83 @@ const WorkFlowMain = () => {
   }, [onRestore])
 
   return (
-      <div className="dndflow">
-        <LeftMenu />
-        <ReactFlowProvider>
-          <div
-            className="reactflow-wrapper"
-            ref={reactFlowWrapper}
-            style={{ height: "88vh" }}
+    <div className="dndflow">
+      <LeftMenu />
+      <ReactFlowProvider>
+        <div
+          className="reactflow-wrapper"
+          ref={reactFlowWrapper}
+          style={{ height: "88vh" }}
+        >
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            onInit={setReactFlowInstance}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
+            onNodeClick={onNodeClick}
+            onEdgeClick={onEdgeClick}
+            onPaneClick={() => setProperty({})}
+            nodeTypes={nodeTypes}
+            fitView
           >
-            <ReactFlow
-              nodes={nodes}
-              edges={edges}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onConnect={onConnect}
-              onInit={setReactFlowInstance}
-              onDrop={onDrop}
-              onDragOver={onDragOver}
-              onNodeClick={onNodeClick}
-              onEdgeClick={onEdgeClick}
-              onPaneClick={() => setProperty({})}
-              nodeTypes={nodeTypes}
-              fitView
-            >
-              <Panel position="top-right">
-                <Grid container spacing={1}>
-                  <Grid item>
-                    <Button variant="contained" color="info" onClick={onSave}>
-                      Save
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      variant="contained"
-                      Click={onRestore}
-                      sx={{
-                        bgcolor: "snow",
-                        color: "black",
-                        ":hover": {
-                          bgcolor: "#eee"
-                        }
-                      }}
-                    >
-                      Restore
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      variant="contained"
-                      color="success"
-                      onClick={onPreview}
-                    >
-                      Run
-                    </Button>
-                  </Grid>
+            <Panel position="top-right">
+              <Grid container spacing={1}>
+                <Grid item>
+                  <Button variant="contained" color="info" onClick={onSave}>
+                    Save
+                  </Button>
                 </Grid>
-              </Panel>
-              <Controls />
-              <MiniMap zoomable pannable />
-              <Background />
-            </ReactFlow>
-          </div>
-        </ReactFlowProvider>
-        {!showPage.show && (
-          <PropertyPanel
-            props={property}
-            onComponentChange={onPropertyChange}
-            onShowPage={setShowPage}
-            display={setProperty}
-          />
-        )}
-        <PagePanel
-          condition={showPage}
-          property={setProperty}
-          onClose={() => setShowPage({ show: false, page: null })}
-          {...property}
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    Click={onRestore}
+                    sx={{
+                      bgcolor: "snow",
+                      color: "black",
+                      ":hover": {
+                        bgcolor: "#eee"
+                      }
+                    }}
+                  >
+                    Restore
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={onPreview}
+                  >
+                    Publish
+                  </Button>
+                </Grid>
+              </Grid>
+            </Panel>
+            <Controls />
+            <MiniMap zoomable pannable />
+            <Background />
+          </ReactFlow>
+        </div>
+      </ReactFlowProvider>
+      {!showPage.show && (
+        <PropertyPanel
+          props={property}
+          onComponentChange={onPropertyChange}
+          onShowPage={setShowPage}
+          display={setProperty}
         />
-      </div>
+      )}
+      <PagePanel
+        condition={showPage}
+        property={setProperty}
+        onClose={() => setShowPage({ show: false, page: null })}
+        {...property}
+      />
+    </div>
   )
 }
 

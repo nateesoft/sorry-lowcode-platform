@@ -1,0 +1,59 @@
+{
+    "type": "Group",
+    "label": "Login Form",
+    "elements": [
+        {
+            "type": "Control",
+            "scope": "#/properties/username"
+        },
+        {
+            "type": "Control",
+            "scope": "#/properties/password",
+            "options": {
+                "format": "password"
+            }
+        },
+        {
+            "type": "GridLayout",
+            "scope": "#",
+            "options": {
+                "style": {
+                    "direction": "row",
+                    "spacing": 1,
+                    "justifyContent": "flex-end"
+                }
+            },
+            "elements": [
+                {
+                    "type": "ActionButton",
+                    "elements": [
+                        {
+                            "type": "Typography",
+                            "label": "Reset"
+                        }
+                    ]
+                },
+                {
+                    "type": "ActionButton",
+                    "elements": [
+                        {
+                            "type": "Typography",
+                            "label": "Login"
+                        }
+                    ],
+                    "options": {
+                        "style": {
+                            "variant": "contained"
+                        },
+                        "onclick": {
+                            "route": {
+                                "type": "ui",
+                                "uri": "/app1/home"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
