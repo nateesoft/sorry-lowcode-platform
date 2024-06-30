@@ -1,6 +1,54 @@
 {
     "type": "object",
     "properties": {
+        "gird": {
+            "type": "object",
+            "properties": {
+                "columns": {
+                    "type": "array",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "alignItem": {
+                            "type": "string"
+                        },
+                        "numeric": {
+                            "type": "boolean"
+                        },
+                        "disablePadding": {
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "rows": {
+                    "type": "array",
+                    "properties": {
+                        "id": {
+                            "type": "number"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "calories": {
+                            "type": "number"
+                        },
+                        "fat": {
+                            "type": "number"
+                        },
+                        "carbs": {
+                            "type": "number"
+                        },
+                        "protein": {
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        },
         "name": {
             "type": "string",
             "minLength": 3,

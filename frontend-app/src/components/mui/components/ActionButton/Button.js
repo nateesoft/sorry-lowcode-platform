@@ -7,8 +7,15 @@ import { setDefaultVal } from "../../utils"
 
 const ActionButton = (props) => {
   const navigate = useNavigate()
-
-  const { uischema, schema, path, enabled, renderers, cells } = props
+  const {
+    uischema,
+    schema,
+    path,
+    enabled,
+    renderers,
+    cells,
+    handleChange
+  } = props
   const elements = setDefaultVal(uischema.elements, [])
   const options = setDefaultVal(uischema.options, {})
   const style = setDefaultVal(options.style, "")
@@ -16,13 +23,20 @@ const ActionButton = (props) => {
   const handleClick = () => {
     const onClick = setDefaultVal(options.onclick, {})
     if (onClick) {
-      const { route } = onClick
+      const { route, clearForm } = onClick
       if (route) {
-        navigate(route.uri)
+        if (route.type && route.type === "link") {
+          console.log(props)
+          navigate(route.uri)
+        } else if (route.type && route.type === "service") {
+          navigate(route.uri)
+        }
+      }
+      if (clearForm) {
+        handleChange("username", "")
+        handleChange("password", "")
       }
     }
-
-    console.log("handleClick")
   }
 
   return (

@@ -31,7 +31,12 @@
                             "type": "Typography",
                             "label": "Reset"
                         }
-                    ]
+                    ],
+                    "options": {
+                        "onclick": {
+                            "clearForm": true
+                        }
+                    }
                 },
                 {
                     "type": "ActionButton",
@@ -47,7 +52,7 @@
                         },
                         "onclick": {
                             "route": {
-                                "type": "ui",
+                                "type": "link",
                                 "uri": "/app1/home"
                             }
                         }

@@ -8,7 +8,7 @@ import React from 'react'
 import { materialCells } from "@jsonforms/material-renderers"
 import { JsonForms } from "@jsonforms/react"
 
-import { renderers } from '../components/renderers'
+import { renderers } from '../../components/renderers'
 
 import uischema from "./uischema.json"
 import schema from "./schema.json"

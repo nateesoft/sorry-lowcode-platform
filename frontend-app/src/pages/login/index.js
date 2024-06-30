@@ -13,7 +13,7 @@ import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Modal from "@mui/material/Modal"
 
-import { renderers } from '../components/renderers'
+import { renderers } from "../../components/renderers"
 
 import uischema from "./uischema.json"
 import schema from "./schema.json"
@@ -31,7 +31,7 @@ const style = {
   p: 4
 }
 
-async function callService(method, uri, payload) {
+async function callService(method, uri, payload={}) {
   if (method === "get") {
     return await axios.get(uri)
   } else if (method === "post") {
@@ -42,8 +42,8 @@ async function callService(method, uri, payload) {
 async function initLoad(setOpen, setErrMsg) {
   console.log("init load Login")
   try {
-    const { data } = await callService("get", "/api/login", {})
-    console.log(data)
+    const { data: response } = await callService("get", "/api/login", {})
+    console.log(response)
   } catch (error) {
     setOpen(true)
     setErrMsg({
@@ -56,11 +56,16 @@ async function initLoad(setOpen, setErrMsg) {
 function Login() {
   const [open, setOpen] = useState(false)
   const [errMsg, setErrMsg] = useState({})
+
   const handleClose = () => setOpen(false)
 
   useEffect(() => {
     initLoad(setOpen, setErrMsg)
   }, [])
+
+  const handleChange = ({error, data}) => {
+    console.log(data)
+  }
 
   return (
     <>
@@ -70,6 +75,7 @@ function Login() {
         data={data}
         renderers={renderers}
         cells={materialCells}
+        onChange={handleChange}
       />
 
       <Modal

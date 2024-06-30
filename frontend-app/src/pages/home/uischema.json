@@ -74,13 +74,27 @@
                         },
                         "onclick": {
                             "route": {
-                                "type": "ui",
+                                "type": "link",
                                 "uri": "/app1"
                             }
                         }
                     }
                 }
             ]
+        },
+        {
+            "type": "TableData",
+            "schema": "grid/table1/schema.json",
+            "data": "grid/table1/data.json",
+            "options": {
+                "type": "basic",
+                "showHeader": true,
+                "style": {
+                    "sx": {
+                        "marginTop": "10px"
+                    }
+                }
+            }
         }
     ]
 }
