@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, memo } from "react"
 
 import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
@@ -18,43 +18,20 @@ async function callService(method, uri, payload = {}) {
   }
 }
 
-const showElement = (id, elm, props) => {
+const BasicTable = (props) => {
+  // console.log("BasicTable:", props)
   const {
     schema,
     path,
     enabled,
     renderers,
     cells,
-  } = props
-  const { elements } = elm.options
-  if (elm.type === "element") {
-    return (
-      <TableCell id={id} align="center">
-        {elements.map((child, index) => (
-           <JsonFormsDispatch
-           key={index}
-           uischema={child}
-           schema={schema}
-           path={path}
-           enabled={enabled}
-           renderers={renderers}
-           cells={cells}
-         />
-        ))}
-      </TableCell>
-    )
-  }
-  return ""
-}
-
-const BasicTable = (props) => {
-  const {
     mock,
     tableSchema,
     options
   } = props
-  const gridSchema = require("../../../../" + tableSchema.schema)
-  const gridData = require("../../../../" + tableSchema.data)
+  const gridSchema = require("../../../../" + tableSchema.uischema)
+  const serviceData = require("../../../../" + tableSchema.service)
 
   const { showHeader = true } = options
   const [header] = useState(gridSchema || [])
@@ -62,10 +39,30 @@ const BasicTable = (props) => {
 
   useEffect(() => {
     (async () => {
-      const response = await callService(gridData.method, gridData.uri, {})
-      setData(response.data)
+      const response = await callService(
+        serviceData.method,
+        serviceData.uri,
+        {}
+      )
+      // console.log("response:", response)
+      const newResp = response.data.map((rItem, index) => {
+        const actionRow = header.filter((item) => item.type === "element")[0]
+        let valueActionRow = JSON.stringify(actionRow)
+        Object.keys(rItem).forEach((key) => {
+          valueActionRow = valueActionRow.replace(
+            new RegExp("#" + key, "g"),
+            rItem[key]
+          )
+        })
+        return {
+          ...rItem,
+          action_row: JSON.parse(valueActionRow).options.elements
+        }
+      })
+      // console.log("newResp:", newResp)
+      setData(newResp)
     })()
-  }, [gridData.method, gridData.uri])
+  }, [serviceData.method, serviceData.uri, header])
 
   return (
     <TableContainer component={Paper}>
@@ -82,27 +79,42 @@ const BasicTable = (props) => {
           </TableHead>
         )}
         <TableBody>
-          {data.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
-              {header.map((elm) => {
-                return showElement(row.id, elm, props)
-              })}
-            </TableRow>
-          ))}
+          {data &&
+            data.map((row, index) => (
+              <TableRow
+                key={index + row.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.name}
+                </TableCell>
+                <TableCell align="right">{row.calories}</TableCell>
+                <TableCell align="right">{row.fat}</TableCell>
+                <TableCell align="right">{row.carbs}</TableCell>
+                <TableCell align="right">{row.protein}</TableCell>
+                <TableCell align="right">
+                  {row.action_row && (
+                    <JsonFormsDispatch
+                      key={row.id + index}
+                      uischema={row.action_row[0]}
+                      schema={schema}
+                      path={path}
+                      enabled={enabled}
+                      renderers={renderers}
+                      cells={cells}
+                    />
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>
   )
 }
 
-export default BasicTable
+const customComparator = (prevProps, nextProps) => {
+  return nextProps.schema === prevProps.schema
+}
+
+export default memo(BasicTable, customComparator)

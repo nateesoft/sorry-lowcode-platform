@@ -4,11 +4,10 @@
  *
  */
 
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { materialCells } from "@jsonforms/material-renderers"
 import { JsonForms } from "@jsonforms/react"
-import axios from "axios"
-
+// import axios from "axios"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Modal from "@mui/material/Modal"
@@ -31,40 +30,40 @@ const style = {
   p: 4
 }
 
-async function callService(method, uri, payload={}) {
-  if (method === "get") {
-    return await axios.get(uri)
-  } else if (method === "post") {
-    return await axios.post(uri, payload)
-  }
-}
+// async function callService(method, uri, payload={}) {
+//   if (method === "get") {
+//     return await axios.get(uri)
+//   } else if (method === "post") {
+//     return await axios.post(uri, payload)
+//   }
+// }
 
-async function initLoad(setOpen, setErrMsg) {
-  console.log("init load Login")
-  try {
-    const { data: response } = await callService("get", "/api/login", {})
-    console.log(response)
-  } catch (error) {
-    setOpen(true)
-    setErrMsg({
-      title: "API Connection Failure!",
-      message: error.message
-    })
-  }
-}
+// async function initLoad(setOpen, setErrMsg) {
+//   console.log("init load Login")
+//   try {
+//     const { data: response } = await callService("get", "/api/login", {})
+//     console.log(response)
+//   } catch (error) {
+//     setOpen(true)
+//     setErrMsg({
+//       title: "API Connection Failure!",
+//       message: error.message
+//     })
+//   }
+// }
 
 function Login() {
   const [open, setOpen] = useState(false)
-  const [errMsg, setErrMsg] = useState({})
+  const [errMsg] = useState({})
 
   const handleClose = () => setOpen(false)
 
-  useEffect(() => {
-    initLoad(setOpen, setErrMsg)
-  }, [])
+  // useEffect(() => {
+  //   initLoad(setOpen, setErrMsg)
+  // }, [])
 
   const handleChange = ({error, data}) => {
-    console.log(data)
+    // console.log(data)
   }
 
   return (
@@ -77,7 +76,6 @@ function Login() {
         cells={materialCells}
         onChange={handleChange}
       />
-
       <Modal
         open={open}
         onClose={handleClose}

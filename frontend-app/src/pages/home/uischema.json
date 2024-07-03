@@ -84,8 +84,8 @@
         },
         {
             "type": "TableData",
-            "schema": "grid/table1/schema.json",
-            "data": "grid/table1/data.json",
+            "uischema": "grid/table1/uischema.json",
+            "service": "grid/table1/service.json",
             "options": {
                 "type": "basic",
                 "showHeader": true,

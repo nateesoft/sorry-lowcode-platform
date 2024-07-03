@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react'
+import React  from 'react'
 import { materialCells } from "@jsonforms/material-renderers"
 import { JsonForms } from "@jsonforms/react"
 

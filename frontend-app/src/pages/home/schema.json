@@ -1,6 +1,9 @@
 {
     "type": "object",
     "properties": {
+        "selectId": {
+            "type": "string"
+        },
         "gird": {
             "type": "object",
             "properties": {

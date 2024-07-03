@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import { Stack } from "@mui/material"
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from "@jsonforms/react"
 import { rankWith, uiTypeIs } from "@jsonforms/core"
@@ -6,6 +6,7 @@ import { rankWith, uiTypeIs } from "@jsonforms/core"
 import { setDefaultVal } from "../utils"
 
 const GridLayout = (props) => {
+  // console.log('GridLayout')
   const { uischema, schema, path, enabled, renderers, cells } = props
   const elements = setDefaultVal(uischema.elements, [])
   const options = setDefaultVal(uischema.options, {})
@@ -28,5 +29,9 @@ const GridLayout = (props) => {
   )
 }
 
+const customComparator = (prevProps, nextProps) => {
+  return nextProps.schema === prevProps.schema
+}
+
 export const gridLayoutTester = rankWith(1000, uiTypeIs("GridLayout"))
-export default withJsonFormsLayoutProps(GridLayout)
+export default withJsonFormsLayoutProps(memo(GridLayout, customComparator))
