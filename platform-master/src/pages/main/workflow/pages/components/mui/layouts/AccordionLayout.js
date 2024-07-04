@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import {
   Accordion,
   AccordionActions,
@@ -37,5 +37,9 @@ const AccordionLayoutRenderer = (props) => {
   )
 }
 
+const customComparator = (prevProps, nextProps) => {
+  return nextProps.schema === prevProps.schema
+}
+
 export const accordionLayoutTester = rankWith(1000, uiTypeIs("AccordionLayout"))
-export default withJsonFormsLayoutProps(AccordionLayoutRenderer)
+export default withJsonFormsLayoutProps(memo(AccordionLayoutRenderer, customComparator))

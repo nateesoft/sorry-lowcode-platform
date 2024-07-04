@@ -1,0 +1,174 @@
+[
+    {
+        "label": "Dessert (100g serving)",
+        "type": "string",
+        "options": {
+            "field": "name",
+            "name": "foodName",
+            "alignItem": "center",
+            "display": ""
+        }
+    },
+    {
+        "label": "Calories",
+        "type": "number",
+        "options": {
+            "field": "calories",
+            "name": "foodCalories",
+            "alignItem": "right",
+            "display": "convertNum"
+        }
+    },
+    {
+        "label": "Fat",
+        "type": "number",
+        "options": {
+            "field": "fat",
+            "name": "foodFat",
+            "alignItem": "right",
+            "display": "convertNum"
+        }
+    },
+    {
+        "label": "Carbs",
+        "type": "number",
+        "options": {
+            "field": "carbs",
+            "name": "foodCarbs",
+            "alignItem": "right",
+            "display": "convertNum"
+        }
+    },
+    {
+        "label": "Protein",
+        "type": "number",
+        "options": {
+            "field": "protein",
+            "name": "foodProtein",
+            "alignItem": "right",
+            "display": "convertNum"
+        }
+    },
+    {
+        "label": "",
+        "type": "element",
+        "options": {
+            "alignItem": "center",
+            "elements": [
+                {
+                    "type": "GridLayout",
+                    "options": {
+                        "style": {
+                            "direction": "row",
+                            "spacing": 1,
+                            "justifyContent": "flex-end"
+                        }
+                    },
+                    "elements": [
+                        {
+                            "type": "ActionButton",
+                            "elements": [
+                                {
+                                    "type": "Typography",
+                                    "label": "View"
+                                }
+                            ],
+                            "options": {
+                                "style": {
+                                    "variant": "contained"
+                                },
+                                "onclick": {
+                                    "data": {
+                                        "id": "#id",
+                                        "name": "#name",
+                                        "fat": "#fat"
+                                    },
+                                    "modal": true,
+                                    "modalSchema": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "fat": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "uischema": {
+                                            "type": "Group",
+                                            "elements": [
+                                                {
+                                                    "type": "Control",
+                                                    "scope": "#/properties/id"
+                                                },
+                                                {
+                                                    "type": "Control",
+                                                    "scope": "#/properties/name"
+                                                },
+                                                {
+                                                    "type": "Control",
+                                                    "scope": "#/properties/fat"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "type": "ActionButton",
+                            "elements": [
+                                {
+                                    "type": "Typography",
+                                    "label": "Edit"
+                                }
+                            ],
+                            "options": {
+                                "style": {
+                                    "variant": "outlined"
+                                },
+                                "onclick": {
+                                    "data": {
+                                        "id": "#id"
+                                    },
+                                    "modal": true
+                                }
+                            }
+                        },
+                        {
+                            "type": "ActionButton",
+                            "elements": [
+                                {
+                                    "type": "Typography",
+                                    "label": "Link"
+                                }
+                            ],
+                            "options": {
+                                "style": {
+                                    "variant": "contained",
+                                    "sx": {
+                                        "bgcolor": "green",
+                                        "&:hover": {
+                                            "bgcolor": "#0E451A"
+                                        }
+                                    }
+                                },
+                                "onclick": {
+                                    "route": {
+                                        "type": "link",
+                                        "uri": "/app1"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]
