@@ -26,7 +26,7 @@ export default function WorkflowLogic(props) {
             component="main"
             sx={{ flexGrow: 1, overflow: "auto" }}
           >
-            <LogicFlow onClose={props.onClose} />
+            <LogicFlow id={props.id} onClose={props.onClose} />
           </Box>
         </Box>
       </Box>

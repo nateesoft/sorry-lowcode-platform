@@ -25,8 +25,6 @@ import EndNode from "./nodes/EndNode"
 import "./index.css"
 import { Button, Grid } from "@mui/material"
 
-const logicFlowKey = "logicTemplate"
-
 const nodeTypes = {
   start: StartNode,
   payload: PayloadNode,
@@ -38,6 +36,7 @@ const nodeTypes = {
 }
 
 const LogicFlow = (props) => {
+  const { id: logicFlowKey } = props;
   const reactFlowWrapper = useRef(null)
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
@@ -141,7 +140,7 @@ const LogicFlow = (props) => {
       const flow = reactFlowInstance.toObject()
       localStorage.setItem(logicFlowKey, JSON.stringify(flow))
     }
-  }, [reactFlowInstance])
+  }, [reactFlowInstance, logicFlowKey])
 
   const onRestore = useCallback(() => {
     const restoreFlow = async () => {
@@ -153,7 +152,7 @@ const LogicFlow = (props) => {
     }
 
     restoreFlow()
-  }, [setNodes, setEdges])
+  }, [setNodes, setEdges, logicFlowKey])
 
   useEffect(() => {
     onRestore()

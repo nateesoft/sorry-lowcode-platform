@@ -17,6 +17,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
 
   const [open, setOpen] = useState(false)
   const [logicOpen, setLogicOpen] = useState(false)
+  const [logicId, setLogicId] = useState(null)
   const handleClose = () => setOpen(false)
   const handleLogicClose = () => setLogicOpen(false)
 
@@ -49,6 +50,11 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
 
   function handleSave() {
     console.log('Save source code to API')
+  }
+
+  function handleServiceFlowOpen(id, callback) {
+    setLogicId(id)
+    callback(true)
   }
 
   return (
@@ -122,7 +128,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                           bgcolor: "#eee"
                         }
                       }}
-                      onClick={() => setLogicOpen(true)}
+                      onClick={() => handleServiceFlowOpen("service1_"+props.id, setLogicOpen)}
                     >
                       Open
                     </Button>
@@ -149,7 +155,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                           bgcolor: "#eee"
                         }
                       }}
-                      onClick={() => setLogicOpen(true)}
+                      onClick={() => handleServiceFlowOpen("service2_"+props.id, setLogicOpen)}
                     >
                       Open
                     </Button>
@@ -211,7 +217,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
         <Grid container spacing={1} padding={5}>
           <Grid xs={12}>
             <Box sx={{ bgcolor: "snow" }}>
-              <WorkflowLogic onClose={handleLogicClose} />
+              <WorkflowLogic onClose={handleLogicClose} id={logicId} />
             </Box>
           </Grid>
         </Grid>
