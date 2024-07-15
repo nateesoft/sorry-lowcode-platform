@@ -1,0 +1,10 @@
+# lowcode-platform-builder
+platform-master:8080
+platform-service:9191
+
+# learning graphql
+https://dev.to/blankgodd/a-simple-introduction-to-graphql-with-expressjs-and-docker-11ff
+
+# lowcode-deploy
+frontend-app:3000
+backend-service:9090
