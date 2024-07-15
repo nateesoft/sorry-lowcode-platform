@@ -18,6 +18,11 @@ const navConfig = [
     icon: icon('ic_workflow'),
   },
   {
+    title: 'serviceflow',
+    path: '/serviceflows',
+    icon: icon('ic_serviceflow'),
+  },
+  {
     title: 'user',
     path: '/user',
     icon: icon('ic_user'),

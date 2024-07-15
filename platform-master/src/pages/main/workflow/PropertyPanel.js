@@ -11,8 +11,8 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
   const [label, setLabel] = useState("")
   const [folder, setFolder] = useState("")
   const [uri, setUri] = useState("")
-  const [processService1, setProcessService1] = useState("")
-  const [processService2, setProcessService2] = useState("")
+  const [serviceFlow1, setServiceFlow1] = useState("")
+  const [serviceFlow2, serServiceFlow2] = useState("")
   const [page, setPage] = useState("")
 
   const [open, setOpen] = useState(false)
@@ -109,12 +109,12 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                 />
               </FormControl>
               <FormControl variant="standard">
-                <Typography variant="caption">Process Service#1</Typography>
+                <Typography variant="caption">Service Flow#1</Typography>
                 <Grid container alignItems="center">
                   <Grid item xs={10}>
                     <TextField
-                      value={processService1}
-                      onChange={(data) => setProcessService1(data.target.value)}
+                      value={serviceFlow1}
+                      onChange={(data) => setServiceFlow1(data.target.value)}
                       onKeyUp={handleKeyUp}
                     />
                   </Grid>
@@ -136,12 +136,12 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                 </Grid>
               </FormControl>
               <FormControl variant="standard">
-                <Typography variant="caption">Process Service#2</Typography>
+                <Typography variant="caption">Service Flow#2</Typography>
                 <Grid container alignItems="center">
                   <Grid item xs={10}>
                     <TextField
-                      value={processService2}
-                      onChange={(data) => setProcessService2(data.target.value)}
+                      value={serviceFlow2}
+                      onChange={(data) => serServiceFlow2(data.target.value)}
                       onKeyUp={handleKeyUp}
                     />
                   </Grid>

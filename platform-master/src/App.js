@@ -17,6 +17,7 @@ export const IndexPage = lazy(() => import("./pages/app"))
 export const BlogPage = lazy(() => import("./pages/blog"))
 export const UserPage = lazy(() => import("./pages/user"))
 export const WorkFlowPage = lazy(() => import("./pages/workflow"))
+export const ServiceFlowPage = lazy(() => import("./pages/serviceflow"))
 export const LoginPage = lazy(() => import("./pages/login"))
 export const ProductsPage = lazy(() => import("./pages/products"))
 export const Page404 = lazy(() => import("./pages/page-not-found"))
@@ -42,6 +43,10 @@ export default function App() {
               <Route path="blog" element={<BlogPage />} />
               <Route path="workflows">
                 <Route index element={<WorkFlowPage />} />
+                <Route path=":id" element={<MainApp />} />
+              </Route>
+              <Route path="serviceflows">
+                <Route index element={<ServiceFlowPage />} />
                 <Route path=":id" element={<MainApp />} />
               </Route>
             </Route>
