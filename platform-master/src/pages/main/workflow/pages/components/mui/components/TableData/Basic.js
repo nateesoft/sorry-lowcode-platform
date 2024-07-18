@@ -20,7 +20,17 @@ async function callService(method, uri, payload = {}) {
 
 const BasicTable = (props) => {
   // console.log("BasicTable:", props)
-  const { schema, path, enabled, renderers, cells, mock, options, tableSchema } = props
+  const {
+    schema,
+    path,
+    enabled,
+    renderers,
+    cells,
+    mock,
+    tableSchema,
+    options
+  } = props
+  const { initLoad = false} = tableSchema
   const gridSchema = require("../../../../" + tableSchema.uischema)
   const serviceData = require("../../../../" + tableSchema.service)
 
@@ -29,31 +39,33 @@ const BasicTable = (props) => {
   const [data, setData] = useState(mock.rows || [])
 
   useEffect(() => {
-    (async () => {
-      const response = await callService(
-        serviceData.method,
-        serviceData.uri,
-        {}
-      )
-      // console.log("response:", response)
-      const newResp = response.data.map((rItem, index) => {
-        const actionRow = header.filter((item) => item.type === "element")[0]
-        let valueActionRow = JSON.stringify(actionRow)
-        Object.keys(rItem).forEach((key) => {
-          valueActionRow = valueActionRow.replace(
-            new RegExp("#" + key, "g"),
-            rItem[key]
-          )
+    if(initLoad){
+      (async () => {
+        const response = await callService(
+          serviceData.method,
+          serviceData.uri,
+          {}
+        )
+        // console.log("response:", response)
+        const newResp = response.data.map((rItem, index) => {
+          const actionRow = header.filter((item) => item.type === "element")[0]
+          let valueActionRow = JSON.stringify(actionRow)
+          Object.keys(rItem).forEach((key) => {
+            valueActionRow = valueActionRow.replace(
+              new RegExp("#" + key, "g"),
+              rItem[key]
+            )
+          })
+          return {
+            ...rItem,
+            action_row: JSON.parse(valueActionRow).options.elements
+          }
         })
-        return {
-          ...rItem,
-          action_row: JSON.parse(valueActionRow).options.elements
-        }
-      })
-      // console.log("newResp:", newResp)
-      setData(newResp)
-    })()
-  }, [serviceData.method, serviceData.uri, header])
+        // console.log("newResp:", newResp)
+        setData(newResp)
+      })()
+    }
+  }, [serviceData.method, serviceData.uri, header, initLoad])
 
   return (
     <TableContainer component={Paper}>

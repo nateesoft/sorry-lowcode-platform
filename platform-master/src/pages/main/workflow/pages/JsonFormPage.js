@@ -7,10 +7,9 @@ import TabContext from "@mui/lab/TabContext"
 import TabList from "@mui/lab/TabList"
 import TabPanel from "@mui/lab/TabPanel"
 import Editor from "@monaco-editor/react"
-import { Button, Grid, Stack, Typography } from "@mui/material"
+import { Button, Grid, Stack, Typography, Paper } from "@mui/material"
 
-import { renderers } from './components/renderers'
-
+import { renderers } from "./components/renderers"
 import uischema from "./uischema.json"
 import schema from "./schema.json"
 import data from "./data.json"
@@ -25,7 +24,7 @@ function localLoad(pageKey, temp) {
 }
 
 function JsonFormPage(props) {
-  const { id, onClose } = props
+  const { id, label, onClose } = props
 
   const [invalidMsg, setInvalidMsg] = useState("")
   const [schemaData, setSchemaData] = useState(
@@ -43,10 +42,54 @@ function JsonFormPage(props) {
   const editorRef3 = useRef(null)
   const [value, setValue] = useState("1")
 
-  const handleSave = (data, callFunc) => {
+  const validJsonSchema = (obj, data, callFunc) => {
+    const p1 = new Promise((resolve, reject) => {
+      let count = 0
+      Object.keys(obj).forEach((item) => {
+        const obj1 = obj[item]
+        if (
+          item === "type" &&
+          [
+            "string",
+            "number",
+            "integer",
+            "object",
+            "array",
+            "boolean",
+            "null"
+          ].indexOf(obj1) === -1
+        ) {
+          count = count + 1
+          return;
+        }
+        if (obj1 instanceof Object) {
+          validJsonSchema(obj1)
+        }
+      })
+
+      resolve(count)
+    })
+
+    p1.then((result) => {
+      console.log("in promise:", result)
+      if (undefined === result) {
+        console.log("schema:change")
+        callFunc(data)
+      } else {
+        console.log('schema:failure')
+      }
+    })
+  }
+
+  const handleSave = async (data, callFunc, type) => {
     try {
-      JSON.parse(data)
-      callFunc(data)
+      const obj = JSON.parse(data)
+      if ("schema" === type) {
+        // callFunc(data)
+        validJsonSchema(obj, data, callFunc)
+      } else {
+        callFunc(data)
+      }
     } catch (e) {
       // console.error(e)
     }
@@ -58,24 +101,31 @@ function JsonFormPage(props) {
 
   function handleEditorDidMount1(editor, monaco) {
     editorRef1.current = editor
-    setTimeout(function() {
-      editor.getAction('editor.action.formatDocument').run();
-    }, 300);
+    setTimeout(function () {
+      editor.getAction("editor.action.formatDocument").run()
+    }, 300)
   }
   function handleEditorDidMount2(editor, monaco) {
     editorRef2.current = editor
-    setTimeout(function() {
-      editor.getAction('editor.action.formatDocument').run();
-    }, 300);
+    setTimeout(function () {
+      editor.getAction("editor.action.formatDocument").run()
+    }, 300)
   }
   function handleEditorDidMount3(editor, monaco) {
     editorRef3.current = editor
-    setTimeout(function() {
-      editor.getAction('editor.action.formatDocument').run();
-    }, 300);
+    setTimeout(function () {
+      editor.getAction("editor.action.formatDocument").run()
+    }, 300)
   }
 
   function handleEditorValidation(markers) {
+    setInvalidMsg("")
+    markers.forEach((marker) => {
+      setInvalidMsg("onValidate:" + marker.message)
+    })
+  }
+
+  function handleEditorValidationSchema(markers) {
     setInvalidMsg("")
     markers.forEach((marker) => {
       setInvalidMsg("onValidate:" + marker.message)
@@ -93,8 +143,8 @@ function JsonFormPage(props) {
     onClose()
   }
 
-  useEffect(()=>{
-    console.log('JsonFormPage load')
+  useEffect(() => {
+    console.log("JsonFormPage load")
   }, [])
 
   return (
@@ -108,7 +158,7 @@ function JsonFormPage(props) {
           sx={{ background: "#228f17", color: "white" }}
         >
           <Grid item xs={12}>
-            <Typography variant="h6">Login Form Page</Typography>
+            <Typography variant="h6">{label}</Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -121,13 +171,15 @@ function JsonFormPage(props) {
               </TabList>
             </Box>
             <TabPanel value="1">
-              <JsonForms
-                schema={JSON.parse(schemaData)}
-                uischema={JSON.parse(uiSchemaData)}
-                data={JSON.parse(dataForm)}
-                renderers={renderers}
-                cells={materialCells}
-              />
+              <Paper  sx={{ height: '70vh', padding: '10px', overflow: 'auto' }}>
+                <JsonForms
+                  schema={JSON.parse(schemaData)}
+                  uischema={JSON.parse(uiSchemaData)}
+                  data={JSON.parse(dataForm)}
+                  renderers={renderers}
+                  cells={materialCells}
+                />
+              </Paper>
             </TabPanel>
           </TabContext>
         </Box>
@@ -143,11 +195,13 @@ function JsonFormPage(props) {
           </Box>
           <TabPanel value="1">
             <Editor
-              height="50vh"
+              height="70vh"
               defaultLanguage="json"
               theme="vs-dark"
               value={uiSchemaData}
-              onChange={(value, event) => handleSave(value, setUISchemaData)}
+              onChange={(value, event) =>
+                handleSave(value, setUISchemaData, "uischema")
+              }
               onMount={handleEditorDidMount1}
               onValidate={handleEditorValidation}
               options={{
@@ -157,13 +211,15 @@ function JsonFormPage(props) {
           </TabPanel>
           <TabPanel value="2">
             <Editor
-              height="50vh"
+              height="70vh"
               defaultLanguage="json"
               theme="vs-dark"
               value={schemaData}
-              onChange={(value, event) => handleSave(value, setSchemaData)}
+              onChange={(value, event) =>
+                handleSave(value, setSchemaData, "schema")
+              }
               onMount={handleEditorDidMount2}
-              onValidate={handleEditorValidation}
+              onValidate={handleEditorValidationSchema}
               options={{
                 formatOnPaste: true
               }}
@@ -171,11 +227,13 @@ function JsonFormPage(props) {
           </TabPanel>
           <TabPanel value="3">
             <Editor
-              height="50vh"
+              height="70vh"
               defaultLanguage="json"
               theme="vs-dark"
               value={dataForm}
-              onChange={(value, event) => handleSave(value, setDataForm)}
+              onChange={(value, event) =>
+                handleSave(value, setDataForm, "data")
+              }
               onMount={handleEditorDidMount3}
               onValidate={handleEditorValidation}
               options={{
@@ -206,7 +264,11 @@ function JsonFormPage(props) {
           spacing={1}
           direction="row"
           padding={2}
-          sx={{ justifyContent: "flex-end", background: "#aed6f1", color: "white" }}
+          sx={{
+            justifyContent: "flex-end",
+            background: "#aed6f1",
+            color: "white"
+          }}
         >
           <Button variant="contained" onClick={handleSaveLocalStorage}>
             Save Page

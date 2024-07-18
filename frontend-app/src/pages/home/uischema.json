@@ -86,6 +86,7 @@
             "type": "TableData",
             "uischema": "grid/table1/uischema.json",
             "service": "grid/table1/service.json",
+            "initLoad": false,
             "options": {
                 "type": "basic",
                 "showHeader": true,

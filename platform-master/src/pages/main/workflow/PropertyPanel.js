@@ -200,7 +200,8 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
               {page === "jsonform" && (
                 <JsonFormPage
                   onClose={handleClose}
-                  id={props.type + "_" + props.id}
+                  id={props.type + "_" + props.id} 
+                  label={label}
                 />
               )}
             </Box>
