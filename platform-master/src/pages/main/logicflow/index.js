@@ -165,7 +165,7 @@ const LogicFlow = (props) => {
         <div
           className="reactflow-wrapper"
           ref={reactFlowWrapper}
-          style={{ height: "100vh" }}
+          style={{ height: "90vh" }}
         >
           <ReactFlow
             nodes={nodes}
@@ -201,15 +201,6 @@ const LogicFlow = (props) => {
                     }}
                   >
                     Restore
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={props.onClose}
-                  >
-                    Close
                   </Button>
                 </Grid>
               </Grid>

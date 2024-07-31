@@ -5,7 +5,7 @@ import Grid from "@mui/material/Unstable_Grid2"
 import { Box, FormControl, TextField, Typography } from "@mui/material"
 
 import JsonFormPage from "./pages/JsonFormPage"
-import WorkflowLogic from "./modal/WorkflowLogic"
+import WorkflowLogic from "../modal"
 
 const PropertyPanel = memo(({ props, onComponentChange }) => {
   const [label, setLabel] = useState("")
