@@ -3,6 +3,10 @@ const express = require("express")
 const fs = require("fs"); 
 const router = express.Router()
 
+router.get('', (req, res) => {
+  res.send("Hello")
+})
+
 router.get("/genapp", function (req, res, next) {
   // console.log("test service")
   // exec('sh gen_source.sh', (err, output) => {

@@ -8,3 +8,24 @@ https://dev.to/blankgodd/a-simple-introduction-to-graphql-with-expressjs-and-doc
 # lowcode-deploy
 frontend-app:3000
 backend-service:9090
+
+# step for build service
+# start
+
+# input payload
+{
+    username: "admin",
+    password: "000000"
+}
+
+# process
+if username === "admin" return true
+else return false
+
+# response mapping
+return {
+    status: 1000,
+    message:
+}
+
+# end
