@@ -5,11 +5,12 @@ import Box from "@mui/material/Box"
 import { IconButton } from "@mui/material"
 import CloseIcon from '@mui/icons-material/Close';
 
-import LogicFlow from "../logicflow"
+import LogicFlow from "../logicflow/LogicFlow"
 
 const defaultTheme = createTheme()
 
 export default function WorkflowLogic(props) {
+  console.log('WorkflowLogic:', props)
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{

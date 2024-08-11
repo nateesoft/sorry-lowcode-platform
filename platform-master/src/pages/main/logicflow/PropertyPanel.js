@@ -7,6 +7,8 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
   const [label, setLabel] = useState("")
   const [folder, setFolder] = useState("")
   const [uri, setUri] = useState("")
+  const { changeTab } = props;
+  console.log('PropertyPanel:', props)
 
   const handleKeyUp = (evt) => {
     if (evt.keyCode === 13) {
@@ -91,17 +93,28 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                 />
               </FormControl>
             </Box>
-            <Grid container spacing={1} padding={1}>
-              <Grid item>
-                <Button
-                  onClick={handleSave}
-                  variant="contained"
-                  color="success"
-                >
-                  Save Source
-                </Button>
+            {changeTab &&
+              <Grid container spacing={1} padding={1}>
+                <Grid item>
+                  <Button
+                    onClick={handleSave}
+                    variant="contained"
+                    color="success"
+                  >
+                    Save Source
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    onClick={() => changeTab(null, 1)}
+                    variant="contained"
+                    color="warning"
+                  >
+                    Propertie Editor
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
+            }
           </Grid>
         )}
       </div>

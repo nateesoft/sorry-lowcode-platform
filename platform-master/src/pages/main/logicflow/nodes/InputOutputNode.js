@@ -3,22 +3,22 @@ import { Handle, Position } from "reactflow"
 import styled from 'styled-components'
 
 const HandleStyle =  styled.div `
-  border: 1px solid #aaa;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: grab;
+  width: 100px;
   height: 50px;
-  background-color: #2074f6;
-  color: white;
+  transform: skew(20deg);
+  background-color: snow;
+  border: 1px solid;
+  background-color: #eee;
+  color: black;
   font-size: 12px;
 `;
 
 const TextStyle = styled.div`
   text-align: center;
+  margin-top: 10%;
 `;
 
-function ProcessNode({ data }) {
+function InputOutputNode({ data }) {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value)
   }, [])
@@ -36,4 +36,4 @@ function ProcessNode({ data }) {
   )
 }
 
-export default ProcessNode
+export default InputOutputNode
