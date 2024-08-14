@@ -11,7 +11,7 @@ import ReactFlow, {
   Panel
 } from "reactflow"
 import { useParams } from 'react-router';
-import { Button, Grid } from "@mui/material"
+import { Button, Grid, Typography } from "@mui/material"
 
 import "reactflow/dist/style.css"
 
@@ -35,7 +35,6 @@ const nodeTypes = {
 }
 
 const LogicFlow = (props) => {
-  const { changeTab } = props;
   const { id: logicFlowKey } = useParams();
   const reactFlowWrapper = useRef(null)
   const [nodes, setNodes, onNodesChange] = useNodesState([])
@@ -116,8 +115,7 @@ const LogicFlow = (props) => {
           id: node.id,
           label: node.data.label,
           type: node.type,
-          component: "node",
-          changeTab
+          component: "node"
         })
       }
     })
@@ -130,8 +128,7 @@ const LogicFlow = (props) => {
           id: edge.id,
           label: edge.label,
           type: edge.type,
-          component: "edge",
-          changeTab
+          component: "edge"
         })
       }
     })
@@ -203,6 +200,15 @@ const LogicFlow = (props) => {
             nodeTypes={nodeTypes}
             fitView
           >
+            <Panel position="bottom-center">
+              <Grid container spacing={1}>
+                <Grid item>
+                  <Typography variant="span" style={{backgroundColor: "#d0ffdb", padding: "20px", borderRadius: "10px"}}>
+                    Flow name: Login Service Flow
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Panel>
             <Panel position="top-right">
               <Grid container spacing={1}>
                 <Grid item>

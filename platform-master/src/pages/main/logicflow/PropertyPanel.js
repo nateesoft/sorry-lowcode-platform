@@ -2,12 +2,18 @@ import React, { memo, useEffect, useState } from "react"
 import Button from "@mui/material/Button"
 import Grid from "@mui/material/Unstable_Grid2"
 import { Box, FormControl, TextField, Typography } from "@mui/material"
+import Modal from "@mui/material/Modal"
+
+import ModalEditor from './modal'
 
 const PropertyPanel = memo(({ props, onComponentChange }) => {
   const [label, setLabel] = useState("")
   const [folder, setFolder] = useState("")
+  const [language, setLanguage] = useState("javascript")
   const [uri, setUri] = useState("")
-  const { changeTab } = props;
+  const [editorOpen, setEditorOpen] = useState(false)
+  const handleClose = () => setEditorOpen(false)
+
   console.log('PropertyPanel:', props)
 
   const handleKeyUp = (evt) => {
@@ -25,6 +31,11 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
       setLabel(props.label)
     } else {
       setLabel("")
+    }
+    if(props.type === "inputOutput"){
+      setLanguage("json")
+    }else{
+      setLanguage("javascript")
     }
   }, [props])
 
@@ -93,31 +104,44 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                 />
               </FormControl>
             </Box>
-            {changeTab &&
-              <Grid container spacing={1} padding={1}>
-                <Grid item>
-                  <Button
-                    onClick={handleSave}
-                    variant="contained"
-                    color="success"
-                  >
-                    Save Source
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button
-                    onClick={() => changeTab(null, 1)}
-                    variant="contained"
-                    color="warning"
-                  >
-                    Propertie Editor
-                  </Button>
-                </Grid>
+            <Grid container spacing={1} padding={1}>
+              <Grid item>
+                <Button
+                  onClick={handleSave}
+                  variant="contained"
+                  color="success"
+                >
+                  Save Source
+                </Button>
               </Grid>
-            }
+              <Grid item>
+                <Button
+                  onClick={()=>setEditorOpen(true)}
+                  variant="contained"
+                  color="warning"
+                >
+                  Propertie Editor
+                </Button>
+              </Grid>
+            </Grid>
           </Grid>
         )}
       </div>
+
+      <Modal
+        open={editorOpen}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Grid container spacing={1} padding={5}>
+          <Grid xs={12}>
+            <Box sx={{ bgcolor: "snow" }}>
+              <ModalEditor onClose={handleClose} id={props.id} language={language} />
+            </Box>
+          </Grid>
+        </Grid>
+      </Modal>
     </>
   )
 })
