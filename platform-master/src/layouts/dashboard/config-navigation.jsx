@@ -23,6 +23,11 @@ const navConfig = [
     icon: icon('ic_serviceflow'),
   },
   {
+    title: 'datasource',
+    path: '/datasource',
+    icon: icon('ic_datasource'),
+  },
+  {
     title: 'user',
     path: '/user',
     icon: icon('ic_user'),

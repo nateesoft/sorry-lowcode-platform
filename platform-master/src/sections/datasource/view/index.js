@@ -1,1 +1,1 @@
-export { default as UserView } from './user-view';
+export { default as DatasourceView } from './datasource-view';
