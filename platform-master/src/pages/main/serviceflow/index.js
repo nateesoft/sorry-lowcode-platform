@@ -1,14 +1,14 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 
-import LogicFlow from './LogicFlow'
+import ServiceFlow from './ServiceFlow'
 
-const LogicFlowMain = () => {
+const ServiceFlowMain = () => {
   return (
     <Box sx={{ width: '100%' }}>
-      <LogicFlow />
+      <ServiceFlow />
     </Box>
   );
 }
 
-export default LogicFlowMain
+export default ServiceFlowMain

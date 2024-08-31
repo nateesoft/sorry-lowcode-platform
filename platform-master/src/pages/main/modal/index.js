@@ -5,7 +5,7 @@ import Box from "@mui/material/Box"
 import { IconButton } from "@mui/material"
 import CloseIcon from '@mui/icons-material/Close';
 
-import LogicFlow from "../logicflow/LogicFlow"
+import ServiceFlow from "../serviceflow/ServiceFlow"
 
 const defaultTheme = createTheme()
 
@@ -41,7 +41,7 @@ export default function WorkflowLogic(props) {
             component="main"
             sx={{ flexGrow: 1, overflow: "auto" }}
           >
-            <LogicFlow id={props.id} onClose={props.onClose} />
+            <ServiceFlow id={props.id} onClose={props.onClose} />
           </Box>
         </Box>
       </Box>

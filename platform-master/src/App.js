@@ -21,7 +21,7 @@ export const ServiceFlowPage = lazy(() => import("./pages/serviceflow"))
 export const LoginPage = lazy(() => import("./pages/login"))
 export const ProductsPage = lazy(() => import("./pages/products"))
 export const Page404 = lazy(() => import("./pages/page-not-found"))
-export const LogicFlow = lazy(()=> import("./pages/main/logicflow"))
+export const ServiceFlow = lazy(()=> import("./pages/main/serviceflow"))
 
 export default function App() {
   return (
@@ -48,7 +48,7 @@ export default function App() {
               </Route>
               <Route path="serviceflows">
                 <Route index element={<ServiceFlowPage />} />
-                <Route path=":id" element={<LogicFlow />} />
+                <Route path=":id" element={<ServiceFlow />} />
               </Route>
             </Route>
             <Route path="/login" element={<LoginPage />} />

@@ -36,7 +36,7 @@ const nodeTypes = {
   end: EndNode
 }
 
-const LogicFlow = (props) => {
+const ServiceFlow = (props) => {
   const { id: logicFlowKey } = useParams();
   const reactFlowWrapper = useRef(null)
   const [nodes, setNodes, onNodesChange] = useNodesState([])
@@ -45,7 +45,7 @@ const LogicFlow = (props) => {
   const [property, setProperty] = useState({})
   const [showPage, setShowPage] = useState({})
 
-  console.log('LogicFlow:', props);
+  console.log('ServiceFlow:', props);
 
   const onConnect = useCallback(
     (params) =>
@@ -255,4 +255,4 @@ const LogicFlow = (props) => {
   )
 }
 
-export default LogicFlow
+export default ServiceFlow

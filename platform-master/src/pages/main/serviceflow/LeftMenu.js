@@ -9,7 +9,7 @@ const LeftMenu = memo(() => {
 
   return (
     <aside>
-      <div className="description" style={{ color: "#aaa"}}>Logic Flow</div>
+      <div className="description" style={{ color: "#aaa"}}>Service Flow</div>
       <Grid container spacing={1}>
         <Grid item xs>
           <div className="dndnode"
