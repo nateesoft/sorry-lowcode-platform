@@ -90,19 +90,6 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                 <Typography variant="caption">Type</Typography>
                 <TextField variant="standard" value={props.type} />
               </FormControl>
-              <FormControl variant="standard">
-                <Typography variant="caption">Json Schema</Typography>
-                <TextField
-                  id="filled-multiline-flexible"
-                  label="# payload"
-                  multiline
-                  maxRows={4}
-                  variant="filled"
-                  value={uri}
-                  onChange={(data) => setUri(data.target.value)}
-                  onKeyUp={handleKeyUp}
-                />
-              </FormControl>
             </Box>
             <Grid container spacing={1} padding={1}>
               <Grid item>

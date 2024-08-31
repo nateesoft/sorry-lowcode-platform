@@ -23,10 +23,20 @@ const LeftMenu = memo(() => {
           <div
             className="dndnode"
             style={{ position: "relative", width: "90px", height: "55px", transform: "skew(20deg)", fontSize: '14px', left: "10px" }}
-            onDragStart={(event) => onDragStart(event, "inputOutput")}
+            onDragStart={(event) => onDragStart(event, "payload")}
             draggable
           >
-            Input/Output
+            Payload
+          </div>
+        </Grid>
+        <Grid item xs>
+          <div
+            className="dndnode"
+            style={{ position: "relative", width: "90px", height: "55px", transform: "skew(20deg)", fontSize: '14px', left: "10px" }}
+            onDragStart={(event) => onDragStart(event, "response")}
+            draggable
+          >
+            Response
           </div>
         </Grid>
         <Grid item xs>

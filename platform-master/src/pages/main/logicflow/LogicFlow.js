@@ -20,7 +20,8 @@ import PropertyPanel from "./PropertyPanel"
 
 import StartNode from "./nodes/StartNode"
 import ProcessNode from "./nodes/ProcessNode"
-import InputOutputNode from "./nodes/InputOutputNode"
+import PayloadNode from "./nodes/Payload"
+import ResponseNode from "./nodes/Response"
 import DecisionNode from "./nodes/DecisionNode"
 import EndNode from "./nodes/EndNode"
 
@@ -28,7 +29,8 @@ import "./index.css"
 
 const nodeTypes = {
   start: StartNode,
-  inputOutput: InputOutputNode,
+  payload: PayloadNode,
+  response: ResponseNode,
   decision: DecisionNode,
   process: ProcessNode,
   end: EndNode
@@ -82,8 +84,10 @@ const LogicFlow = (props) => {
       let label = ""
       if (type === "start") {
         label = "Start"
-      } else if (type === "inputOutput") {
-        label = "Input/Output"
+      } else if (type === "payload") {
+        label = "Payload"
+      } else if (type === "response") {
+        label = "Response"
       } else if (type === "decision") {
         label = "X"
       } else if (type === "process") {
@@ -203,8 +207,8 @@ const LogicFlow = (props) => {
             <Panel position="bottom-center">
               <Grid container spacing={1}>
                 <Grid item>
-                  <Typography variant="span" style={{backgroundColor: "#d0ffdb", padding: "20px", borderRadius: "10px"}}>
-                    Flow name: Login Service Flow
+                  <Typography variant="span" style={{backgroundColor: "#d0ffdb", padding: "20px", borderRadius: "10px", fontSize: "12px"}}>
+                    Login Service Flow
                   </Typography>
                 </Grid>
               </Grid>

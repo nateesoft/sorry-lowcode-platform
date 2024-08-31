@@ -8,8 +8,8 @@ const HandleStyle =  styled.div `
   transform: skew(20deg);
   background-color: snow;
   border: 1px solid;
-  background-color: #eee;
-  color: black;
+  background-color: #123456;
+  color: white;
   font-size: 12px;
 `;
 
@@ -18,7 +18,7 @@ const TextStyle = styled.div`
   margin-top: 10%;
 `;
 
-function InputOutputNode({ data }) {
+function ResponseNode({ data }) {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value)
   }, [])
@@ -36,4 +36,4 @@ function InputOutputNode({ data }) {
   )
 }
 
-export default InputOutputNode
+export default ResponseNode

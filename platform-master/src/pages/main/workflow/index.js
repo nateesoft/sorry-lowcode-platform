@@ -12,10 +12,9 @@ import ReactFlow, {
 } from "reactflow"
 import { useParams } from "react-router-dom"
 import axios from "axios"
+import { Button, Grid } from "@mui/material"
 
 import "reactflow/dist/style.css"
-
-import { Button, Grid } from "@mui/material"
 
 import LeftMenu from "./LeftMenu"
 import PropertyPanel from "./PropertyPanel"
@@ -43,7 +42,7 @@ const nodeTypes = {
   server: ServerNode
 }
 
-const WorkFlowMain = () => {
+const WorkFlowMain = (props) => {
   const { id: workFlowId } = useParams()
   const reactFlowWrapper = useRef(null)
   const [nodes, setNodes, onNodesChange] = useNodesState([])
@@ -51,6 +50,8 @@ const WorkFlowMain = () => {
   const [reactFlowInstance, setReactFlowInstance] = useState(null)
   const [property, setProperty] = useState({})
   const [showPage, setShowPage] = useState({})
+
+  console.log('WorkFlowMain:', props)
 
   const onConnect = useCallback(
     (params) =>
