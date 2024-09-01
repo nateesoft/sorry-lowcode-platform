@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link as RouterLink } from "react-router-dom"
-import Link from "@mui/material/Link"
+
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Popover from '@mui/material/Popover';
 import TableRow from '@mui/material/TableRow';
+import Checkbox from '@mui/material/Checkbox';
 import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
@@ -15,14 +15,15 @@ import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 
 // ----------------------------------------------------------------------
-export default function DatasourceTableRow({
-  id,
+export default function DSDetailTableRow({
+  selected,
   name,
   avatarUrl,
-  tableCount,
-  created,
-  lastUserLogin,
+  company,
+  role,
+  isVerified,
   status,
+  handleClick,
 }) {
   const [open, setOpen] = useState(null);
 
@@ -36,22 +37,25 @@ export default function DatasourceTableRow({
 
   return (
     <>
-      <TableRow hover tabIndex={-1} role="checkbox">
-        <TableCell></TableCell>
+      <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
+        <TableCell padding="checkbox">
+          <Checkbox disableRipple checked={selected} onChange={handleClick} />
+        </TableCell>
+
         <TableCell component="th" scope="row" padding="none">
           <Stack direction="row" alignItems="center" spacing={2}>
             <Avatar alt={name} src={avatarUrl} />
-            <Link component={RouterLink} to={`/datasource/${id}`} sx={{ textDecoration: 0 }}>
-              <Typography variant="subtitle2" noWrap>
-                {name}
-              </Typography>
-            </Link>
+            <Typography variant="subtitle2" noWrap>
+              {name}
+            </Typography>
           </Stack>
         </TableCell>
 
-        <TableCell>{created}</TableCell>
-        <TableCell>{tableCount}</TableCell>
-        <TableCell>{lastUserLogin}</TableCell>
+        <TableCell>{company}</TableCell>
+
+        <TableCell>{role}</TableCell>
+
+        <TableCell align="center">{isVerified ? 'Yes' : 'No'}</TableCell>
 
         <TableCell>
           <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
@@ -88,11 +92,13 @@ export default function DatasourceTableRow({
   );
 }
 
-DatasourceTableRow.propTypes = {
+DSDetailTableRow.propTypes = {
   avatarUrl: PropTypes.any,
-  created: PropTypes.any,
-  tableCount: PropTypes.any,
-  lastUserLogin: PropTypes.any,
+  company: PropTypes.any,
+  handleClick: PropTypes.func,
+  isVerified: PropTypes.any,
   name: PropTypes.any,
+  role: PropTypes.any,
+  selected: PropTypes.any,
   status: PropTypes.string,
 };

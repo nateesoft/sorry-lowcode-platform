@@ -10,22 +10,24 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { datasource } from '../../../_mock/datasource';
+import { dsDetails } from '../../../_mock/datasource-detail';
 import Iconify from '../../../components/iconify';
 import Scrollbar from '../../../components/scrollbar';
 import TableNoData from '../table-no-data';
-import DatasourceTableRow from '../datasource-table-row';
-import DatasourceTableHead from '../datasource-table-head';
+import DSDetailTableRow from '../datasource-table-row';
+import DSDetailTableHead from '../datasource-table-head';
 import TableEmptyRows from '../table-empty-rows';
-import DatasourceTableToolbar from '../datasource-table-toolbar';
+import DSDetailTableToolbar from '../datasource-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
 // ----------------------------------------------------------------------
 
-export default function DatasourcePage() {
+export default function DSDetailPage() {
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
+
+  const [selected, setSelected] = useState([]);
 
   const [orderBy, setOrderBy] = useState('name');
 
@@ -39,6 +41,33 @@ export default function DatasourcePage() {
       setOrder(isAsc ? 'desc' : 'asc');
       setOrderBy(id);
     }
+  };
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = dsDetails.map((n) => n.name);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleClick = (event, name) => {
+    const selectedIndex = selected.indexOf(name);
+    let newSelected = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, name);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+    setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -56,7 +85,7 @@ export default function DatasourcePage() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: datasource,
+    inputData: dsDetails,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -66,15 +95,16 @@ export default function DatasourcePage() {
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Datasources</Typography>
+        <Typography variant="h4">Tables</Typography>
 
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
-          New Datasource
+          New Table
         </Button>
       </Stack>
 
       <Card>
-        <DatasourceTableToolbar
+        <DSDetailTableToolbar
+          numSelected={selected.length}
           filterName={filterName}
           onFilterName={handleFilterByName}
         />
@@ -82,15 +112,18 @@ export default function DatasourcePage() {
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
-              <DatasourceTableHead
+              <DSDetailTableHead
                 order={order}
                 orderBy={orderBy}
+                rowCount={dsDetails.length}
+                numSelected={selected.length}
                 onRequestSort={handleSort}
+                onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'name', label: 'Name' },
-                  { id: 'created', label: 'Created' },
-                  { id: 'tableCount', label: 'Table Count' },
-                  { id: 'lastUserLogin', label: 'User Login' },
+                  { id: 'company', label: 'Company' },
+                  { id: 'role', label: 'Role' },
+                  { id: 'isVerified', label: 'Verified', align: 'center' },
                   { id: 'status', label: 'Status' },
                   { id: '' },
                 ]}
@@ -99,21 +132,22 @@ export default function DatasourcePage() {
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
-                    <DatasourceTableRow
+                    <DSDetailTableRow
                       key={row.id}
-                      id={row.id}
                       name={row.name}
+                      role={row.role}
                       status={row.status}
-                      created={row.created}
-                      tableCount={row.tableCount}
-                      lastUserLogin={row.lastUserLogin}
+                      company={row.company}
                       avatarUrl={row.avatarUrl}
+                      isVerified={row.isVerified}
+                      selected={selected.indexOf(row.name) !== -1}
+                      handleClick={(event) => handleClick(event, row.name)}
                     />
                   ))}
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, datasource.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, dsDetails.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
@@ -125,7 +159,7 @@ export default function DatasourcePage() {
         <TablePagination
           page={page}
           component="div"
-          count={datasource.length}
+          count={dsDetails.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}
