@@ -14,6 +14,11 @@ function App() {
           <Route path="home" element={<HomePage />} />
           <Route path="" element={<LoginPage />} />
         </Route>
+        <Route path="/id-swf-001/ui/v1">
+          {/* inject route */}
+          <Route path="home" element={<HomePage />} />
+          <Route path="" element={<LoginPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )

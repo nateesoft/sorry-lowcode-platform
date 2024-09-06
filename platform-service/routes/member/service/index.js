@@ -2,104 +2,7 @@ const express = require("express")
 const router = express.Router()
 
 /*** load router from config */
-const routerConfig = [
-  {
-    serviceId: "id-swf-001",
-    flowName: "Login Service Flow",
-    uri: "/v1/login",
-    method: "post",
-    auth: {},
-    steps: [
-      {
-        id: "node_hvd51h",
-        type: "start",
-        name: "start1",
-        nextProcess: {
-          name: "inputPayload"
-        }
-      },
-      {
-        id: "node_bpzzau",
-        type: "payload",
-        name: "inputPayload",
-        data: {
-          username: {
-            type: "string"
-          },
-          password: {
-            type: "password"
-          }
-        },
-        nextProcess: {
-          name: "validateInput"
-        }
-      },
-      {
-        id: "node_h4n86s",
-        type: "decision",
-        name: "validateInput",
-        logic: `inputPayload.username !== "" && inputPayload.password !== ""`,
-        availableSteps: ["checkLogin", "invalidPayload"],
-        nextProcess: {}
-      },
-      {
-        id: "node_process001",
-        type: "process",
-        name: "checkLogin",
-        steps: [
-          {
-            type: "query",
-            action: "query MyQuery { ....... }"
-          },
-          {
-            type: "mapping",
-            action: "..."
-          },
-          {
-            type: "return",
-            return: {
-              status: [200, 403, 401, 500],
-              message: "xxxxx"
-            }
-          }
-        ],
-        nextProcess: {
-          name: "responseEnd"
-        }
-      },
-      {
-        id: "node_process002",
-        type: "process",
-        name: "invalidPayload",
-        steps: [
-          {
-            type: "return",
-            return: {
-              status: 500,
-              message: "Username or password not empty !!!"
-            }
-          }
-        ],
-        nextProcess: {
-          name: "responseEnd"
-        }
-      },
-      {
-        id: "node_response001",
-        type: "response",
-        name: "responseEnd",
-        nextProcess: {
-          name: "end9"
-        }
-      },
-      {
-        id: "node_rend001",
-        type: "end",
-        name: "end9"
-      }
-    ]
-  }
-]
+const routerConfig = require("./config/index")
 
 function executeLogic(logic, object) {
   if (object.username !== "" && object.password !== "") {
@@ -110,14 +13,17 @@ function executeLogic(logic, object) {
 
 for (let i = 0; i < routerConfig.length; i++) {
   const config = routerConfig[i]
-  console.log("app02=>init POST")
+  console.log("member service api=>init " + config.method)
 
   // router configuration
-  router.post(config.uri, (req, res) => {
+  router[config.method](config.uri, (req, res) => {
+    const { serviceId, serviceVersion } = req.params
+
     let apiLogger = {
       input: {},
       output: {},
       process: [],
+      logs: [],
       error: [],
       nextProcess: {}
     }
@@ -131,6 +37,7 @@ for (let i = 0; i < routerConfig.length; i++) {
 
       if (steps.type === "start") {
         apiLogger.process.push({ [steps.name]: "pass" })
+        apiLogger.logs.push(steps.type)
 
         countStep = countStep + 1
         apiLogger.nextProcess = steps.nextProcess
@@ -145,6 +52,7 @@ for (let i = 0; i < routerConfig.length; i++) {
         // payload case
         if (steps.type === "payload") {
           apiLogger.process.push({ [steps.name]: "pass" })
+          apiLogger.logs.push(steps.type)
 
           steps.data = req.body
           apiLogger.input = steps.data
@@ -155,11 +63,9 @@ for (let i = 0; i < routerConfig.length; i++) {
         // decision case
         if (steps.type === "decision") {
           apiLogger.process.push({ [steps.name]: "pass" })
+          apiLogger.logs.push(steps.type)
 
-          const nextProcessName = executeLogic(
-            steps.logic,
-            apiLogger.input
-          )
+          const nextProcessName = executeLogic(steps.logic, apiLogger.input)
           console.log("nextProcessName: " + nextProcessName)
           apiLogger.nextProcess = {
             name: nextProcessName
@@ -170,17 +76,27 @@ for (let i = 0; i < routerConfig.length; i++) {
         // process case
         if (steps.type === "process") {
           apiLogger.process.push({ [steps.name]: "pass" })
+          apiLogger.logs.push(steps.type)
 
           let sumResponse = {}
           for (let a = 0; a < steps.steps.length; a++) {
             switch (steps.steps[a].type) {
               case "query":
+                apiLogger.logs.push(
+                  "[" + steps.type + "] " + steps.steps[a].type
+                )
                 sumResponse = {}
                 break
               case "mapping":
+                apiLogger.logs.push(
+                  "[" + steps.type + "] " + steps.steps[a].type
+                )
                 sumResponse = {}
                 break
               case "return":
+                apiLogger.logs.push(
+                  "[" + steps.type + "] " + steps.steps[a].type
+                )
                 sumResponse = {}
                 break
               default:
@@ -193,6 +109,7 @@ for (let i = 0; i < routerConfig.length; i++) {
         // response case
         if (steps.type === "response") {
           apiLogger.process.push({ [steps.name]: "pass" })
+          apiLogger.logs.push(steps.type)
 
           apiLogger.nextProcess = steps.nextProcess
         }
@@ -201,6 +118,7 @@ for (let i = 0; i < routerConfig.length; i++) {
       // end or finish logic
       if (steps.type === "end") {
         apiLogger.process.push({ [steps.name]: "pass" })
+        apiLogger.logs.push(steps.type)
 
         apiResponse = {
           payload: apiLogger.input,
