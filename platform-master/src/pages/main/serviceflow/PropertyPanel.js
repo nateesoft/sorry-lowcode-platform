@@ -4,7 +4,7 @@ import Grid from "@mui/material/Unstable_Grid2"
 import { Box, FormControl, TextField, Typography } from "@mui/material"
 import Modal from "@mui/material/Modal"
 
-import ModalEditor from './modal'
+import ModalEditor from "./modal"
 
 const PropertyPanel = memo(({ props, onComponentChange }) => {
   const [label, setLabel] = useState("")
@@ -14,7 +14,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
   const [editorOpen, setEditorOpen] = useState(false)
   const handleClose = () => setEditorOpen(false)
 
-  console.log('PropertyPanel:', props)
+  console.log("PropertyPanel:", props)
 
   const handleKeyUp = (evt) => {
     if (evt.keyCode === 13) {
@@ -32,9 +32,9 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
     } else {
       setLabel("")
     }
-    if(props.type === "inputOutput"){
+    if (props.type === "inputOutput") {
       setLanguage("json")
-    }else{
+    } else {
       setLanguage("javascript")
     }
   }, [props])
@@ -44,7 +44,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
   }
 
   function handleSave() {
-    console.log('Save source code to API')
+    console.log("Save source code to API")
   }
 
   return (
@@ -65,10 +65,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
             >
               <FormControl variant="standard">
                 <Typography variant="caption">Index</Typography>
-                <TextField
-                  variant="standard"
-                  value={props.type + "_" + props.id}
-                />
+                <TextField variant="standard" value={props.id} />
               </FormControl>
               <FormControl variant="standard">
                 <Typography variant="caption">Folder</Typography>
@@ -90,6 +87,19 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                 <Typography variant="caption">Type</Typography>
                 <TextField variant="standard" value={props.type} />
               </FormControl>
+              {props.nextProcess && props.nextProcess.map((item, index) => (
+                <Grid container direction="row">
+                  <Grid item xs={8}>
+                    <FormControl variant="standard">
+                      <Typography variant="caption">Condition ({item.label})</Typography>
+                      <TextField variant="standard" value={item.target} />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={4} alignContent="end">
+                    <Button variant="outlined" onClick={() => setEditorOpen(true)}>Open</Button>
+                  </Grid>
+                </Grid>
+              ))}
             </Box>
             <Grid container spacing={1} padding={1}>
               <Grid item>
@@ -103,7 +113,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
               </Grid>
               <Grid item>
                 <Button
-                  onClick={()=>setEditorOpen(true)}
+                  onClick={() => setEditorOpen(true)}
                   variant="contained"
                   color="warning"
                 >
@@ -124,7 +134,11 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
         <Grid container spacing={1} padding={5}>
           <Grid xs={12}>
             <Box sx={{ bgcolor: "snow" }}>
-              <ModalEditor onClose={handleClose} id={props.id} language={language} />
+              <ModalEditor
+                onClose={handleClose}
+                id={props.id}
+                language={language}
+              />
             </Box>
           </Grid>
         </Grid>

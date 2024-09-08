@@ -112,14 +112,21 @@ const ServiceFlow = (props) => {
     [reactFlowInstance, setNodes]
   )
 
+  const findNodeInEdges1 = (nodeId) => edges.filter((edge) => edge.source===nodeId)
+  const findNodeInEdges = (nodeId) => edges.filter((edge) => {
+    return edge.source===nodeId
+  })
+
   const onNodeClick = () => {
     nodes.forEach((node) => {
       if (node.selected) {
+        const nextProcess = findNodeInEdges(node.id)
         setProperty({
           id: node.id,
           label: node.data.label,
           type: node.type,
-          component: "node"
+          component: "node",
+          nextProcess
         })
       }
     })
