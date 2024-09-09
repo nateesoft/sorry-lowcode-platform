@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useState } from "react"
 import Button from "@mui/material/Button"
+import { Select, MenuItem } from "@mui/material"
 import Grid from "@mui/material/Unstable_Grid2"
 import { Box, FormControl, TextField, Typography } from "@mui/material"
 import Modal from "@mui/material/Modal"
@@ -9,12 +10,18 @@ import ModalEditor from "./modal"
 const PropertyPanel = memo(({ props, onComponentChange }) => {
   const [label, setLabel] = useState("")
   const [folder, setFolder] = useState("")
+  const [content, setContent] = useState("")
+  const [outputType, setOutputType] = useState("")
   const [language, setLanguage] = useState("javascript")
-  const [uri, setUri] = useState("")
+  // const [uri, setUri] = useState("")
   const [editorOpen, setEditorOpen] = useState(false)
   const handleClose = () => setEditorOpen(false)
 
   console.log("PropertyPanel:", props)
+
+  const handleOpenModal = (data) => {
+    setEditorOpen(!editorOpen)
+  }
 
   const handleKeyUp = (evt) => {
     if (evt.keyCode === 13) {
@@ -32,10 +39,23 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
     } else {
       setLabel("")
     }
-    if (props.type === "inputOutput") {
+    if (props.folder) {
+      setFolder(props.folder)
+    } else {
+      setFolder("")
+    }
+    if (props.type === "payload") {
       setLanguage("json")
     } else {
       setLanguage("javascript")
+    }
+
+    // load folder and outputType
+    const data = JSON.parse(localStorage.getItem(props.id+"_props"))
+    if(data){
+      setFolder(data.folder||'')
+      setOutputType(data.outputType||'')
+      setContent(data.content)
     }
   }, [props])
 
@@ -45,6 +65,12 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
 
   function handleSave() {
     console.log("Save source code to API")
+    localStorage.setItem(props.id + "_props", JSON.stringify({
+      folder, 
+      label, 
+      outputType, 
+      nextProcess: props.nextProcess
+    }))
   }
 
   return (
@@ -87,6 +113,20 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                 <Typography variant="caption">Type</Typography>
                 <TextField variant="standard" value={props.type} />
               </FormControl>
+              <FormControl variant="standard">
+                <Typography variant="caption">Output Type</Typography>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={outputType}
+                  label="Age"
+                  onChange={(evt) => setOutputType(evt.target.value)}
+                >
+                  <MenuItem value={"json"}>json</MenuItem>
+                  <MenuItem value={"text"}>text</MenuItem>
+                  <MenuItem value={"number"}>number</MenuItem>
+                </Select>
+              </FormControl>
               {props.nextProcess && props.nextProcess.map((item, index) => (
                 <Grid container direction="row">
                   <Grid item xs={8}>
@@ -96,7 +136,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                     </FormControl>
                   </Grid>
                   <Grid item xs={4} alignContent="end">
-                    <Button variant="outlined" onClick={() => setEditorOpen(true)}>Open</Button>
+                    <Button variant="outlined" onClick={() => handleOpenModal({})}>Open</Button>
                   </Grid>
                 </Grid>
               ))}
@@ -113,7 +153,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
               </Grid>
               <Grid item>
                 <Button
-                  onClick={() => setEditorOpen(true)}
+                  onClick={() => handleOpenModal({})}
                   variant="contained"
                   color="warning"
                 >
@@ -137,6 +177,8 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
               <ModalEditor
                 onClose={handleClose}
                 id={props.id}
+                content={content}
+                data={props}
                 language={language}
               />
             </Box>
