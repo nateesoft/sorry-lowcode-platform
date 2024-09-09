@@ -112,7 +112,7 @@ const ServiceFlow = (props) => {
     [reactFlowInstance, setNodes]
   )
 
-  const findNodeInEdges1 = (nodeId) => edges.filter((edge) => edge.source===nodeId)
+  // const findNodeInEdges1 = (nodeId) => edges.filter((edge) => edge.source===nodeId)
   const findNodeInEdges = (nodeId) => edges.filter((edge) => {
     return edge.source===nodeId
   })
