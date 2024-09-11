@@ -53,7 +53,8 @@ const ServiceFlow = (props) => {
         addEdge(
           {
             ...params,
-            label: "connected",
+            label: "",
+            type: "smoothstep",
             markerEnd: { type: MarkerType.Arrow }
           },
           eds

@@ -1,0 +1,113 @@
+### step0 (Start)
+nextProcess = { "from": ["Start"], "to": ["InputLogin"] }
+dataInput = {}
+dataResponse = {}
+errors = []
+
+### step1 (InputLogin, type: input)
+----------------------------------------------------------------------------------
+{
+    "username": {
+        "type": "string"
+    },
+    "password": {
+        "type": "string",
+        "encrypt": true,
+        "format": "******"
+    },
+    "active": {
+        "type": "string"
+    }
+}
+----------------------------------------------------------------------------------
+InputLogin.username = req.payload.username
+InputLogin.password = req.payload.password
+InputLogin.active = req.payload.active
+
+nextProcess = { "from": ["InputLogin"], "to": ["X"] }
+dataInput = { ...Start.dataInput, 
+    username: InputLogin.username, 
+    password: InputLogin.password, 
+    active: InputLogin.active  }
+dataResponse = {}
+errors = []
+if (Start.errors.length > 0) {
+    errors.push(Start.errors)
+}
+
+### step2 (X, type: decision)
+----------------------------------------------------------------------------------
+if (InputLogin.dataInput.username != "" && InputLogin.dataInput.password != "") {
+    return "valid"
+}
+return "invalid"
+----------------------------------------------------------------------------------
+if (X === "valid) {
+    nextProcess = { "from": ["X"], "to": ["valid", "CheckLogin"] }
+    dataInput = {
+        "username": InputLogin.dataInput.username,
+        "password": InputLogin.dataInput.password,
+        "active": InputLogin.dataInput.active || "Y"
+    }
+    dataResponse = {}
+    errors = []
+    if (InputLogin.errors.length > 0) {
+        errors.push(InputLogin.errors)
+    }
+} else if (X === "invalid) {
+    nextProcess = { "from": ["X"], "to": ["invalid", "Output"] }
+    dataInput = {
+        "username": InputLogin.dataInput.username
+    }
+    dataResponse = {
+        status: 402,
+            message: "Login Failure You not authorization!"
+        }
+    errors = []
+    if (InputLogin.errors.length > 0) {
+        errors.push(InputLogin.errors)
+    }
+    errors.push("invalid login data")
+}
+
+### step3 (valid:CheckLogin)
+----------------------------------------------------------------------------------
+if (X.dataInput.username === "admin" 
+        && X.dataInput.password === "000000" 
+            && X.dataInput.active === "Y") {
+    return {
+        status: 200,
+        message: "Login Success"
+    }
+} else {
+    return {
+        status: 401,
+        message: "Login Failure You not authorization!"
+    }
+}
+----------------------------------------------------------------------------------
+nextProcess = { "from": ["CheckLogin"], "to": ["Output"] }
+dataInput = {}
+dataResponse = { ...CheckLogin }
+errors = []
+if (X.errors.length > 0) {
+    errors.push(X.errors)
+}
+
+### step3 (invalid:Output)
+return { ...X.dataResponse}
+nextProcess = { "from": ["Output"], "to": ["End"] }
+
+### step4 (Output)
+----------------------------------------------------------------------------------
+if (nextProcess.from === "X") {
+    return X.dataResponse
+}
+if (nextProcess.from === "CheckLogin") {
+    return CheckLogin.dataResponse
+}
+
+----------------------------------------------------------------------------------
+nextProcess = { "from": ["Output"], "to": ["End"] }
+
+### step5 (End)
