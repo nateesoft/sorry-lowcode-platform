@@ -1,2 +1,6 @@
 # dependencies
-/poc
+/poc/jsonforms-editor/node_modules
+/poc/jsonforms-editor/testapp
+/pos/jsonforms-editor/jsonforms-editor/node_modules
+/pos/jsonforms-editor/jsonforms-editor/dist
+
