@@ -15,6 +15,7 @@ import QueueOutlinedIcon from '@material-ui/icons/QueueOutlined';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import TabIcon from '@material-ui/icons/Tab';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
+import CloudSharpIcon from '@material-ui/icons/CloudSharp';
 import React from 'react';
 
 import { ARRAY, OBJECT, PRIMITIVE, SchemaElementType } from '../model';
@@ -23,6 +24,7 @@ export const VerticalIcon = Height;
 export const HorizontalIcon = styled(Height)({
   transform: 'rotate(90deg)',
 });
+export const CustomIcon = CloudSharpIcon;
 export const GroupIcon = CropFreeIcon;
 export const CategorizationIcon = TabIcon;
 export const CategoryIcon = CropFreeIcon;
@@ -54,6 +56,10 @@ export const getIconForUISchemaType = (type: string) => {
       return HorizontalIcon;
     case 'VerticalLayout':
       return VerticalIcon;
+    case 'CustomHorizontalLayout':
+      return CustomIcon;
+    case 'CustomVerticalLayout':
+      return CustomIcon;
     case 'Group':
       return GroupIcon;
     case 'Category':

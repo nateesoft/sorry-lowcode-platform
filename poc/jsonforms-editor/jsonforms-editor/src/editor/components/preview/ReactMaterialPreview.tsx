@@ -8,7 +8,7 @@
 import { createAjv } from '@jsonforms/core';
 import {
   materialCells,
-  materialRenderers,
+  materialRenderers
 } from '@jsonforms/material-renderers';
 import { JsonForms } from '@jsonforms/react';
 import React, { useMemo } from 'react';
@@ -17,6 +17,8 @@ import { useSchema } from '../../../core/context';
 import { generateEmptyData } from '../../../core/model';
 import { useExportSchema, useExportUiSchema } from '../../../core/util/hooks';
 import { previewOptions } from './options';
+
+import { renderes } from './renderers'
 
 export const ReactMaterialPreview: React.FC = () => {
   const schema = useExportSchema();
@@ -33,7 +35,7 @@ export const ReactMaterialPreview: React.FC = () => {
       data={previewData}
       schema={schema}
       uischema={uischema}
-      renderers={materialRenderers}
+      renderers={renderes}
       cells={materialCells}
     />
   );

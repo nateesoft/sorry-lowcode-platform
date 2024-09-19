@@ -13,6 +13,8 @@ import { PaletteElement } from '../../core/api/paletteService';
 import { DndItems } from '../../core/dnd';
 import { EditorUISchemaElement } from '../../core/model/uischema';
 import { StyledTreeItem, StyledTreeView } from './Tree';
+import { createCustomLayout } from '../../core/util';
+import { CustomIcon } from '../../core/icons';
 
 interface UiSchemaTreeItemProps {
   uiSchemaElementProvider: () => EditorUISchemaElement;

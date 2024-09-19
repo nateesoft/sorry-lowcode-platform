@@ -32,6 +32,7 @@ export const EmptyEditor: React.FC = () => {
       uiSchemaElement: mon.getItem()?.uiSchemaElement,
     }),
     drop: (): any => {
+      console.log('EmptyEditor drop:',uiSchemaElement)
       dispatch(Actions.setUiSchema(uiSchemaElement));
     },
   });

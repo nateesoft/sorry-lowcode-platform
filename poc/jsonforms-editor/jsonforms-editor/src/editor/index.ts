@@ -14,6 +14,10 @@ import { DroppableCategoryLayoutRegistration } from '../core/renderers/Droppable
 import { DroppableElementRegistration } from '../core/renderers/DroppableElement';
 import { DroppableGroupLayoutRegistration } from '../core/renderers/DroppableGroupLayout';
 import {
+  DroppableCustomHorizontalLayoutRegistration,
+  DroppableCustomVerticalLayoutRegistration,
+} from '../core/renderers/DroppableCustomLayout';
+import {
   DroppableHorizontalLayoutRegistration,
   DroppableVerticalLayoutRegistration,
 } from '../core/renderers/DroppableLayout';
@@ -36,4 +40,6 @@ export const defaultEditorRenderers: JsonFormsRendererRegistryEntry[] = [
   DroppableCategoryLayoutRegistration,
   DroppableArrayControlRegistration,
   DroppableCategorizationLayoutRegistration,
+  DroppableCustomHorizontalLayoutRegistration,
+  DroppableCustomVerticalLayoutRegistration,
 ];

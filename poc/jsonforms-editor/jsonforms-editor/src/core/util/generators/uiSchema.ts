@@ -39,7 +39,25 @@ export const createLayout = (type: string): Layout & EditorUISchemaElement => {
   } as Layout & EditorUISchemaElement;
 };
 
+export const createCustomLayout = (type: string): Layout & EditorUISchemaElement => {
+  return {
+    type: type,
+    elements: [],
+    uuid: uuid(),
+  } as Layout & EditorUISchemaElement;
+};
+
 export const createLabel = (
+  text?: string
+): LabelElement & EditorUISchemaElement => {
+  return {
+    type: 'Label',
+    text: text,
+    uuid: uuid(),
+  } as LabelElement & EditorUISchemaElement;
+};
+
+export const createCustomLabel = (
   text?: string
 ): LabelElement & EditorUISchemaElement => {
   return {

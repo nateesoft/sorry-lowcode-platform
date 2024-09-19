@@ -15,6 +15,10 @@ const exampleSchema = {
       type: 'string',
       minLength: 3,
     },
+    lastName: {
+      type: 'string',
+      minLength: 5,
+    },
     birthDate: {
       type: 'string',
       format: 'date',

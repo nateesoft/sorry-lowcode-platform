@@ -19,6 +19,7 @@ import { EditorUISchemaElement } from '../model/uischema';
 import {
   createCategorization,
   createLabel,
+  createCustomLabel,
   createLayout,
 } from '../util/generators/uiSchema';
 
@@ -47,6 +48,18 @@ const paletteElements: PaletteElement[] = [
     uiSchemaElementProvider: () => createLayout('VerticalLayout'),
   },
   {
+    type: 'CustomHorizontalLayout',
+    label: 'Custom HLayout',
+    icon: <HorizontalIcon />,
+    uiSchemaElementProvider: () => createLayout('CustomHorizontalLayout'),
+  } as PaletteElement,
+  {
+    type: 'CustomVerticalLayout',
+    label: 'Custom VLayout',
+    icon: <VerticalIcon />,
+    uiSchemaElementProvider: () => createLayout('CustomVerticalLayout'),
+  },
+  {
     type: 'Group',
     label: 'Group',
     icon: <GroupIcon />,
@@ -63,6 +76,12 @@ const paletteElements: PaletteElement[] = [
     label: 'Categorization',
     icon: <CategorizationIcon />,
     uiSchemaElementProvider: () => createCategorization(),
+  },
+  {
+    type: 'CustomLabel',
+    label: 'Custom Label',
+    icon: <LabelIcon />,
+    uiSchemaElementProvider: () => createCustomLabel(),
   },
 ];
 
