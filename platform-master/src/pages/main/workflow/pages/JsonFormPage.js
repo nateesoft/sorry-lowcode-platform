@@ -41,6 +41,7 @@ function JsonFormPage(props) {
   const editorRef2 = useRef(null)
   const editorRef3 = useRef(null)
   const [value, setValue] = useState("1")
+  const [valuePreview, setValuePreview] = useState("1")
 
   const validJsonSchema = (obj, data, callFunc) => {
     const p1 = new Promise((resolve, reject) => {
@@ -97,6 +98,9 @@ function JsonFormPage(props) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
+  }
+  const handlePreviewChange = (event, newValue) => {
+    setValuePreview(newValue)
   }
 
   function handleEditorDidMount1(editor, monaco) {
@@ -164,13 +168,17 @@ function JsonFormPage(props) {
       </Grid>
       <Grid item xs={6}>
         <Box sx={{ width: "100%", typography: "body1" }}>
-          <TabContext value="1">
+          <TabContext value={valuePreview}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <TabList onChange={handleChange}>
-                <Tab label="Preview" value="1" />
+              <TabList onChange={handlePreviewChange}>
+                <Tab label="Palette" value="1" />
+                <Tab label="Preview" value="2" />
               </TabList>
             </Box>
             <TabPanel value="1">
+              <h1>Palette Tools</h1>
+            </TabPanel>
+            <TabPanel value="2">
               <Paper  sx={{ height: '70vh', padding: '10px', overflow: 'auto' }}>
                 <JsonForms
                   schema={JSON.parse(schemaData)}
@@ -188,12 +196,16 @@ function JsonFormPage(props) {
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleChange}>
-              <Tab label="UI Schema" value="1" />
-              <Tab label="Schema" value="2" />
-              <Tab label="Data" value="3" />
+              <Tab label="UI Editor" value="1" />
+              <Tab label="UI Schema" value="2" />
+              <Tab label="Schema" value="3" />
+              <Tab label="Data" value="4" />
             </TabList>
           </Box>
           <TabPanel value="1">
+            <h1>UI Editor</h1>
+          </TabPanel>
+          <TabPanel value="2">
             <Editor
               height="70vh"
               defaultLanguage="json"
@@ -209,7 +221,7 @@ function JsonFormPage(props) {
               }}
             />
           </TabPanel>
-          <TabPanel value="2">
+          <TabPanel value="3">
             <Editor
               height="70vh"
               defaultLanguage="json"
@@ -225,7 +237,7 @@ function JsonFormPage(props) {
               }}
             />
           </TabPanel>
-          <TabPanel value="3">
+          <TabPanel value="4">
             <Editor
               height="70vh"
               defaultLanguage="json"
