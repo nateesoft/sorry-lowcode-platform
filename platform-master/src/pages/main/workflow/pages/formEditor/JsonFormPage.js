@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect, useReducer } from "react"
 import { materialCells } from "@jsonforms/material-renderers"
 import { JsonForms } from "@jsonforms/react"
 import Box from "@mui/material/Box"
@@ -8,11 +8,40 @@ import TabList from "@mui/lab/TabList"
 import TabPanel from "@mui/lab/TabPanel"
 import Editor from "@monaco-editor/react"
 import { Button, Grid, Stack, Typography, Paper } from "@mui/material"
+import { makeStyles } from "@mui/styles"
+import { spacing } from '@mui/system'
+import { DndProvider } from "react-dnd"
+import { HTML5Backend } from "react-dnd-html5-backend"
 
-import { renderers } from "./components/renderers"
-import uischema from "./uischema.json"
-import schema from "./schema.json"
-import data from "./data.json"
+import { renderers } from "../components/renderers"
+import data from "../data.json"
+import schema from '../schema.json'
+import uischema from '../uischema.json'
+
+// dnd
+import { defaultEditorRenderers } from './editor/editor'
+import { Editor as EditorForm } from './editor/editor/components/Editor'
+import { UIElementsTree } from "./editor/palette-panel/components/UIElementsTree"
+import { EditorContextInstance, usePaletteService, useSchema } from "./editor/core/context"
+import { Actions, editorReducer } from "./editor/core/model"
+
+import { CategorizationServiceImpl } from './editor/core/api/categorizationService'
+import { EmptySchemaService } from './editor/core/api/schemaService'
+import { DefaultPaletteService } from './editor/core/api/paletteService'
+import { tryFindByUUID } from "./editor/core/util/schemasUtil"
+import { SchemaTreeView } from "./editor/palette-panel/components/SchemaTree"
+
+
+const useStyles = makeStyles(theme => ({
+  uiElementsTree: {
+    marginBottom: spacing(1)
+  },
+  palettePanel: {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column"
+  }
+}))
 
 function localLoad(pageKey, temp) {
   const haveData = JSON.parse(localStorage.getItem(pageKey))
@@ -23,8 +52,11 @@ function localLoad(pageKey, temp) {
   return JSON.stringify(temp)
 }
 
-function JsonFormPage(props) {
+function JsonFormApp(props) {
   const { id, label, onClose } = props
+
+  const classes = useStyles()
+  const paletteService = usePaletteService()
 
   const [invalidMsg, setInvalidMsg] = useState("")
   const [schemaData, setSchemaData] = useState(
@@ -42,6 +74,8 @@ function JsonFormPage(props) {
   const editorRef3 = useRef(null)
   const [value, setValue] = useState("1")
   const [valuePreview, setValuePreview] = useState("1")
+
+  const propsSchema = useSchema()
 
   const validJsonSchema = (obj, data, callFunc) => {
     const p1 = new Promise((resolve, reject) => {
@@ -176,7 +210,11 @@ function JsonFormPage(props) {
               </TabList>
             </Box>
             <TabPanel value="1">
-              <h1>Palette Tools</h1>
+              <UIElementsTree
+                className={classes.uiElementsTree}
+                elements={paletteService.getPaletteElements()}
+              />
+              <SchemaTreeView schema={propsSchema} />
             </TabPanel>
             <TabPanel value="2">
               <Paper  sx={{ height: '70vh', padding: '10px', overflow: 'auto' }}>
@@ -203,7 +241,7 @@ function JsonFormPage(props) {
             </TabList>
           </Box>
           <TabPanel value="1">
-            <h1>UI Editor</h1>
+            <EditorForm editorRenderers={defaultEditorRenderers} />
           </TabPanel>
           <TabPanel value="2">
             <Editor
@@ -291,6 +329,63 @@ function JsonFormPage(props) {
         </Stack>
       </Grid>
     </Grid>
+  )
+}
+
+const defaultSchemaService = new EmptySchemaService()
+const defaultPaletteService = new DefaultPaletteService()
+
+const JsonFormPage = (props) => {
+  const defaultCategorizationService = new CategorizationServiceImpl()
+  const {
+    schemaService = defaultSchemaService,
+    paletteService = defaultPaletteService,
+    categorizationService = defaultCategorizationService
+  } = props
+
+  const [{ schema: edSchema, uiSchema: edUiSchema }, dispatch] = useReducer(editorReducer, {
+    categorizationService: defaultCategorizationService
+  })
+
+  const [selection, setSelection] = useState(undefined)
+  useEffect(() => {
+    schemaService
+      .getSchema()
+      .then(schema => dispatch(Actions.setSchema(schema)))
+    schemaService
+      .getUiSchema()
+      .then(uiSchema => dispatch(Actions.setUiSchema(uiSchema)))
+  }, [schemaService])
+
+  useEffect(() => {
+    setSelection(oldSelection => {
+      if (!oldSelection) {
+        return oldSelection
+      }
+      const idInNewSchema = tryFindByUUID(edUiSchema, oldSelection.uuid)
+      if (!idInNewSchema) {
+        // element does not exist anymore - clear old selection
+        return undefined
+      }
+      return oldSelection
+    })
+  }, [edUiSchema])
+
+  return (
+    <EditorContextInstance.Provider value={{
+      schema: edSchema,
+      uiSchema: edUiSchema,
+      dispatch,
+      selection,
+      setSelection,
+      categorizationService,
+      schemaService,
+      paletteService
+    }}>
+      <DndProvider backend={HTML5Backend}>
+        <JsonFormApp {...props} />
+      </DndProvider>
+    </EditorContextInstance.Provider>
   )
 }
 

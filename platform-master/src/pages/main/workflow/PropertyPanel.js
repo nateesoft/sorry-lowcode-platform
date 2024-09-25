@@ -4,7 +4,7 @@ import Modal from "@mui/material/Modal"
 import Grid from "@mui/material/Unstable_Grid2"
 import { Box, FormControl, TextField, Typography } from "@mui/material"
 
-import JsonFormPage from "./pages/JsonFormPage"
+import JsonFormPage from "./pages/formEditor"
 import WorkflowLogic from "../modal"
 
 const PropertyPanel = memo(({ props, onComponentChange }) => {
