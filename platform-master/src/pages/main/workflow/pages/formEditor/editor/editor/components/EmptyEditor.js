@@ -35,7 +35,7 @@ export const EmptyEditor = () => {
   return (
     <div ref={drop} className={classes.root}>
       <Typography data-cy={`nolayout-drop`}>
-        Drag and drop an element from the Palette to begin.
+        {`<= เลือกรูปแบบจากฝั่งซ้ายมือ วางตรงนี้`}
       </Typography>
     </div>
   )

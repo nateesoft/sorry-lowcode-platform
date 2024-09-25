@@ -22,7 +22,7 @@ import uischema from '../uischema.json'
 import { defaultEditorRenderers } from './editor/editor'
 import { Editor as EditorForm } from './editor/editor/components/Editor'
 import { UIElementsTree } from "./editor/palette-panel/components/UIElementsTree"
-import { EditorContextInstance, usePaletteService, useSchema } from "./editor/core/context"
+import { EditorContextInstance, usePaletteService, useSchema, useUiSchema } from "./editor/core/context"
 import { Actions, editorReducer } from "./editor/core/model"
 
 import { CategorizationServiceImpl } from './editor/core/api/categorizationService'
@@ -30,6 +30,7 @@ import { EmptySchemaService } from './editor/core/api/schemaService'
 import { DefaultPaletteService } from './editor/core/api/paletteService'
 import { tryFindByUUID } from "./editor/core/util/schemasUtil"
 import { SchemaTreeView } from "./editor/palette-panel/components/SchemaTree"
+import { useExportSchema } from "./editor/core/util/hooks"
 
 
 const useStyles = makeStyles(theme => ({
@@ -180,6 +181,11 @@ function JsonFormApp(props) {
     localStorage.setItem(id + "_template_data", dataForm)
     onClose()
   }
+
+  const newSchema = useExportSchema()
+  const newUiSchema = useUiSchema()
+  console.log('JsonFormPage(schema):', newSchema)
+  console.log('JsonFormPage(uiSchema):', newUiSchema)
 
   useEffect(() => {
     console.log("JsonFormPage load")

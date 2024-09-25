@@ -20,6 +20,8 @@ const theme = createTheme({
 export const Editor = ({ editorRenderers }) => {
   const schema = useExportSchema()
   const uiSchema = useUiSchema()
+  console.log('Editor(schema):', schema)
+  console.log('Editor(uiSchema):', uiSchema)
   return uiSchema ? (
     <Grid container>
       <ThemeProvider theme={theme}>
