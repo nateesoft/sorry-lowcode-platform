@@ -1,5 +1,6 @@
 {
   "type": "object",
+  "title": "Example",
   "properties": {
     "name": {
       "type": "string",

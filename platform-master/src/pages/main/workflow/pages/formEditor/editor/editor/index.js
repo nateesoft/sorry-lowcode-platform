@@ -11,6 +11,9 @@ import {
 } from "../core/renderers/DroppableLayout"
 import { ReactMaterialPreview } from "./components/preview"
 
+// import core renderer
+import { renderers } from '../../../components/renderers'
+
 export * from "./components/EditorPanel"
 export { EditorElement } from "./components/EditorElement"
 
@@ -19,7 +22,7 @@ export const defaultEditorTabs = [
 ]
 
 export const defaultEditorRenderers = [
-  ...materialRenderers,
+  ...renderers,
   DroppableHorizontalLayoutRegistration,
   DroppableVerticalLayoutRegistration,
   DroppableElementRegistration,
