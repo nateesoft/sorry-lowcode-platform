@@ -1,39 +1,34 @@
 import React, { useState, useRef, useEffect, useReducer } from "react"
 import { materialCells } from "@jsonforms/material-renderers"
 import { JsonForms } from "@jsonforms/react"
-import Box from "@mui/material/Box"
-import Tab from "@mui/material/Tab"
-import TabContext from "@mui/lab/TabContext"
-import TabList from "@mui/lab/TabList"
-import TabPanel from "@mui/lab/TabPanel"
+import { Box, Tab } from "@mui/material"
+import { TabContext, TabList, TabPanel } from "@mui/lab"
 import Editor from "@monaco-editor/react"
 import { Button, Grid, Stack, Typography, Paper } from "@mui/material"
 import { makeStyles } from "@mui/styles"
-import { spacing } from '@mui/system'
+import { spacing } from "@mui/system"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 
 import { renderers } from "../components/renderers"
-import data from "../data.json"
-import schema from '../schema.json'
-import uischema from '../uischema.json'
 
 // dnd
-import { defaultEditorRenderers } from './editor/editor'
-import { Editor as EditorForm } from './editor/editor/components/Editor'
+import { defaultEditorRenderers } from "./editor/editor"
+import { Editor as EditorForm } from "./editor/editor/components/Editor"
 import { UIElementsTree } from "./editor/palette-panel/components/UIElementsTree"
-import { EditorContextInstance, usePaletteService, useSchema, useUiSchema } from "./editor/core/context"
+import {
+  EditorContextInstance,
+  usePaletteService,
+  useSchema,
+  useUiSchema
+} from "./editor/core/context"
 import { Actions, editorReducer } from "./editor/core/model"
 
-import { CategorizationServiceImpl } from './editor/core/api/categorizationService'
-import { EmptySchemaService } from './editor/core/api/schemaService'
-import { DefaultPaletteService } from './editor/core/api/paletteService'
 import { tryFindByUUID } from "./editor/core/util/schemasUtil"
 import { SchemaTreeView } from "./editor/palette-panel/components/SchemaTree"
 import { useExportSchema } from "./editor/core/util/hooks"
 
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   uiElementsTree: {
     marginBottom: spacing(1)
   },
@@ -44,31 +39,24 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function localLoad(pageKey, temp) {
-  const haveData = JSON.parse(localStorage.getItem(pageKey))
-  if (haveData) {
-    return JSON.stringify(haveData)
-  }
-
-  return JSON.stringify(temp)
-}
-
 function JsonFormApp(props) {
-  const { id, label, onClose } = props
+  const {
+    id,
+    label,
+    onClose,
+    schema: loadSchema,
+    uischema: loadUiSchema,
+    data: loadData
+  } = props
 
   const classes = useStyles()
   const paletteService = usePaletteService()
 
   const [invalidMsg, setInvalidMsg] = useState("")
-  const [schemaData, setSchemaData] = useState(
-    localLoad(id + "_template_schema", schema)
-  )
-  const [uiSchemaData, setUISchemaData] = useState(
-    localLoad(id + "_template_uischema", uischema)
-  )
-  const [dataForm, setDataForm] = useState(
-    localLoad(id + "_template_data", data)
-  )
+
+  const [schemaData, setSchemaData] = useState(JSON.stringify(loadSchema))
+  const [uiSchemaData, setUISchemaData] = useState(JSON.stringify(loadUiSchema))
+  const [dataForm, setDataForm] = useState(JSON.stringify(loadData))
 
   const editorRef1 = useRef(null)
   const editorRef2 = useRef(null)
@@ -96,7 +84,7 @@ function JsonFormApp(props) {
           ].indexOf(obj1) === -1
         ) {
           count = count + 1
-          return;
+          return
         }
         if (obj1 instanceof Object) {
           validJsonSchema(obj1)
@@ -112,7 +100,7 @@ function JsonFormApp(props) {
         console.log("schema:change")
         callFunc(data)
       } else {
-        console.log('schema:failure')
+        console.log("schema:failure")
       }
     })
   }
@@ -184,8 +172,8 @@ function JsonFormApp(props) {
 
   const newSchema = useExportSchema()
   const newUiSchema = useUiSchema()
-  console.log('JsonFormPage(schema):', newSchema)
-  console.log('JsonFormPage(uiSchema):', newUiSchema)
+  console.log("JsonFormPage(schema):", newSchema)
+  console.log("JsonFormPage(uiSchema):", newUiSchema)
 
   useEffect(() => {
     console.log("JsonFormPage load")
@@ -223,7 +211,7 @@ function JsonFormApp(props) {
               <SchemaTreeView schema={propsSchema} />
             </TabPanel>
             <TabPanel value="2">
-              <Paper  sx={{ height: '70vh', padding: '10px', overflow: 'auto' }}>
+              <Paper sx={{ height: "70vh", padding: "10px", overflow: "auto" }}>
                 <JsonForms
                   schema={JSON.parse(schemaData)}
                   uischema={JSON.parse(uiSchemaData)}
@@ -338,56 +326,52 @@ function JsonFormApp(props) {
   )
 }
 
-const defaultSchemaService = new EmptySchemaService()
-const defaultPaletteService = new DefaultPaletteService()
-
 const JsonFormPage = (props) => {
-  const defaultCategorizationService = new CategorizationServiceImpl()
-  const {
-    schemaService = defaultSchemaService,
-    paletteService = defaultPaletteService,
-    categorizationService = defaultCategorizationService
-  } = props
-
-  const [{ schema: edSchema, uiSchema: edUiSchema }, dispatch] = useReducer(editorReducer, {
-    categorizationService: defaultCategorizationService
-  })
-
+  const { schemaService, paletteService, categorizationService } = props
+  const [{ schema, uiSchema }, dispatch] = useReducer(
+    editorReducer,
+    {
+      categorizationService: categorizationService
+    }
+  )
   const [selection, setSelection] = useState(undefined)
+
   useEffect(() => {
     schemaService
       .getSchema()
-      .then(schema => dispatch(Actions.setSchema(schema)))
+      .then((schema) => dispatch(Actions.setSchema(schema)))
     schemaService
       .getUiSchema()
-      .then(uiSchema => dispatch(Actions.setUiSchema(uiSchema)))
+      .then((uiSchema) => dispatch(Actions.setUiSchema(uiSchema)))
   }, [schemaService])
 
   useEffect(() => {
-    setSelection(oldSelection => {
+    setSelection((oldSelection) => {
       if (!oldSelection) {
         return oldSelection
       }
-      const idInNewSchema = tryFindByUUID(edUiSchema, oldSelection.uuid)
+      const idInNewSchema = tryFindByUUID(uiSchema, oldSelection.uuid)
       if (!idInNewSchema) {
         // element does not exist anymore - clear old selection
         return undefined
       }
       return oldSelection
     })
-  }, [edUiSchema])
+  }, [uiSchema])
 
   return (
-    <EditorContextInstance.Provider value={{
-      schema: edSchema,
-      uiSchema: edUiSchema,
-      dispatch,
-      selection,
-      setSelection,
-      categorizationService,
-      schemaService,
-      paletteService
-    }}>
+    <EditorContextInstance.Provider
+      value={{
+        schema,
+        uiSchema,
+        dispatch,
+        selection,
+        setSelection,
+        categorizationService,
+        schemaService,
+        paletteService
+      }}
+    >
       <DndProvider backend={HTML5Backend}>
         <JsonFormApp {...props} />
       </DndProvider>
