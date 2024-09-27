@@ -31,11 +31,13 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-helmet-async": "^2.0.5",
+    "react-reflex": "^4.2.6",
     "react-scripts": "5.0.1",
     "react-spring": "^9.7.4",
     "reactflow": "^11.10.4",
     "simplebar-react": "^3.2.6",
     "styled-components": "^6.1.12",
+    "util": "^0.12.5",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
