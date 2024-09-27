@@ -1,5 +1,3 @@
-import { materialRenderers } from "@jsonforms/material-renderers"
-
 import { DroppableArrayControlRegistration } from "../core/renderers/DroppableArrayControl"
 import { DroppableCategorizationLayoutRegistration } from "../core/renderers/DroppableCategorizationLayout"
 import { DroppableCategoryLayoutRegistration } from "../core/renderers/DroppableCategoryLayout"

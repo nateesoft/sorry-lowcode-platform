@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useReducer } from "react"
+import React, { useState, useRef, useEffect, useReducer, useMemo } from "react"
 import { materialCells } from "@jsonforms/material-renderers"
 import { JsonForms } from "@jsonforms/react"
 import { Box, Tab } from "@mui/material"
@@ -18,15 +18,17 @@ import { Editor as EditorForm } from "./editor/editor/components/Editor"
 import { UIElementsTree } from "./editor/palette-panel/components/UIElementsTree"
 import {
   EditorContextInstance,
+  useDispatch,
   usePaletteService,
   useSchema,
   useUiSchema
 } from "./editor/core/context"
-import { Actions, editorReducer } from "./editor/core/model"
+import { Actions, editorReducer, generateEmptyData } from "./editor/core/model"
 
 import { tryFindByUUID } from "./editor/core/util/schemasUtil"
 import { SchemaTreeView } from "./editor/palette-panel/components/SchemaTree"
 import { useExportSchema } from "./editor/core/util/hooks"
+import { createAjv } from "@jsonforms/core"
 
 const useStyles = makeStyles((theme) => ({
   uiElementsTree: {
@@ -49,6 +51,17 @@ function JsonFormApp(props) {
     data: loadData
   } = props
 
+  const newSchema = useExportSchema()
+  const newUiSchema = useUiSchema()
+  const editorSchema = useSchema()
+  const previewData = useMemo(
+    () => (editorSchema ? generateEmptyData(editorSchema) : {}),
+    [editorSchema]
+  )
+  console.log("JsonFormPage(schema):", newSchema)
+  console.log("JsonFormPage(uiSchema):", newUiSchema)
+
+  const dispatch = useDispatch()
   const classes = useStyles()
   const paletteService = usePaletteService()
 
@@ -65,6 +78,7 @@ function JsonFormApp(props) {
   const [valuePreview, setValuePreview] = useState("1")
 
   const propsSchema = useSchema()
+  const ajv = createAjv({ useDefaults: true })
 
   const validJsonSchema = (obj, data, callFunc) => {
     const p1 = new Promise((resolve, reject) => {
@@ -107,12 +121,19 @@ function JsonFormApp(props) {
 
   const handleSave = async (data, callFunc, type) => {
     try {
-      const obj = JSON.parse(data)
+      const dataObj = JSON.parse(data)
       if ("schema" === type) {
-        // callFunc(data)
-        validJsonSchema(obj, data, callFunc)
+        callFunc(data)
+        // validJsonSchema(dataObj, data, callFunc)
       } else {
         callFunc(data)
+      }
+      // console.log('handleSave:', data)
+      if("schema" === type){
+        dispatch(Actions.setSchema(dataObj))
+      }
+      if("uischema" === type){
+        dispatch(Actions.setUiSchema(dataObj))
       }
     } catch (e) {
       // console.error(e)
@@ -132,12 +153,14 @@ function JsonFormApp(props) {
       editor.getAction("editor.action.formatDocument").run()
     }, 300)
   }
+
   function handleEditorDidMount2(editor, monaco) {
     editorRef2.current = editor
     setTimeout(function () {
       editor.getAction("editor.action.formatDocument").run()
     }, 300)
   }
+
   function handleEditorDidMount3(editor, monaco) {
     editorRef3.current = editor
     setTimeout(function () {
@@ -169,11 +192,6 @@ function JsonFormApp(props) {
     localStorage.setItem(id + "_template_data", dataForm)
     onClose()
   }
-
-  const newSchema = useExportSchema()
-  const newUiSchema = useUiSchema()
-  console.log("JsonFormPage(schema):", newSchema)
-  console.log("JsonFormPage(uiSchema):", newUiSchema)
 
   useEffect(() => {
     console.log("JsonFormPage load")
@@ -212,10 +230,11 @@ function JsonFormApp(props) {
             </TabPanel>
             <TabPanel value="2">
               <Paper sx={{ height: "70vh", padding: "10px", overflow: "auto" }}>
-                <JsonForms
-                  schema={JSON.parse(schemaData)}
-                  uischema={JSON.parse(uiSchemaData)}
-                  data={JSON.parse(dataForm)}
+              <JsonForms
+                  ajv={ajv}
+                  data={previewData}
+                  schema={newSchema}
+                  uischema={newUiSchema}
                   renderers={renderers}
                   cells={materialCells}
                 />
