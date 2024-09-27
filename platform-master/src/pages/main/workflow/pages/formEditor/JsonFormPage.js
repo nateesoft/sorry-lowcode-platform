@@ -254,7 +254,10 @@ function JsonFormApp(props) {
             </TabList>
           </Box>
           <TabPanel value="1">
-            <EditorForm editorRenderers={defaultEditorRenderers} />
+            <EditorForm 
+              editorRenderers={defaultEditorRenderers} 
+              setUISchemaData={setUISchemaData} 
+            />
           </TabPanel>
           <TabPanel value="2">
             <Editor
