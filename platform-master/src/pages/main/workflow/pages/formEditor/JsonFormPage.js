@@ -80,44 +80,44 @@ function JsonFormApp(props) {
   const propsSchema = useSchema()
   const ajv = createAjv({ useDefaults: true })
 
-  const validJsonSchema = (obj, data, callFunc) => {
-    const p1 = new Promise((resolve, reject) => {
-      let count = 0
-      Object.keys(obj).forEach((item) => {
-        const obj1 = obj[item]
-        if (
-          item === "type" &&
-          [
-            "string",
-            "number",
-            "integer",
-            "object",
-            "array",
-            "boolean",
-            "null"
-          ].indexOf(obj1) === -1
-        ) {
-          count = count + 1
-          return
-        }
-        if (obj1 instanceof Object) {
-          validJsonSchema(obj1)
-        }
-      })
+  // const validJsonSchema = (obj, data, callFunc) => {
+  //   const p1 = new Promise((resolve, reject) => {
+  //     let count = 0
+  //     Object.keys(obj).forEach((item) => {
+  //       const obj1 = obj[item]
+  //       if (
+  //         item === "type" &&
+  //         [
+  //           "string",
+  //           "number",
+  //           "integer",
+  //           "object",
+  //           "array",
+  //           "boolean",
+  //           "null"
+  //         ].indexOf(obj1) === -1
+  //       ) {
+  //         count = count + 1
+  //         return
+  //       }
+  //       if (obj1 instanceof Object) {
+  //         validJsonSchema(obj1)
+  //       }
+  //     })
 
-      resolve(count)
-    })
+  //     resolve(count)
+  //   })
 
-    p1.then((result) => {
-      console.log("in promise:", result)
-      if (undefined === result) {
-        console.log("schema:change")
-        callFunc(data)
-      } else {
-        console.log("schema:failure")
-      }
-    })
-  }
+  //   p1.then((result) => {
+  //     console.log("in promise:", result)
+  //     if (undefined === result) {
+  //       console.log("schema:change")
+  //       callFunc(data)
+  //     } else {
+  //       console.log("schema:failure")
+  //     }
+  //   })
+  // }
 
   const handleSave = async (data, callFunc, type) => {
     try {
@@ -223,8 +223,14 @@ function JsonFormApp(props) {
             </Box>
             <TabPanel value="1">
               <UIElementsTree
+                title="Layouts & Forms"
                 className={classes.uiElementsTree}
                 elements={paletteService.getPaletteElements()}
+              />
+              <UIElementsTree
+                title="Components"
+                className={classes.uiElementsTree}
+                elements={paletteService.getComponentElements()}
               />
               <SchemaTreeView schema={propsSchema} />
             </TabPanel>

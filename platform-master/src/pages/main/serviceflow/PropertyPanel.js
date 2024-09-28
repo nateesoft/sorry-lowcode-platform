@@ -96,6 +96,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
               <FormControl variant="standard">
                 <Typography variant="caption">Folder</Typography>
                 <TextField
+                 variant="standard"
                   value={folder}
                   onChange={(data) => setFolder(data.target.value)}
                   onKeyUp={handleKeyUp}
@@ -104,6 +105,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
               <FormControl variant="standard">
                 <Typography variant="caption">Name</Typography>
                 <TextField
+                 variant="standard"
                   value={label}
                   onChange={(data) => setLabel(data.target.value)}
                   onKeyUp={handleKeyUp}

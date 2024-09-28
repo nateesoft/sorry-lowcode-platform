@@ -16,8 +16,8 @@ const UiSchemaTreeItem = ({ uiSchemaElementProvider, type, label, icon }) => {
   return (
     <div ref={drag} data-cy={`${type}-source`}>
       <StyledTreeItem
-        id={`id-${type}`}
-        itemId={`id-${type}`}
+        id={`id-${type}-${label}`}
+        itemId={`id-${type}-${label}`}
         key={type}
         nodeId={type}
         label={label}
@@ -28,11 +28,11 @@ const UiSchemaTreeItem = ({ uiSchemaElementProvider, type, label, icon }) => {
   )
 }
 
-export const UIElementsTree = ({ className, elements }) => {
+export const UIElementsTree = ({ title, className, elements }) => {
   return (
     <div className={className}>
       <Typography variant="h6" color="inherit" noWrap>
-        Layouts & Forms
+        {title}
       </Typography>
       <StyledTreeView defaultExpanded={[""]}>
         {elements.map(({ id, type, label, icon, uiSchemaElementProvider }) => (

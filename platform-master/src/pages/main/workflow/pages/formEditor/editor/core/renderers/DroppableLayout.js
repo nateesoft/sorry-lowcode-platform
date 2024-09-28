@@ -38,6 +38,7 @@ export const DroppableLayout = ({
   renderers,
   cells
 }) => {
+  console.log('DroppableLayout:', layout)
   const classes = useLayoutStyles()
   return (
     <Grid

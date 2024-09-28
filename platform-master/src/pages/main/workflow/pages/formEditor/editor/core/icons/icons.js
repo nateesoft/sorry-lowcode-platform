@@ -1,14 +1,18 @@
-import React from "react"
+import { createElement } from "react"
 import { styled } from "@mui/material"
-import CropFreeIcon from "@mui/icons-material/CropFree"
-import Height from "@mui/icons-material/Height"
-import InsertLinkIcon from "@mui/icons-material/InsertLink"
-import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined"
-import ListAltIcon from "@mui/icons-material/ListAlt"
-import QueueOutlinedIcon from "@mui/icons-material/QueueOutlined"
-import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked"
-import TabIcon from "@mui/icons-material/Tab"
-import TextFieldsIcon from "@mui/icons-material/TextFields"
+import {
+  QueueOutlined,
+  RadioButtonUnchecked,
+  CropFree,
+  InsertLink,
+  LabelOutlined,
+  ListAlt,
+  Height,
+  Tab,
+  TextFields,
+  SmartButton,
+  GridView
+} from "@mui/icons-material"
 
 import { ARRAY, OBJECT, PRIMITIVE } from "../model"
 
@@ -16,19 +20,21 @@ export const VerticalIcon = Height
 export const HorizontalIcon = styled(Height)({
   transform: "rotate(90deg)"
 })
-export const GroupIcon = CropFreeIcon
-export const CategorizationIcon = TabIcon
-export const CategoryIcon = CropFreeIcon
+export const GridLayoutIcon = GridView
+export const GroupIcon = CropFree
+export const CategorizationIcon = Tab
+export const CategoryIcon = CropFree
 
-export const LabelIcon = TextFieldsIcon
+export const LabelIcon = TextFields
 
-export const ControlIcon = InsertLinkIcon
-export const ObjectIcon = ListAltIcon
-export const ArrayIcon = QueueOutlinedIcon
-export const PrimitiveIcon = LabelOutlinedIcon
-export const OtherIcon = RadioButtonUncheckedIcon
+export const ControlIcon = InsertLink
+export const ObjectIcon = ListAlt
+export const ArrayIcon = QueueOutlined
+export const PrimitiveIcon = LabelOutlined
+export const OtherIcon = RadioButtonUnchecked
+export const SmartButtonIcon = SmartButton
 
-export const getIconForSchemaType = type => {
+export const getIconForSchemaType = (type) => {
   switch (type) {
     case OBJECT:
       return ObjectIcon
@@ -41,8 +47,11 @@ export const getIconForSchemaType = type => {
   }
 }
 
-export const getIconForUISchemaType = type => {
+export const getIconForUISchemaType = (type) => {
+  console.log('getIconForUISchemaType:', type)
   switch (type) {
+    case "GridLayout":
+      return GridLayoutIcon
     case "HorizontalLayout":
       return HorizontalIcon
     case "VerticalLayout":
@@ -57,15 +66,17 @@ export const getIconForUISchemaType = type => {
       return ControlIcon
     case "Label":
       return LabelIcon
+    case "ActionButton":
+      return SmartButtonIcon
     default:
       return OtherIcon
   }
 }
 
 export const UISchemaIcon = ({ type }) => {
-  return React.createElement(getIconForUISchemaType(type), {})
+  return createElement(getIconForUISchemaType(type), {})
 }
 
 export const SchemaIcon = ({ type }) => {
-  return React.createElement(getIconForSchemaType(type), {})
+  return createElement(getIconForSchemaType(type), {})
 }

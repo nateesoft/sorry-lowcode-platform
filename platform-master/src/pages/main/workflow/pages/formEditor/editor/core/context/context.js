@@ -1,9 +1,9 @@
-import React, { useContext } from "react"
+import { useContext, createContext } from "react"
 
 /**We always use a provider so default can be undefined*/
 const defaultContext = undefined
 
-export const EditorContextInstance = React.createContext(defaultContext)
+export const EditorContextInstance = createContext(defaultContext)
 
 export const useEditorContext = () => useContext(EditorContextInstance)
 

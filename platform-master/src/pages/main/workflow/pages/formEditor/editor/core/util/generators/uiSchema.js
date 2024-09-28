@@ -2,11 +2,11 @@ import { v4 as uuid } from "uuid"
 
 import { getScope } from "../../model"
 
-export const createControl = schemaElement => {
+export const createControl = (schemaElement) => {
   return createControlWithScope(`#${getScope(schemaElement)}`)
 }
 
-export const createControlWithScope = scope => {
+export const createControlWithScope = (scope) => {
   return {
     type: "Control",
     scope: scope,
@@ -14,7 +14,23 @@ export const createControlWithScope = scope => {
   }
 }
 
-export const createLayout = type => {
+export const createGridLayout = () => {
+  return {
+    type: "GridLayout",
+    scope: "#",
+    elements: [],
+    options: {
+      style: {
+        direction: "row",
+        spacing: 1,
+        justifyContent: "flex-end"
+      }
+    },
+    uuid: uuid()
+  }
+}
+
+export const createLayout = (type) => {
   return {
     type: type,
     elements: [],
@@ -22,7 +38,7 @@ export const createLayout = type => {
   }
 }
 
-export const createLabel = text => {
+export const createLabel = (text) => {
   return {
     type: "Label",
     text: text,
@@ -30,7 +46,7 @@ export const createLabel = text => {
   }
 }
 
-export const createCategory = label => {
+export const createCategory = (label) => {
   return {
     type: "Category",
     elements: [],
@@ -39,11 +55,29 @@ export const createCategory = label => {
   }
 }
 
-export const createCategorization = label => {
+export const createCategorization = (label) => {
   return {
     type: "Categorization",
     label: label,
     uuid: uuid(),
     elements: []
+  }
+}
+
+export const createActionButton = (buttonText) => {
+  return {
+    type: "ActionButton",
+    elements: [
+      {
+        type: "Typography",
+        label: buttonText,
+        uuid: "51dacc95-aad5-4e86-a136-494d6e6af28a"
+      }
+    ],
+    options: {
+      onclick: {
+        clearForm: true
+      }
+    }
   }
 }
