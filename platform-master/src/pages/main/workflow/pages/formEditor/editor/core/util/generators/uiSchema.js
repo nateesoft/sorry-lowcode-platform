@@ -71,12 +71,18 @@ export const createActionButton = (buttonText) => {
       {
         type: "Typography",
         label: buttonText,
-        uuid: "51dacc95-aad5-4e86-a136-494d6e6af28a"
+        uuid: uuid()
       }
     ],
     options: {
+      style: {
+        variant: "contained"
+      },
       onclick: {
-        clearForm: true
+        route: {
+          type: "link",
+          uri: "#"
+        }
       }
     }
   }
