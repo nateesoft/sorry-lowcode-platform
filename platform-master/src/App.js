@@ -22,6 +22,7 @@ export const DatasourcePage = lazy(() => import("./pages/datasource"))
 export const DatasourceDetailPage = lazy(() => import("./pages/datasource-detail"))
 export const LoginPage = lazy(() => import("./pages/login"))
 export const ProductsPage = lazy(() => import("./pages/products"))
+export const ArchitecturePage = lazy(() => import("./pages/architecture"))
 export const Page404 = lazy(() => import("./pages/page-not-found"))
 export const ServiceFlow = lazy(()=> import("./pages/main/serviceflow"))
 
@@ -43,6 +44,7 @@ export default function App() {
               <Route element={<IndexPage />} index={true} />
               <Route path="user" element={<UserPage />} />
               <Route path="products" element={<ProductsPage />} />
+              <Route path="architecture" element={<ArchitecturePage />} />
               <Route path="blog" element={<BlogPage />} />
               <Route path="workflows">
                 <Route index element={<WorkFlowPage />} />
