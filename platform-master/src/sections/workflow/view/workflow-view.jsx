@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 
 import Card from "@mui/material/Card"
 import Stack from "@mui/material/Stack"
@@ -20,6 +20,8 @@ import TableEmptyRows from "../table-empty-rows"
 import WorkFlowTableToolbar from "../workflow-table-toolbar"
 import { emptyRows, applyFilter, getComparator } from "../utils"
 
+import NewWorkflowModal from "../modal"
+
 // ----------------------------------------------------------------------
 
 export default function WorkFlowPage() {
@@ -29,6 +31,8 @@ export default function WorkFlowPage() {
   const [orderBy, setOrderBy] = useState("name")
   const [filterName, setFilterName] = useState("")
   const [rowsPerPage, setRowsPerPage] = useState(5)
+
+  const [openModal, setOpenModal] = useState(false)
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === "asc"
@@ -88,92 +92,96 @@ export default function WorkFlowPage() {
   const notFound = !dataFiltered.length && !!filterName
 
   return (
-    <Container>
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        mb={5}
-      >
-        <Typography variant="h4">WorkFlows</Typography>
-        <Button
-          variant="contained"
-          color="inherit"
-          startIcon={<Iconify icon="eva:plus-fill" />}
+    <React.Fragment>
+      <Container>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={5}
         >
-          New WorkFlow
-        </Button>
-      </Stack>
+          <Typography variant="h4">WorkFlows</Typography>
+          <Button
+            variant="contained"
+            color="inherit"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+            onClick={() => setOpenModal(true)}
+          >
+            New WorkFlow
+          </Button>
+        </Stack>
 
-      <Card>
-        <WorkFlowTableToolbar
-          numSelected={selected.length}
-          filterName={filterName}
-          onFilterName={handleFilterByName}
-        />
+        <Card>
+          <WorkFlowTableToolbar
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+          />
 
-        <Scrollbar>
-          <TableContainer sx={{ overflow: "unset" }}>
-            <Table sx={{ minWidth: 800 }}>
-              <WorkFlowTableHead
-                order={order}
-                orderBy={orderBy}
-                rowCount={workflows.length}
-                numSelected={selected.length}
-                onRequestSort={handleSort}
-                onSelectAllClick={handleSelectAllClick}
-                headLabel={[
-                  { id: "id", label: "Id" },
-                  { id: "projectName", label: "Project Name" },
-                  { id: "workFlowName", label: "Workflow Name" },
-                  { id: "updatedDate", label: "Update Date" },
-                  { id: "version", label: "Version" },
-                  { id: "status", label: "Status" },
-                  { id: "" }
-                ]}
-              />
-              <TableBody>
-                {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map(row =>
-                    <WorkFlowTableRow
-                      key={row.id}
-                      id={row.id}
-                      projectName={row.projectName}
-                      workFlowName={row.workFlowName}
-                      createdDate={row.createdDate}
-                      updatedDate={row.updatedDate}
-                      version={row.version}
-                      manager={row.manager}
-                      status={row.status}
-                      projectUrl={row.projectUrl}
-                      workFlowUrl={row.workFlowUrl}
-                      handleClick={event =>
-                        handleClick(event, row.workFlowName)}
-                    />
-                  )}
-
-                <TableEmptyRows
-                  height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, workflows.length)}
+          <Scrollbar>
+            <TableContainer sx={{ overflow: "unset" }}>
+              <Table sx={{ minWidth: 800 }}>
+                <WorkFlowTableHead
+                  order={order}
+                  orderBy={orderBy}
+                  rowCount={workflows.length}
+                  numSelected={selected.length}
+                  onRequestSort={handleSort}
+                  onSelectAllClick={handleSelectAllClick}
+                  headLabel={[
+                    { id: "id", label: "Id" },
+                    { id: "projectName", label: "Project Name" },
+                    { id: "workFlowName", label: "Workflow Name" },
+                    { id: "updatedDate", label: "Update Date" },
+                    { id: "version", label: "Version" },
+                    { id: "status", label: "Status" },
+                    { id: "" }
+                  ]}
                 />
+                <TableBody>
+                  {dataFiltered
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map(row =>
+                      <WorkFlowTableRow
+                        key={row.id}
+                        id={row.id}
+                        projectName={row.projectName}
+                        workFlowName={row.workFlowName}
+                        createdDate={row.createdDate}
+                        updatedDate={row.updatedDate}
+                        version={row.version}
+                        manager={row.manager}
+                        status={row.status}
+                        projectUrl={row.projectUrl}
+                        workFlowUrl={row.workFlowUrl}
+                        handleClick={event =>
+                          handleClick(event, row.workFlowName)}
+                      />
+                    )}
 
-                {notFound && <TableNoData query={filterName} />}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Scrollbar>
+                  <TableEmptyRows
+                    height={77}
+                    emptyRows={emptyRows(page, rowsPerPage, workflows.length)}
+                  />
 
-        <TablePagination
-          page={page}
-          component="div"
-          count={workflows.length}
-          rowsPerPage={rowsPerPage}
-          onPageChange={handleChangePage}
-          rowsPerPageOptions={[5, 10, 25]}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Card>
-    </Container>
+                  {notFound && <TableNoData query={filterName} />}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Scrollbar>
+
+          <TablePagination
+            page={page}
+            component="div"
+            count={workflows.length}
+            rowsPerPage={rowsPerPage}
+            onPageChange={handleChangePage}
+            rowsPerPageOptions={[5, 10, 25]}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Card>
+      </Container>
+      <NewWorkflowModal openModal={openModal} setOpenModal={setOpenModal} />
+    </React.Fragment>
   )
 }
