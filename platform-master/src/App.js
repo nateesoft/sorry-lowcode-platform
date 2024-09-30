@@ -8,7 +8,6 @@ import {
 } from "react-router-dom"
 import { HelmetProvider } from "react-helmet-async"
 
-import MainApp from "./pages/main"
 import ThemeProvider from "./theme"
 
 import DashboardLayout from "./layouts/dashboard"
@@ -16,15 +15,18 @@ import DashboardLayout from "./layouts/dashboard"
 export const IndexPage = lazy(() => import("./pages/app"))
 export const BlogPage = lazy(() => import("./pages/blog"))
 export const UserPage = lazy(() => import("./pages/user"))
+
 export const WorkFlowPage = lazy(() => import("./pages/workflow"))
+export const WorkFlowApp = lazy(() => import("./pages/main"))
 export const ServiceFlowPage = lazy(() => import("./pages/serviceflow"))
+export const ServiceFlowApp = lazy(()=> import("./pages/main/serviceflow"))
 export const DatasourcePage = lazy(() => import("./pages/datasource"))
-export const DatasourceDetailPage = lazy(() => import("./pages/datasource-detail"))
+export const DatasourceApp = lazy(() => import("./pages/datasource-detail"))
+export const ArchitectureApp = lazy(() => import("./pages/main/architecture"))
+
 export const LoginPage = lazy(() => import("./pages/login"))
 export const ProductsPage = lazy(() => import("./pages/products"))
-export const ArchitecturePage = lazy(() => import("./pages/architecture"))
 export const Page404 = lazy(() => import("./pages/page-not-found"))
-export const ServiceFlow = lazy(()=> import("./pages/main/serviceflow"))
 
 export default function App() {
   return (
@@ -44,19 +46,19 @@ export default function App() {
               <Route element={<IndexPage />} index={true} />
               <Route path="user" element={<UserPage />} />
               <Route path="products" element={<ProductsPage />} />
-              <Route path="architecture" element={<ArchitecturePage />} />
               <Route path="blog" element={<BlogPage />} />
+              <Route path="architecture" element={<ArchitectureApp />} />
               <Route path="workflows">
                 <Route index element={<WorkFlowPage />} />
-                <Route path=":id" element={<MainApp />} />
+                <Route path=":id" element={<WorkFlowApp />} />
               </Route>
               <Route path="serviceflows">
                 <Route index element={<ServiceFlowPage />} />
-                <Route path=":id" element={<ServiceFlow />} />
+                <Route path=":id" element={<ServiceFlowApp />} />
               </Route>
               <Route path="datasource">
                 <Route index element={<DatasourcePage />} />
-                <Route path=":id" element={<DatasourceDetailPage />} />
+                <Route path=":id" element={<DatasourceApp />} />
               </Route>
             </Route>
             <Route path="/login" element={<LoginPage />} />
