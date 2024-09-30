@@ -1,13 +1,12 @@
 import { useCallback } from "react"
 
-function MessageNode({ data }) {
+function AuditLogsNode({ data }) {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value)
   }, [])
 
   return (
-    <div align="center">
-    <span style={{fontSize: '12px'}}>{data.label}</span>
+    <>
       <div
         style={{
           height: "100%",
@@ -17,10 +16,10 @@ function MessageNode({ data }) {
           cursor: "grab"
         }}
       >
-        <img src="/images/message.png" alt="" onChange={onChange} />
+        <img src="/images/audit_logs.png" alt="" onChange={onChange} />
       </div>
-    </div>
+    </>
   )
 }
 
-export default MessageNode
+export default AuditLogsNode

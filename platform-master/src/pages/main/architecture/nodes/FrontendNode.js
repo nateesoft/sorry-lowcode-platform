@@ -1,13 +1,13 @@
 import { useCallback } from "react"
-import { Handle, Position } from "reactflow"
 
-function ActorNode({ data }) {
+function FrontendNode({ data }) {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value)
   }, [])
 
   return (
-    <>
+    <div align="center">
+      <span style={{fontSize: '12px'}}>{data.label}</span>
       <div
         style={{
           height: "100%",
@@ -17,11 +17,10 @@ function ActorNode({ data }) {
           cursor: "grab"
         }}
       >
-        <img src="/images/actor.png" alt="" onChange={onChange} />
+        <img src="/images/frontend.png" alt="" onChange={onChange} />
       </div>
-      <Handle type="source" position={Position.Right} style={{backgroundColor: 'blue', width: '10px', height: '10px'}} />
-    </>
+    </div>
   )
 }
 
-export default ActorNode
+export default FrontendNode

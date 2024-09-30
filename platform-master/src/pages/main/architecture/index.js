@@ -18,22 +18,26 @@ import "reactflow/dist/style.css"
 import LeftMenu from "./LeftMenu"
 import PropertyPanel from "./PropertyPanel"
 
-import ActorNode from "./nodes/ActorNode"
-import PageNode from "./nodes/PageNode"
-import MegessaNode from "./nodes/MessageNode"
+import UserNode from "./nodes/UserNode"
+import FrontendNode from "./nodes/FrontendNode"
+import BackendNode from "./nodes/BackendNode"
 import DatabaseNode from "./nodes/DatabaseNode"
-import ServerNode from "./nodes/ServerNode"
+import MegessaNode from "./nodes/MessageNode"
+import ReportNode from "./nodes/ReportNode"
+import AuditLogsNode from "./nodes/AuditLogsNode"
 
 import "./index.css"
 
 const flowKey = "architecture"
 
 const nodeTypes = {
-  actor: ActorNode,
-  page: PageNode,
-  message: MegessaNode,
+  user: UserNode,
+  frontend: FrontendNode,
+  backend: BackendNode,
   database: DatabaseNode,
-  server: ServerNode
+  message: MegessaNode,
+  report: ReportNode,
+  auditlogs: AuditLogsNode
 }
 
 const ArchitectureOverview = (props) => {
@@ -82,16 +86,20 @@ const ArchitectureOverview = (props) => {
       })
 
       let label = ""
-      if (type === "page") {
-        label = "Page"
-      } else if (type === "actor") {
+      if (type === "user") {
         label = "User"
-      } else if (type === "message") {
-        label = "Message"
+      } else if (type === "frontend") {
+        label = "Frontend"
+      } else if (type === "backend") {
+        label = "Backend"
       } else if (type === "database") {
         label = "Database"
-      } else if (type === "server") {
-        label = "Server"
+      } else if (type === "message") {
+        label = "Message"
+      } else if (type === "report") {
+        label = "Report"
+      } else if (type === "auditlogs") {
+        label = "AuditLogs"
       }
 
       const newNode = {

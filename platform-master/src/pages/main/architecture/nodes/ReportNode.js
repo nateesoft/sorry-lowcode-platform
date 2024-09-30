@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 
-function MessageNode({ data }) {
+function ReportNode({ data }) {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value)
   }, [])
@@ -17,10 +17,10 @@ function MessageNode({ data }) {
           cursor: "grab"
         }}
       >
-        <img src="/images/message.png" alt="" onChange={onChange} />
+        <img src="/images/export_report.png" alt="" onChange={onChange} />
       </div>
     </div>
   )
 }
 
-export default MessageNode
+export default ReportNode

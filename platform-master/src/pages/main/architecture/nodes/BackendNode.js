@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 
-function ServerNode({ data }) {
+function BackendNode({ data }) {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value)
   }, [])
@@ -18,10 +18,10 @@ function ServerNode({ data }) {
           borderRadius: '5px'
         }}
       >
-        <img src="/images/server.png" alt="" onChange={onChange} />
+        <img src="/images/backend.png" alt="" onChange={onChange} />
       </div>
     </div>
   )
 }
 
-export default ServerNode
+export default BackendNode

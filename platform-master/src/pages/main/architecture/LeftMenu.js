@@ -16,25 +16,25 @@ const LeftMenu = memo(() => {
         </Link>
       </div>
       <div
-        className="flowchart"
-        onDragStart={(event) => onDragStart(event, "actor")}
+        className="dndnode"
+        onDragStart={(event) => onDragStart(event, "user")}
         draggable
       >
-        <img src="/images/actor.png" alt="" />
+        <img src="/images/user.png" alt="" />
       </div>
       <div
         className="dndnode"
-        onDragStart={(event) => onDragStart(event, "page")}
+        onDragStart={(event) => onDragStart(event, "frontend")}
         draggable
       >
-        <img src="/images/pages.png" alt="" />
+        <img src="/images/frontend.png" alt="" />
       </div>
       <div
         className="dndnode output"
-        onDragStart={(event) => onDragStart(event, "message")}
+        onDragStart={(event) => onDragStart(event, "backend")}
         draggable
       >
-        <img src="/images/message.png" alt="" />
+        <img src="/images/backend.png" alt="" />
       </div>
       <div
         className="dndnode output"
@@ -45,10 +45,24 @@ const LeftMenu = memo(() => {
       </div>
       <div
         className="dndnode output"
-        onDragStart={(event) => onDragStart(event, "server")}
+        onDragStart={(event) => onDragStart(event, "message")}
         draggable
       >
-        <img src="/images/server.png" alt="" />
+        <img src="/images/message.png" alt="" />
+      </div>
+      <div
+        className="dndnode output"
+        onDragStart={(event) => onDragStart(event, "report")}
+        draggable
+      >
+        <img src="/images/export_report.png" alt="" />
+      </div>
+      <div
+        className="dndnode"
+        onDragStart={(event) => onDragStart(event, "auditlogs")}
+        draggable
+      >
+        <img src="/images/audit_logs.png" alt="" />
       </div>
     </aside>
   )
