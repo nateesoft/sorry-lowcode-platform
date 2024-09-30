@@ -1,25 +1,11 @@
 import React, { memo, useEffect, useState } from "react"
 import Button from "@mui/material/Button"
-import Modal from "@mui/material/Modal"
 import Grid from "@mui/material/Unstable_Grid2"
-import { Box, FormControl, TextField, Typography } from "@mui/material"
-
-import JsonFormPage from "./pages/formEditor"
-import WorkflowLogic from "../modal"
+import { Box, FormControl, MenuItem, Select, TextField, Typography } from "@mui/material"
 
 const PropertyPanel = memo(({ props, onComponentChange }) => {
   const [label, setLabel] = useState("")
-  const [folder, setFolder] = useState("")
-  const [uri, setUri] = useState("")
-  const [serviceFlow1, setServiceFlow1] = useState("")
-  const [serviceFlow2, serServiceFlow2] = useState("")
-  const [page, setPage] = useState("")
-
-  const [open, setOpen] = useState(false)
-  const [logicOpen, setLogicOpen] = useState(false)
-  const [logicId, setLogicId] = useState(null)
-  const handleClose = () => setOpen(false)
-  const handleLogicClose = () => setLogicOpen(false)
+  const [languageDev, setLanguageDdev] = useState("")
 
   const handleKeyUp = (evt) => {
     if (evt.keyCode === 13) {
@@ -43,18 +29,8 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
     return <></>
   }
 
-  function handlePage(page) {
-    setOpen(true)
-    setPage(page)
-  }
-
   function handleSave() {
     console.log('Save source code to API')
-  }
-
-  function handleServiceFlowOpen(id, callback) {
-    setLogicId(id)
-    callback(true)
   }
 
   return (
@@ -81,15 +57,6 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                 />
               </FormControl>
               <FormControl variant="standard">
-                <Typography variant="caption">Folder</Typography>
-                <TextField
-                 variant="standard"
-                  value={folder}
-                  onChange={(data) => setFolder(data.target.value)}
-                  onKeyUp={handleKeyUp}
-                />
-              </FormControl>
-              <FormControl variant="standard">
                 <Typography variant="caption">Name</Typography>
                 <TextField
                  variant="standard"
@@ -98,74 +65,22 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                   onKeyUp={handleKeyUp}
                 />
               </FormControl>
-              <FormControl variant="standard">
+              <FormControl fullWidth>
                 <Typography variant="caption">Type</Typography>
                 <TextField variant="standard" value={props.type} />
               </FormControl>
               <FormControl variant="standard">
-                <Typography variant="caption">URI</Typography>
-                <TextField
-                 variant="standard"
-                  value={uri}
-                  onChange={(data) => setUri(data.target.value)}
-                  onKeyUp={handleKeyUp}
-                />
-              </FormControl>
-              <FormControl variant="standard">
-                <Typography variant="caption">Service Flow#1</Typography>
-                <Grid container alignItems="center">
-                  <Grid item xs={10}>
-                    <TextField
-                     variant="standard"
-                      value={serviceFlow1}
-                      onChange={(data) => setServiceFlow1(data.target.value)}
-                      onKeyUp={handleKeyUp}
-                    />
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        bgcolor: "snow",
-                        color: "black",
-                        ":hover": {
-                          bgcolor: "#eee"
-                        }
-                      }}
-                      onClick={() => handleServiceFlowOpen("service1_"+props.id, setLogicOpen)}
-                    >
-                      Open
-                    </Button>
-                  </Grid>
-                </Grid>
-              </FormControl>
-              <FormControl variant="standard">
-                <Typography variant="caption">Service Flow#2</Typography>
-                <Grid container alignItems="center">
-                  <Grid item xs={10}>
-                    <TextField
-                     variant="standard"
-                      value={serviceFlow2}
-                      onChange={(data) => serServiceFlow2(data.target.value)}
-                      onKeyUp={handleKeyUp}
-                    />
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        bgcolor: "snow",
-                        color: "black",
-                        ":hover": {
-                          bgcolor: "#eee"
-                        }
-                      }}
-                      onClick={() => handleServiceFlowOpen("service2_"+props.id, setLogicOpen)}
-                    >
-                      Open
-                    </Button>
-                  </Grid>
-                </Grid>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={languageDev}
+                  label="Language Dev"
+                  onChange={(evt)=>setLanguageDdev(evt.target.value())}
+                >
+                  <MenuItem value={10}>Ten</MenuItem>
+                  <MenuItem value={20}>Twenty</MenuItem>
+                  <MenuItem value={30}>Thirty</MenuItem>
+                </Select>
               </FormControl>
             </Box>
             <Grid container spacing={1} padding={1}>
@@ -177,57 +92,10 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                   Save Source
                 </Button>
               </Grid>
-              {props.type === "page" && (
-                <Grid item>
-                  <Button
-                    onClick={() => handlePage("jsonform")}
-                    variant="contained"
-                    color="success"
-                  >
-                    Preview Page
-                  </Button>
-                </Grid>
-              )}
             </Grid>
           </Grid>
         )}
       </div>
-
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Grid container spacing={1} padding={5}>
-          <Grid xs={12}>
-            <Box sx={{ bgcolor: "snow" }}>
-              {page === "jsonform" && (
-                <JsonFormPage
-                  onClose={handleClose}
-                  id={props.type + "_" + props.id} 
-                  label={label}
-                />
-              )}
-            </Box>
-          </Grid>
-        </Grid>
-      </Modal>
-
-      <Modal
-        open={logicOpen}
-        onClose={handleLogicClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Grid container spacing={1} padding={5}>
-          <Grid xs={12}>
-            <Box sx={{ bgcolor: "snow" }}>
-              <WorkflowLogic onClose={handleLogicClose} id={logicId} />
-            </Box>
-          </Grid>
-        </Grid>
-      </Modal>
     </>
   )
 })

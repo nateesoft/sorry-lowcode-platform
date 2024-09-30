@@ -17,11 +17,8 @@ import "reactflow/dist/style.css"
 
 import LeftMenu from "./LeftMenu"
 import PropertyPanel from "./PropertyPanel"
-import PagePanel from "./PagePanel"
 
 import ActorNode from "./nodes/ActorNode"
-import StartNode from "./nodes/StartNode"
-import EndNode from "./nodes/EndNode"
 import PageNode from "./nodes/PageNode"
 import MegessaNode from "./nodes/MessageNode"
 import DatabaseNode from "./nodes/DatabaseNode"
@@ -33,8 +30,6 @@ const flowKey = "architecture"
 
 const nodeTypes = {
   actor: ActorNode,
-  start: StartNode,
-  end: EndNode,
   page: PageNode,
   message: MegessaNode,
   database: DatabaseNode,
@@ -87,11 +82,7 @@ const ArchitectureOverview = (props) => {
       })
 
       let label = ""
-      if (type === "start") {
-        label = "Start"
-      } else if (type === "end") {
-        label = "End"
-      } else if (type === "page") {
+      if (type === "page") {
         label = "Page"
       } else if (type === "actor") {
         label = "User"
@@ -249,12 +240,6 @@ const ArchitectureOverview = (props) => {
           display={setProperty}
         />
       )}
-      <PagePanel
-        condition={showPage}
-        property={setProperty}
-        onClose={() => setShowPage({ show: false, page: null })}
-        {...property}
-      />
     </div>
   )
 }
