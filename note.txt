@@ -29,3 +29,16 @@ return {
 }
 
 # end
+
+
+
+# reflex for split pane resize
+https://www.npmjs.com/package/react-reflex
+
+# jsonforms drag and drop example
+https://github.com/eclipsesource/jsonforms-editor
+export SET NODE_OPTIONS=--openssl-legacy-provider
+
+#step
+npm ci
+npm run init

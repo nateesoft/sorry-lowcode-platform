@@ -1,6 +1,6 @@
 import React from "react"
 import GrapesJsPage from "./pages/GrapesJsPage"
-import JsonFormPage from "./pages/JsonFormPage"
+import JsonFormPage from "./pages/formEditor"
 
 function PagePanel(props) {
   if (!props.condition.show) {

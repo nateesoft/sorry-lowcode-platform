@@ -4,7 +4,7 @@ import Modal from "@mui/material/Modal"
 import Grid from "@mui/material/Unstable_Grid2"
 import { Box, FormControl, TextField, Typography } from "@mui/material"
 
-import JsonFormPage from "./pages/JsonFormPage"
+import JsonFormPage from "./pages/formEditor"
 import WorkflowLogic from "../modal"
 
 const PropertyPanel = memo(({ props, onComponentChange }) => {
@@ -83,6 +83,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
               <FormControl variant="standard">
                 <Typography variant="caption">Folder</Typography>
                 <TextField
+                 variant="standard"
                   value={folder}
                   onChange={(data) => setFolder(data.target.value)}
                   onKeyUp={handleKeyUp}
@@ -91,6 +92,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
               <FormControl variant="standard">
                 <Typography variant="caption">Name</Typography>
                 <TextField
+                 variant="standard"
                   value={label}
                   onChange={(data) => setLabel(data.target.value)}
                   onKeyUp={handleKeyUp}
@@ -103,6 +105,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
               <FormControl variant="standard">
                 <Typography variant="caption">URI</Typography>
                 <TextField
+                 variant="standard"
                   value={uri}
                   onChange={(data) => setUri(data.target.value)}
                   onKeyUp={handleKeyUp}
@@ -113,6 +116,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                 <Grid container alignItems="center">
                   <Grid item xs={10}>
                     <TextField
+                     variant="standard"
                       value={serviceFlow1}
                       onChange={(data) => setServiceFlow1(data.target.value)}
                       onKeyUp={handleKeyUp}
@@ -140,6 +144,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                 <Grid container alignItems="center">
                   <Grid item xs={10}>
                     <TextField
+                     variant="standard"
                       value={serviceFlow2}
                       onChange={(data) => serServiceFlow2(data.target.value)}
                       onKeyUp={handleKeyUp}
