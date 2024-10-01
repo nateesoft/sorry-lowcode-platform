@@ -8,6 +8,7 @@ import uischema from "../pages/uischema.json"
 import data from "../pages/data.json"
 import { renderers } from "../pages/components/renderers"
 import { Box } from "@mui/material"
+import { useParams } from "react-router-dom"
 
 function localLoad(pageKey, temp) {
   const haveData = JSON.parse(localStorage.getItem(pageKey))
@@ -18,12 +19,15 @@ function localLoad(pageKey, temp) {
   return temp
 }
 
-const DemoPage = ({ id }) => {
-  const ajv = createAjv({ useDefaults: true })
+const DemoPage = (props) => {
+  console.log('DemoPage:', props)
 
-  const loadSchema = localLoad(id + "_template_schema", schema)
-  const loadUiSchema = localLoad(id + "_template_uischema", uischema)
-  const loadData = localLoad(id + "_template_data", data)
+  const { formId } = useParams()
+
+  const ajv = createAjv({ useDefaults: true })
+  const loadSchema = localLoad(formId + "_template_schema", schema)
+  const loadUiSchema = localLoad(formId + "_template_uischema", uischema)
+  const loadData = localLoad(formId + "_template_data", data)
 
   return (
     <Box padding={2}>

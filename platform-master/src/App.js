@@ -63,8 +63,8 @@ export default function App() {
               </Route>
             </Route>
             <Route path="demo">
-              <Route index element={<DemoPage id="page_node_0t0udq" />} />
-              <Route path="*" element={<DemoPage id="page_node_0t0udq" />} />
+              <Route index element={<DemoPage />} />
+              <Route path=":formId" element={<DemoPage />} />
             </Route>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/404" element={<Page404 />} />

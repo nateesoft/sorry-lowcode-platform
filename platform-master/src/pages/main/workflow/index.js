@@ -262,7 +262,7 @@ const WorkFlowMain = (props) => {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Link to="/demo" target="_blank">
+                  <Link to="/demo/page_node_0t0udq" target="_blank">
                     <Button
                       variant="contained"
                       color="success"
