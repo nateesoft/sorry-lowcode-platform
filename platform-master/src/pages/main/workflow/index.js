@@ -10,8 +10,8 @@ import ReactFlow, {
   MarkerType,
   Panel
 } from "reactflow"
-import { useParams } from "react-router-dom"
-import axios from "axios"
+import { Link, useParams } from "react-router-dom"
+// import axios from "axios"
 import { Button, Grid } from "@mui/material"
 
 import "reactflow/dist/style.css"
@@ -197,19 +197,19 @@ const WorkFlowMain = (props) => {
     restoreFlow()
   }, [setNodes, setEdges, workFlowId])
 
-  const onPreview = () => {
-    // window.open("http://localhost:3000/app1")
-    axios
-      .get("/api/frontend")
-      .then(({ data }) => {
-        if (data.redirectUrl) {
-          window.open(data.redirectUrl)
-        }
-      })
-      .catch((error) => {
-        alert(error.message)
-      })
-  }
+  // const handlePreview = () => {
+  //   // window.open("http://localhost:3000/app1")
+  //   axios
+  //     .get("/api/frontend")
+  //     .then(({ data }) => {
+  //       if (data.redirectUrl) {
+  //         window.open(data.redirectUrl)
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       alert(error.message)
+  //     })
+  // }
 
   useEffect(() => {
     onRestore()
@@ -262,13 +262,14 @@ const WorkFlowMain = (props) => {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button
-                    variant="contained"
-                    color="success"
-                    onClick={onPreview}
-                  >
-                    Publish
-                  </Button>
+                  <Link to="/demo" target="_blank">
+                    <Button
+                      variant="contained"
+                      color="success"
+                    >
+                      Publish
+                    </Button>
+                  </Link>
                 </Grid>
               </Grid>
             </Panel>

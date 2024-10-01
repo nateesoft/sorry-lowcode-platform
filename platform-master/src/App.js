@@ -11,6 +11,7 @@ import { HelmetProvider } from "react-helmet-async"
 import ThemeProvider from "./theme"
 
 import DashboardLayout from "./layouts/dashboard"
+import DemoPage from "./pages/main/workflow/demo"
 
 export const IndexPage = lazy(() => import("./pages/app"))
 export const BlogPage = lazy(() => import("./pages/blog"))
@@ -19,7 +20,7 @@ export const UserPage = lazy(() => import("./pages/user"))
 export const WorkFlowPage = lazy(() => import("./pages/workflow"))
 export const WorkFlowApp = lazy(() => import("./pages/main"))
 export const ServiceFlowPage = lazy(() => import("./pages/serviceflow"))
-export const ServiceFlowApp = lazy(()=> import("./pages/main/serviceflow"))
+export const ServiceFlowApp = lazy(() => import("./pages/main/serviceflow"))
 export const DatasourcePage = lazy(() => import("./pages/datasource"))
 export const DatasourceApp = lazy(() => import("./pages/datasource-detail"))
 export const ArchitectureApp = lazy(() => import("./pages/main/architecture"))
@@ -60,6 +61,10 @@ export default function App() {
                 <Route index element={<DatasourcePage />} />
                 <Route path=":id" element={<DatasourceApp />} />
               </Route>
+            </Route>
+            <Route path="demo">
+              <Route index element={<DemoPage id="page_node_0t0udq" />} />
+              <Route path="*" element={<DemoPage id="page_node_0t0udq" />} />
             </Route>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/404" element={<Page404 />} />
