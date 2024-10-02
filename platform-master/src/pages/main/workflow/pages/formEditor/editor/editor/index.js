@@ -1,3 +1,6 @@
+import { materialRenderers } from "@jsonforms/material-renderers"
+
+import { ReactMaterialPreview } from "./components/preview"
 import { DroppableArrayControlRegistration } from "../core/renderers/DroppableArrayControl"
 import { DroppableCategorizationLayoutRegistration } from "../core/renderers/DroppableCategorizationLayout"
 import { DroppableCategoryLayoutRegistration } from "../core/renderers/DroppableCategoryLayout"
@@ -7,10 +10,14 @@ import {
   DroppableHorizontalLayoutRegistration,
   DroppableVerticalLayoutRegistration
 } from "../core/renderers/DroppableLayout"
-import { ReactMaterialPreview } from "./components/preview"
+
+// custom layout
+import { DroppableGridLayoutRegistration } from "../core/renderers/custom/DroppableGridLayout"
+import ActionButton, { actionButtonTester } from "../core/renderers/custom/ActionButton"
+import Typography, { typographyTester } from "../core/renderers/custom/Typography"
 
 // import core renderer
-import { renderers } from '../../../components/renderers'
+// import { renderers } from '../../../components/renderers'
 
 export * from "./components/EditorPanel"
 export { EditorElement } from "./components/EditorElement"
@@ -20,12 +27,15 @@ export const defaultEditorTabs = [
 ]
 
 export const defaultEditorRenderers = [
-  ...renderers,
+  ...materialRenderers,
   DroppableHorizontalLayoutRegistration,
   DroppableVerticalLayoutRegistration,
   DroppableElementRegistration,
   DroppableGroupLayoutRegistration,
   DroppableCategoryLayoutRegistration,
   DroppableArrayControlRegistration,
-  DroppableCategorizationLayoutRegistration
+  DroppableCategorizationLayoutRegistration,
+  DroppableGridLayoutRegistration,
+  { tester: actionButtonTester, renderer: ActionButton },
+  { tester: typographyTester, renderer: Typography }
 ]

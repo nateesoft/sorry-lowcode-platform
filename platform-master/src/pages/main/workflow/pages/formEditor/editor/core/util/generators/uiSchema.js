@@ -14,22 +14,6 @@ export const createControlWithScope = (scope) => {
   }
 }
 
-export const createGridLayout = () => {
-  return {
-    type: "GridLayout",
-    scope: "#",
-    elements: [],
-    options: {
-      style: {
-        direction: "row",
-        spacing: 1,
-        justifyContent: "flex-end"
-      }
-    },
-    uuid: uuid()
-  }
-}
-
 export const createLayout = (type) => {
   return {
     type: type,
@@ -64,14 +48,43 @@ export const createCategorization = (label) => {
   }
 }
 
+/* ##### CUSTOM COMPONENTS #### */
+export const createGridLayout = () => {
+  return {
+    type: "GridLayout",
+    elements: [],
+    options: {
+      style: {
+        direction: "row",
+        spacing: 1,
+        justifyContent: "flex-end"
+      }
+    },
+    uuid: uuid()
+  }
+}
+
+export const createAccordionLayout = () => {
+  return {
+    type: "AccordionLayout",
+    uuid: uuid()
+  }
+}
+
+export const createTableData = () => {
+  return {
+    type: "TableData",
+    uuid: uuid()
+  }
+}
+
 export const createActionButton = (buttonText) => {
   return {
     type: "ActionButton",
     elements: [
       {
         type: "Typography",
-        label: buttonText,
-        uuid: uuid()
+        label: buttonText
       }
     ],
     options: {
@@ -84,6 +97,22 @@ export const createActionButton = (buttonText) => {
           uri: "#"
         }
       }
-    }
+    },
+    uuid: uuid()
+  }
+}
+
+export const createRating = () => {
+  return {
+    type: "rating",
+    uuid: uuid()
+  }
+}
+
+export const createTypography = (label) => {
+  return {
+    type: "Typography",
+    label: label,
+    uuid: uuid()
   }
 }

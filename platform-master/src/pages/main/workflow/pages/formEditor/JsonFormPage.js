@@ -9,6 +9,7 @@ import { makeStyles } from "@mui/styles"
 import { spacing } from "@mui/system"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
+import { createAjv } from "@jsonforms/core"
 
 import { renderers } from "../components/renderers"
 
@@ -28,7 +29,6 @@ import { Actions, editorReducer, generateEmptyData } from "./editor/core/model"
 import { tryFindByUUID } from "./editor/core/util/schemasUtil"
 import { SchemaTreeView } from "./editor/palette-panel/components/SchemaTree"
 import { useExportSchema } from "./editor/core/util/hooks"
-import { createAjv } from "@jsonforms/core"
 
 const useStyles = makeStyles((theme) => ({
   uiElementsTree: {
@@ -221,7 +221,15 @@ function JsonFormApp(props) {
                 <Tab label="Preview" value="2" />
               </TabList>
             </Box>
-            <TabPanel value="1">
+            <TabPanel value="1" sx={{
+              height: "600px",
+              overflow: "scroll"
+            }}>
+              <UIElementsTree
+                title="Template"
+                className={classes.uiElementsTree}
+                elements={paletteService.getTemplateElements()}
+              />
               <UIElementsTree
                 title="Layouts & Forms"
                 className={classes.uiElementsTree}
