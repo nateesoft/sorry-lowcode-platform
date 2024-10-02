@@ -221,10 +221,7 @@ function JsonFormApp(props) {
                 <Tab label="Preview" value="2" />
               </TabList>
             </Box>
-            <TabPanel value="1" sx={{
-              height: "600px",
-              overflow: "scroll"
-            }}>
+            <TabPanel value="1"  sx={{height: "70vh", overflow: "scroll"}}>
               <UIElementsTree
                 title="Template"
                 className={classes.uiElementsTree}
@@ -243,8 +240,8 @@ function JsonFormApp(props) {
               <SchemaTreeView schema={propsSchema} />
             </TabPanel>
             <TabPanel value="2">
-              <Paper sx={{ height: "70vh", padding: "10px", overflow: "auto" }}>
-              <JsonForms
+              <Paper sx={{ height: "70vh", padding: "10px", overflow: "scroll" }}>
+                <JsonForms
                   ajv={ajv}
                   data={previewData}
                   schema={newSchema}

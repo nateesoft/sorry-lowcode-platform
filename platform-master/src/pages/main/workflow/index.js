@@ -123,6 +123,18 @@ const WorkFlowMain = (props) => {
   const onNodeClick = () => {
     nodes.forEach((node) => {
       if (node.selected) {
+        console.log('onNodeClick:', node)
+        nodes.forEach(node=> {
+          node.style.border = ""
+          node.style.background = ""
+        })
+        node.style = { ...node.style,
+          border: "2px solid #5ba9de",
+          borderRadius: "10px",
+          background: "#5ba9de"
+         }
+        setNodes((nds) => nds.concat(node))
+
         setProperty({
           id: node.id,
           label: node.data.label,
