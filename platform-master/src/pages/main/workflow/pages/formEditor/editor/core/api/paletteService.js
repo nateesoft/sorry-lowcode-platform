@@ -1,5 +1,5 @@
 import React from "react"
-import { SpaceDashboard } from "@mui/icons-material"
+import { BackupTable, SpaceDashboard, TextRotationNone } from "@mui/icons-material"
 
 import {
   CategorizationIcon,
@@ -12,10 +12,8 @@ import {
 } from "../icons"
 import {
   createGridLayout,
-  createAccordionLayout,
   createTableData,
   createActionButton,
-  createRating,
   createTypography,
   createCategorization,
   createLabel,
@@ -101,37 +99,29 @@ const componentElements = [
     icon: <SmartButtonIcon />,
     uiSchemaElementProvider: () => createActionButton("Button")
   },
-  {
-    id: 10,
-    itemId: 10,
-    type: "AccordionLayout",
-    label: "AccordionLayout",
-    icon: <SmartButtonIcon />,
-    uiSchemaElementProvider: () => createAccordionLayout()
-  },
+  // {
+  //   id: 10,
+  //   itemId: 10,
+  //   type: "AccordionLayout",
+  //   label: "AccordionLayout",
+  //   icon: <HorizontalSplit />,
+  //   uiSchemaElementProvider: () => createAccordionLayout()
+  // },
   {
     id: 11,
     itemId: 11,
     type: "TableData",
     label: "TableData",
-    icon: <SmartButtonIcon />,
+    icon: <BackupTable />,
     uiSchemaElementProvider: () => createTableData()
   },
   {
     id: 12,
     itemId: 12,
-    type: "Rating",
-    label: "Rating",
-    icon: <SmartButtonIcon />,
-    uiSchemaElementProvider: () => createRating()
-  },
-  {
-    id: 13,
-    itemId: 13,
     type: "Typography",
     label: "Typography",
-    icon: <SmartButtonIcon />,
-    uiSchemaElementProvider: () => createTypography("Example")
+    icon: <TextRotationNone />,
+    uiSchemaElementProvider: () => createTypography("Text")
   }
 ]
 

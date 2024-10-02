@@ -15,6 +15,8 @@ import {
 import { DroppableGridLayoutRegistration } from "../core/renderers/custom/DroppableGridLayout"
 import ActionButton, { actionButtonTester } from "../core/renderers/custom/ActionButton"
 import Typography, { typographyTester } from "../core/renderers/custom/Typography"
+import AccordionLayout, { accordionLayoutTester } from "../core/renderers/custom/AccordionLayout"
+import TableData, { tableDataTester } from "../core/renderers/custom/TableData"
 
 // import core renderer
 // import { renderers } from '../../../components/renderers'
@@ -37,5 +39,7 @@ export const defaultEditorRenderers = [
   DroppableCategorizationLayoutRegistration,
   DroppableGridLayoutRegistration,
   { tester: actionButtonTester, renderer: ActionButton },
-  { tester: typographyTester, renderer: Typography }
+  { tester: typographyTester, renderer: Typography },
+  { tester: accordionLayoutTester, renderer: AccordionLayout },
+  { tester: tableDataTester, renderer: TableData },
 ]

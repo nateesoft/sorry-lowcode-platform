@@ -1,7 +1,7 @@
 import React, { useState, memo } from "react"
 import { rankWith, uiTypeIs } from "@jsonforms/core"
 import { Button } from "@mui/material"
-import { JsonFormsDispatch, withJsonFormsControlProps } from "@jsonforms/react"
+import { withJsonFormsControlProps } from "@jsonforms/react"
 import { materialCells } from "@jsonforms/material-renderers"
 import { useNavigate } from "react-router-dom"
 import Box from "@mui/material/Box"
@@ -30,9 +30,8 @@ const ActionButton = (props) => {
   const handleClose = () => setOpen(false)
 
   const navigate = useNavigate()
-  const { uischema, schema, path, enabled, renderers, cells, handleChange } =
+  const { uischema, renderers, handleChange } =
     props
-  const elements = setDefaultVal(uischema.elements, [])
   const options = setDefaultVal(uischema.options, {})
   const style = setDefaultVal(options.style, "")
 
@@ -65,17 +64,6 @@ const ActionButton = (props) => {
     <>
       <Button {...style} onClick={() => handleClick()}>
         <DroppableLayout {...props} layout={uischema} direction={"row"} />
-        {elements.map((child, index) => (
-          <JsonFormsDispatch
-            key={index}
-            uischema={child}
-            schema={schema}
-            path={path}
-            enabled={enabled}
-            renderers={renderers}
-            cells={cells}
-          />
-        ))}
       </Button>
       <Modal
         open={open}

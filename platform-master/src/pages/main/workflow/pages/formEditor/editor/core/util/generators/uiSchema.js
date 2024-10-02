@@ -74,6 +74,18 @@ export const createAccordionLayout = () => {
 export const createTableData = () => {
   return {
     type: "TableData",
+    uischema: "grid/table1/uischema.json",
+    service: "grid/table1/service.json",
+    initLoad: false,
+    options: {
+      type: "basic",
+      showHeader: true,
+      style: {
+        sx: {
+          marginTop: "10px"
+        }
+      }
+    },
     uuid: uuid()
   }
 }
@@ -98,13 +110,6 @@ export const createActionButton = (buttonText) => {
         }
       }
     },
-    uuid: uuid()
-  }
-}
-
-export const createRating = () => {
-  return {
-    type: "rating",
     uuid: uuid()
   }
 }
