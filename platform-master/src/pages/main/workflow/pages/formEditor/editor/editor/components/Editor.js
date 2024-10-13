@@ -3,9 +3,8 @@ import { materialCells } from "@jsonforms/material-renderers"
 import { JsonForms } from "@jsonforms/react"
 import { createTheme, Grid, ThemeProvider } from "@mui/material"
 
-import { useExportSchema } from "../../core/util/hooks"
+import { useExportSchema, useExportUiSchema } from "../../core/util/hooks"
 import { EmptyEditor } from "./EmptyEditor"
-import { useUiSchema } from "../../core/context"
 
 const theme = createTheme({
   overrides: {
@@ -19,13 +18,13 @@ const theme = createTheme({
 
 export const Editor = ({ editorRenderers, setUISchemaData }) => {
   const schema = useExportSchema()
-  const uiSchema = useUiSchema()
+  const uiSchema = useExportUiSchema()
   console.log('Editor(schema):', schema)
   console.log('Editor(uiSchema):', uiSchema)
 
   const handleChange = (evt) => {
     console.log('Editor:handleChange:', uiSchema)
-    setUISchemaData(uiSchema)
+    setUISchemaData(JSON.stringify(uiSchema))
   }
 
   return uiSchema ? (
