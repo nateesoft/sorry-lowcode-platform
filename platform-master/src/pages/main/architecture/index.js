@@ -10,39 +10,37 @@ import ReactFlow, {
   MarkerType,
   Panel
 } from "reactflow"
-import { Link, useParams } from "react-router-dom"
-// import axios from "axios"
+import { useParams } from "react-router-dom"
 import { Button, Grid } from "@mui/material"
 
 import "reactflow/dist/style.css"
 
 import LeftMenu from "./LeftMenu"
 import PropertyPanel from "./PropertyPanel"
-import PagePanel from "./PagePanel"
 
-import ActorNode from "./nodes/ActorNode"
-import StartNode from "./nodes/StartNode"
-import EndNode from "./nodes/EndNode"
-import PageNode from "./nodes/PageNode"
-import MegessaNode from "./nodes/MessageNode"
+import UserNode from "./nodes/UserNode"
+import FrontendNode from "./nodes/FrontendNode"
+import BackendNode from "./nodes/BackendNode"
 import DatabaseNode from "./nodes/DatabaseNode"
-import ServerNode from "./nodes/ServerNode"
+import MegessaNode from "./nodes/MessageNode"
+import ReportNode from "./nodes/ReportNode"
+import AuditLogsNode from "./nodes/AuditLogsNode"
 
 import "./index.css"
 
-const flowKey = "template"
+const flowKey = "architecture"
 
 const nodeTypes = {
-  actor: ActorNode,
-  start: StartNode,
-  end: EndNode,
-  page: PageNode,
-  message: MegessaNode,
+  user: UserNode,
+  frontend: FrontendNode,
+  backend: BackendNode,
   database: DatabaseNode,
-  server: ServerNode
+  message: MegessaNode,
+  report: ReportNode,
+  auditlogs: AuditLogsNode
 }
 
-const WorkFlowMain = (props) => {
+const ArchitectureOverview = (props) => {
   const { id: workFlowId } = useParams()
   const reactFlowWrapper = useRef(null)
   const [nodes, setNodes, onNodesChange] = useNodesState([])
@@ -51,7 +49,7 @@ const WorkFlowMain = (props) => {
   const [property, setProperty] = useState({})
   const [showPage, setShowPage] = useState({})
 
-  console.log('WorkFlowMain:', props)
+  console.log('ArchitectureOverview:', props)
 
   const onConnect = useCallback(
     (params) =>
@@ -88,20 +86,20 @@ const WorkFlowMain = (props) => {
       })
 
       let label = ""
-      if (type === "start") {
-        label = "Start"
-      } else if (type === "end") {
-        label = "End"
-      } else if (type === "page") {
-        label = "Page"
-      } else if (type === "actor") {
+      if (type === "user") {
         label = "User"
-      } else if (type === "message") {
-        label = "Message"
+      } else if (type === "frontend") {
+        label = "Frontend"
+      } else if (type === "backend") {
+        label = "Backend"
       } else if (type === "database") {
         label = "Database"
-      } else if (type === "server") {
-        label = "Server"
+      } else if (type === "message") {
+        label = "Message"
+      } else if (type === "report") {
+        label = "Report"
+      } else if (type === "auditlogs") {
+        label = "AuditLogs"
       }
 
       const newNode = {
@@ -123,18 +121,6 @@ const WorkFlowMain = (props) => {
   const onNodeClick = () => {
     nodes.forEach((node) => {
       if (node.selected) {
-        console.log('onNodeClick:', node)
-        nodes.forEach(node=> {
-          node.style.border = ""
-          node.style.background = ""
-        })
-        node.style = { ...node.style,
-          border: "2px solid #5ba9de",
-          borderRadius: "10px",
-          background: "#5ba9de"
-         }
-        setNodes((nds) => nds.concat(node))
-
         setProperty({
           id: node.id,
           label: node.data.label,
@@ -181,19 +167,6 @@ const WorkFlowMain = (props) => {
     if (reactFlowInstance) {
       const flow = reactFlowInstance.toObject()
       localStorage.setItem(flowKey + "_" + workFlowId, JSON.stringify(flow))
-
-      // const data = {
-      //   created_user: "natheep",
-      //   name: "overview",
-      //   template: JSON.stringify(flow),
-      //   project_id: "project01",
-      //   version: "0"
-      // }
-
-      //// save to database
-      // axios.post("/apis/flow-main", data).then((response) => {
-      //   console.log(response)
-      // })
     }
   }, [reactFlowInstance, workFlowId])
 
@@ -208,20 +181,6 @@ const WorkFlowMain = (props) => {
 
     restoreFlow()
   }, [setNodes, setEdges, workFlowId])
-
-  // const handlePreview = () => {
-  //   // window.open("http://localhost:3000/app1")
-  //   axios
-  //     .get("/api/frontend")
-  //     .then(({ data }) => {
-  //       if (data.redirectUrl) {
-  //         window.open(data.redirectUrl)
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       alert(error.message)
-  //     })
-  // }
 
   useEffect(() => {
     onRestore()
@@ -273,16 +232,6 @@ const WorkFlowMain = (props) => {
                     Restore
                   </Button>
                 </Grid>
-                <Grid item>
-                  <Link to="/demo/page_node_0t0udq" target="_blank">
-                    <Button
-                      variant="contained"
-                      color="success"
-                    >
-                      Publish
-                    </Button>
-                  </Link>
-                </Grid>
               </Grid>
             </Panel>
             <Controls />
@@ -299,14 +248,8 @@ const WorkFlowMain = (props) => {
           display={setProperty}
         />
       )}
-      <PagePanel
-        condition={showPage}
-        property={setProperty}
-        onClose={() => setShowPage({ show: false, page: null })}
-        {...property}
-      />
     </div>
   )
 }
 
-export default WorkFlowMain
+export default ArchitectureOverview

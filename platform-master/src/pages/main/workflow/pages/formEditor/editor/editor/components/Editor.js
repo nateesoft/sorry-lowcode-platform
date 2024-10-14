@@ -28,7 +28,7 @@ export const Editor = ({ editorRenderers, setUISchemaData }) => {
   }
 
   return uiSchema ? (
-    <Grid container>
+    <Grid container sx={{height: "70vh", overflow: "scroll"}}>
       <ThemeProvider theme={theme}>
         <JsonForms
           data={{}}
