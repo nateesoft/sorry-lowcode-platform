@@ -7,8 +7,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var masterRouter = require('./routes/master');
 
-var memberApiRouter = require('./routes/member/service/index');
-var memberUiRouter = require('./routes/member/ui/index');
+var exportAppsApiRouter = require('./routes/exportApps/service/index');
+var exportAppsUiRouter = require('./routes/exportApps/ui/index');
 var app01Router = require('./routes/app01');
 var app02Router = require('./routes/app02');
 var fronendAppRouter = require('./routes/frontend-app');
@@ -29,8 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/', indexRouter);
 app.use('/api/master', masterRouter);
 
-app.use('/api/memberWS', memberApiRouter);
-app.use('/api/memberUI', memberUiRouter);
+app.use('/api/memberWS', exportAppsApiRouter);
+app.use('/api/memberUI', exportAppsUiRouter);
 app.use('/api/app01/v1/api', app01Router);
 app.use('/api/app02/:serviceId', app02Router);
 app.use('/api/frontend', fronendAppRouter);
