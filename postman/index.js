@@ -1,0 +1,2 @@
+var data = `{"nodes":[{"id":"node_wuy9r9","type":"start","position":{"x":69,"y":107},"data":{"label":"Start"},"style":{"width":80,"height":50},"width":80,"height":50,"selected":true,"positionAbsolute":{"x":69,"y":107},"dragging":false}],"edges":[],"viewport":{"x":17.5,"y":-60.5,"zoom":2}}`
+console.log(JSON.stringify(data))

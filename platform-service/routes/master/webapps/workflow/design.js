@@ -2,8 +2,7 @@ const uuid = require("uuid")
 const pool = require("../../dbconfig")
 
 const ResponseClass = require("../../models/response")
-const tableName = "webapps_serviceflow"
-const tableDetailName = "webapps_serviceflow_design"
+const tableName = "webapps_workflow_design"
 
 const getData = (req, res) => {
   const response = new ResponseClass()
@@ -48,36 +47,37 @@ const getDataById = (req, res) => {
 const createData = (req, res) => {
   const newId = uuid.v4()
   const {
-    project_name,
-    project_icon,
-    workflow_icon,
-    serviceflow_name,
-    create_by,
-    template,
+    name,
+    versions,
+    workflow_id,
+    template_uischema,
+    template_schema,
+    template_data,
     mapping_logic,
+    create_by,
     uri_path
   } = req.body
   pool.query(
     `INSERT INTO ${tableName} 
-    (id, project_name, project_icon, workflow_icon, serviceflow_name, 
-    create_date, create_by, versions, status, 
-    template, mapping_logic, uri_path) 
-    VALUES (?, ?, ?, ?, ?, now(), ?, '0.01', 'Y',
-    ?, ?, ?)`,
+    (id, name, versions, workflow_id, template_uischema, template_schema, template_data, mapping_logic, 
+    create_at, create_by, uri_path) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, now(), ?, ?)`,
     [
       newId,
-      project_name,
-      project_icon,
-      workflow_icon,
-      serviceflow_name,
-      create_by,
-      template,
+      name,
+      versions,
+      workflow_id,
+      template_uischema,
+      template_schema,
+      template_data,
       mapping_logic,
+      create_by,
       uri_path
     ],
     (err, results) => {
       if (err) throw err
-      res.status(201).json({ id: newId })
+
+      res.status(201).send("Data added")
     }
   )
 }
@@ -87,41 +87,38 @@ const updateData = (req, res) => {
   const response = new ResponseClass()
   try {
     const {
-      project_name,
-      project_icon,
-      workflow_icon,
-      serviceflow_name,
-      update_by,
+      name,
       versions,
-      status,
-      template,
+      workflow_id,
+      template_uischema,
+      template_schema,
+      template_data,
       mapping_logic,
+      update_by,
       uri_path
     } = req.body
     pool.query(
       `UPDATE ${tableName} 
-                SET project_name = ?,
-                project_icon = ?,
-                workflow_icon = ?,
-                serviceflow_name = ?,
-                update_date=now(),
-                update_by = ?,
-                versions = ?,
-                status = ?,
-                template = ?, 
-                mapping_logic = ?, 
-                uri_path = ? 
-                WHERE id = ?`,
+        SET 
+        name=?,
+        versions=?,
+        workflow_id=?,
+        template_uischema=?,
+        template_schema=?,
+        template_data=?,
+        mapping_logic=?,
+        create_by=?,
+        uri_path=? 
+        WHERE id = ?`,
       [
-        project_name,
-        project_icon,
-        workflow_icon,
-        serviceflow_name,
-        update_by,
+        name,
         versions,
-        status,
-        template,
+        workflow_id,
+        template_uischema,
+        template_schema,
+        template_data,
         mapping_logic,
+        update_by,
         uri_path,
         id
       ],
@@ -148,11 +145,8 @@ const deleteData = (req, res) => {
   const id = req.params.id
   pool.query(`DELETE FROM ${tableName} WHERE id = ?`, [id], (err, results) => {
     if (err) throw err
-    pool.query(`DELETE FROM ${tableDetailName} WHERE serviceflow_id=?`, [id], 
-      (err2, result2) => {
-        if (err2) throw err2
-        res.status(201).send(`Delete service flow id: ${id} success.`)
-    })
+
+    res.status(201).send("Data deleted")
   })
 }
 

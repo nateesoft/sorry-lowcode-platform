@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
+import axios from 'axios';
 
 import Card from "@mui/material/Card"
 import Stack from "@mui/material/Stack"
@@ -10,7 +11,6 @@ import Typography from "@mui/material/Typography"
 import TableContainer from "@mui/material/TableContainer"
 import TablePagination from "@mui/material/TablePagination"
 
-import { serviceflows } from "../../../_mock/serviceflow"
 import Iconify from "../../../components/iconify"
 import Scrollbar from "../../../components/scrollbar"
 import TableNoData from "../table-no-data"
@@ -30,8 +30,22 @@ export default function ServiceFlowPage() {
   const [orderBy, setOrderBy] = useState("name")
   const [filterName, setFilterName] = useState("")
   const [rowsPerPage, setRowsPerPage] = useState(5)
-
+  const [serviceflows, setServiceFlows] = useState([])
   const [openModal, setOpenModal] = useState(false)
+
+  const initLoad = () => {
+    axios.get('/api/master/webapps/serviceflow')
+    .then(response => {
+      setServiceFlows(response.data.data)
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
+
+  useEffect(() => {
+    initLoad();
+  }, []);
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === "asc"
@@ -48,6 +62,17 @@ export default function ServiceFlowPage() {
       return
     }
     setSelected([])
+  }
+
+  const handleDelete = (id) => {
+    axios.delete(`/api/master/webapps/serviceflow/${id}`)
+      .then(response => {
+        console.log('response:', response)
+        initLoad()
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   const handleClick = (event, name) => {
@@ -131,6 +156,7 @@ export default function ServiceFlowPage() {
                     { id: "id", label: "Id" },
                     { id: "projectName", label: "Project Name" },
                     { id: "serviceFlowName", label: "Serviceflow Name" },
+                    { id: "createdDate", label: "Create Date" },
                     { id: "updatedDate", label: "Update Date" },
                     { id: "version", label: "Version" },
                     { id: "status", label: "Status" },
@@ -144,17 +170,18 @@ export default function ServiceFlowPage() {
                       <ServiceFlowTableRow
                         key={row.id}
                         id={row.id}
-                        projectName={row.projectName}
-                        serviceFlowName={row.serviceFlowName}
-                        createdDate={row.createdDate}
-                        updatedDate={row.updatedDate}
-                        version={row.version}
-                        manager={row.manager}
+                        projectName={row.project_name}
+                        serviceFlowName={row.serviceflow_name}
+                        createdDate={row.create_date}
+                        updatedDate={row.update_date}
+                        version={row.versions}
+                        manager={row.create_by}
                         status={row.status}
-                        projectUrl={row.projectUrl}
-                        serviceFlowUrl={row.serviceFlowUrl}
+                        projectUrl={row.project_icon}
+                        serviceFlowUrl={row.workflow_icon}
+                        handleDelete={()=>handleDelete(row.id)}
                         handleClick={event =>
-                          handleClick(event, row.serviceFlowName)}
+                          handleClick(event, row.serviceflow_name)}
                       />
                     )}
 
@@ -180,7 +207,7 @@ export default function ServiceFlowPage() {
           />
         </Card>
       </Container>
-      <NewServiceflowModal openModal={openModal} setOpenModal={setOpenModal} />
+      <NewServiceflowModal openModal={openModal} setOpenModal={setOpenModal} initLoad={initLoad} />
     </React.Fragment>
   )
 }

@@ -1,16 +1,25 @@
-require('dotenv').config()
+require("dotenv").config()
 
-const Pool = require("pg").Pool
+const mysql = require("mysql2")
 
-console.log(process.env)
-
-const pool = new Pool({
+const pool = mysql.createPool({
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-  options: process.env.DB_OPTIONS
+  waitForConnections: true,
+  connectionLimit: 10,
+  maxIdle: 3,
+  idleTimeout: 60000,
+  queueLimit: 0,
+  enableKeepAlive: true,
+  keepAliveInitialDelay: 0
+})
+
+pool.query("SELECT 1 + 1 AS solution", function (error, results, fields) {
+  if (error) throw error
+  console.log("The solution is: ", results[0].solution)
 })
 
 module.exports = pool

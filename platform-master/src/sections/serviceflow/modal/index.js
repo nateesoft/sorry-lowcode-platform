@@ -11,7 +11,7 @@ import {
   TextField,
   Typography
 } from "@mui/material"
-import { v4 as uuid } from "uuid"
+import axios from "axios"
 
 const style = {
   position: "absolute",
@@ -27,13 +27,36 @@ const style = {
   pb: 3
 }
 
-const NewServiceflowModal = ({ openModal, setOpenModal }) => {
-  const [id] = useState(uuid())
+const NewServiceflowModal = ({ openModal, setOpenModal, initLoad }) => {
   const [projectName, setProjectName] = useState("")
   const [serviceflowName, setServiceFlowName] = useState("")
   const [updateDate] = useState(new Date())
   const [version, setVersion] = useState("0.1")
   const [status, setStatus] = useState("InActive")
+
+  function save() {
+    axios
+      .post("/api/master/webapps/serviceflow", {
+        project_name: projectName,
+        project_icon: "/assets/icons/navbar/ic_project.svg",
+        workflow_icon: "/assets/icons/navbar/ic_serviceflow.svg",
+        serviceflow_name: serviceflowName,
+        create_by: "natheep",
+        template:
+          '{"nodes":[{"id":"node_wuy9r9","type":"start","position":{"x":69,"y":107},"data":{"label":"Start"},"style":{"width":80,"height":50},"width":80,"height":50,"selected":true,"positionAbsolute":{"x":69,"y":107},"dragging":false}],"edges":[],"viewport":{"x":17.5,"y":-60.5,"zoom":2}}',
+        mapping_logic: "{}",
+        uri_path: "/login"
+      })
+      .then((response) => {
+        console.log("response:", response)
+        setOpenModal(false)
+        initLoad()
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
+
   return (
     <Modal
       open={openModal}
@@ -50,20 +73,11 @@ const NewServiceflowModal = ({ openModal, setOpenModal }) => {
         <Grid container direction="column" spacing={2}>
           <Grid item xs>
             <TextField
-              value={id}
-              label="Id (Auto Generate)"
-              variant="outlined"
-              disabled
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs>
-            <TextField
               value={projectName}
               label="Project Name"
               variant="outlined"
               fullWidth
-              onChange={(evt)=>setProjectName(evt.target.value)}
+              onChange={(evt) => setProjectName(evt.target.value)}
             />
           </Grid>
           <Grid item xs>
@@ -72,13 +86,13 @@ const NewServiceflowModal = ({ openModal, setOpenModal }) => {
               label="Service Flow Name"
               variant="outlined"
               fullWidth
-              onChange={(evt)=>setServiceFlowName(evt.target.value)}
+              onChange={(evt) => setServiceFlowName(evt.target.value)}
             />
           </Grid>
           <Grid item xs>
             <TextField
               value={updateDate}
-              label="Update Date"
+              label="Create Date"
               variant="outlined"
               fullWidth
               disabled
@@ -90,7 +104,7 @@ const NewServiceflowModal = ({ openModal, setOpenModal }) => {
               label="Version"
               variant="outlined"
               fullWidth
-              onChange={(evt)=>setVersion(evt.target.value)}
+              onChange={(evt) => setVersion(evt.target.value)}
             />
           </Grid>
           <Grid item xs>
@@ -115,7 +129,11 @@ const NewServiceflowModal = ({ openModal, setOpenModal }) => {
               >
                 Cancel
               </Button>
-              <Button variant="contained" color="primary">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => save()}
+              >
                 Save
               </Button>
             </Box>

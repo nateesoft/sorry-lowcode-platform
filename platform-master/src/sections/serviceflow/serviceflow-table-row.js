@@ -28,6 +28,7 @@ export default function ServiceFlowTableRow({
   projectUrl,
   serviceFlowUrl,
   handleClick,
+  handleDelete,
 }) {
   const [open, setOpen] = useState(null);
 
@@ -64,6 +65,7 @@ export default function ServiceFlowTableRow({
           </Stack>
         </TableCell>
 
+        <TableCell>{createdDate}</TableCell>
         <TableCell>{updatedDate}</TableCell>
         <TableCell>{version}</TableCell>
         <TableCell>
@@ -93,7 +95,7 @@ export default function ServiceFlowTableRow({
           </MenuItem>
         </Link>
 
-        <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
+        <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
           Delete
         </MenuItem>
