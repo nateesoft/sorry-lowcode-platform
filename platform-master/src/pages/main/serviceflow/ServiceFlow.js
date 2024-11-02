@@ -128,6 +128,9 @@ const ServiceFlow = (props) => {
           console.log(response)
           if (response.data.code === 200) {
             const data = response.data.data
+            const {editor_logic, next_process} = data
+            const editorLogic = editor_logic ? JSON.parse(editor_logic): "{}"
+            const nextProcess = next_process ? JSON.parse(next_process): []
             setProperty({
               id: node.id,
               serviceFlowId: serviceFlowId,
@@ -136,8 +139,10 @@ const ServiceFlow = (props) => {
               folder: data.folder,
               outputType: data.output_type,
               component: "node",
-              nextProcess,
-              action: "edit"
+              action: "edit",
+              editorLogic: editorLogic,
+              editorType: data.editor_type,
+              nextProcess: nextProcess
             })
           } else {
             setProperty({
@@ -279,7 +284,7 @@ const ServiceFlow = (props) => {
               <Grid container spacing={1}>
                 <Grid item>
                   <Button variant="contained" color="info" onClick={onSave}>
-                    Save
+                    Save Layout
                   </Button>
                 </Grid>
                 <Grid item>

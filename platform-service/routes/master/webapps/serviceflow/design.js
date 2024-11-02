@@ -185,6 +185,51 @@ const updateData = (req, res) => {
   }
 }
 
+const updateEditor = (req, res) => {
+  const id = req.params.id
+  const response = new ResponseClass()
+  try {
+    const {
+      id,
+      next_process,
+      editor_logic,
+      editor_type,
+      update_by
+    } = req.body
+    pool.query(
+      `UPDATE ${tableName} 
+        SET 
+      next_process=?,
+      editor_logic=?,
+      editor_type=?,
+      update_at=now(),
+      update_by =? WHERE id = ?`,
+      [
+        next_process,
+        editor_logic,
+        editor_type,
+        update_by,
+        id
+      ],
+      (err, results) => {
+        if (err) throw err
+
+        response.status = true
+        response.code = 200
+        response.message = "Update content editor successed"
+        response.data = null
+        res.status(200).send(response)
+      }
+    )
+  } catch (error) {
+    response.status = false
+    response.code = 500
+    response.message = error.message
+    response.data = null
+    res.status(500).json(response)
+  }
+}
+
 const deleteData = (req, res) => {
   const id = req.params.id
   pool.query(`DELETE FROM ${tableName} WHERE id = ?`, [id], (err, results) => {
@@ -199,5 +244,6 @@ module.exports = {
   getDataById,
   createData,
   updateData,
+  updateEditor,
   deleteData
 }

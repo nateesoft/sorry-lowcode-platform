@@ -134,6 +134,7 @@ router.delete("/webapps/serviceflow/:id", serviceflow.deleteData);
 router.get("/webapps/serviceflow-design", serviceflowDesign.getData);
 router.get("/webapps/serviceflow-design/:id", serviceflowDesign.getDataById);
 router.put("/webapps/serviceflow-design/:id", serviceflowDesign.updateData);
+router.patch("/webapps/serviceflow-design/:id", serviceflowDesign.updateEditor);
 router.post("/webapps/serviceflow-design", serviceflowDesign.createData);
 router.delete("/webapps/serviceflow-design/:id", serviceflowDesign.deleteData);
 

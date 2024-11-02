@@ -182,7 +182,7 @@ const PropertyPanel = ({ props, onComponentChange }) => {
                   variant="contained"
                   color="success"
                 >
-                  Save Source
+                  Save Property
                 </Button>
               </Grid>
               <Grid item>
@@ -191,7 +191,7 @@ const PropertyPanel = ({ props, onComponentChange }) => {
                   variant="contained"
                   color="warning"
                 >
-                  Propertie Editor
+                  Property Editor
                 </Button>
               </Grid>
             </Grid>

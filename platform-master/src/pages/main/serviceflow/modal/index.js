@@ -4,6 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline"
 import Box from "@mui/material/Box"
 import { Button, Grid, IconButton, Typography } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
+import axios from "axios"
 
 import PropertieEditor from "../PropertieEditor"
 
@@ -13,16 +14,29 @@ export default function ModalEditor(props) {
   console.log("Modal Editor:", props)
   const { id, data, language } = props
 
-  const [content, setContent] = useState(props.content)
+  const {editorLogic} = props.data
+  const [content, setContent] = useState(editorLogic || "")
 
   function handleSave() {
-    const propsData = JSON.parse(localStorage.getItem(id + "_props"))
-    if (propsData) {
-      propsData.content = content
-      console.log("handleSave:", propsData)
-      localStorage.setItem(id + "_props", JSON.stringify(propsData))
-      props.onClose()
-    }
+    // const propsData = JSON.parse(localStorage.getItem(id + "_props"))
+    // if (propsData) {
+    //   propsData.content = content
+    //   console.log("handleSave:", propsData)
+    //   localStorage.setItem(id + "_props", JSON.stringify(propsData))
+    //   props.onClose()
+    // }
+    axios
+        .patch(`/api/master/webapps/serviceflow-design/${id}`, {
+          id: id,
+          next_process: JSON.stringify(data.nextProcess),
+          editor_logic: JSON.stringify(content),
+          editor_type: language,
+          update_by: "natheep"
+        })
+        .then((response) => {
+          console.log("handleSave: ", response.data)
+          props.onClose()
+        })
   }
 
   return (
@@ -36,7 +50,7 @@ export default function ModalEditor(props) {
             }}
           >
             <Typography variant="span">
-              Modal Editor - {data.label} - {language}
+              Modal Editor - {data.boxName} - {language}
             </Typography>
           </Box>
         </Grid>
