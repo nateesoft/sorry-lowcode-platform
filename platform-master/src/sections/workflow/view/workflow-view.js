@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
+import axios from 'axios';
 
 import Card from "@mui/material/Card"
 import Stack from "@mui/material/Stack"
@@ -10,7 +11,6 @@ import Typography from "@mui/material/Typography"
 import TableContainer from "@mui/material/TableContainer"
 import TablePagination from "@mui/material/TablePagination"
 
-import { workflows } from "../../../_mock/workflow"
 import Iconify from "../../../components/iconify"
 import Scrollbar from "../../../components/scrollbar"
 import TableNoData from "../table-no-data"
@@ -19,7 +19,6 @@ import WorkFlowTableHead from "../workflow-table-head"
 import TableEmptyRows from "../table-empty-rows"
 import WorkFlowTableToolbar from "../workflow-table-toolbar"
 import { emptyRows, applyFilter, getComparator } from "../utils"
-
 import NewWorkflowModal from "../modal"
 
 // ----------------------------------------------------------------------
@@ -31,8 +30,22 @@ export default function WorkFlowPage() {
   const [orderBy, setOrderBy] = useState("name")
   const [filterName, setFilterName] = useState("")
   const [rowsPerPage, setRowsPerPage] = useState(5)
-
+  const [workflows, setWorkFlows] = useState([])
   const [openModal, setOpenModal] = useState(false)
+
+  const initLoad = () => {
+    axios.get('/api/master/webapps/workflow')
+    .then(response => {
+      setWorkFlows(response.data.data)
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
+
+  useEffect(() => {
+    initLoad();
+  }, []);
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === "asc"
@@ -49,6 +62,17 @@ export default function WorkFlowPage() {
       return
     }
     setSelected([])
+  }
+
+  const handleDelete = (id) => {
+    axios.delete(`/api/master/webapps/workflow/${id}`)
+      .then(response => {
+        console.log('response:', response)
+        initLoad()
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   const handleClick = (event, name) => {
@@ -145,15 +169,16 @@ export default function WorkFlowPage() {
                       <WorkFlowTableRow
                         key={row.id}
                         id={row.id}
-                        projectName={row.projectName}
-                        workFlowName={row.workFlowName}
-                        createdDate={row.createdDate}
-                        updatedDate={row.updatedDate}
-                        version={row.version}
-                        manager={row.manager}
+                        projectName={row.project_name}
+                        workFlowName={row.workflow_name}
+                        createdDate={row.create_date}
+                        updatedDate={row.update_date}
+                        version={row.versions}
+                        manager={row.create_by}
                         status={row.status}
-                        projectUrl={row.projectUrl}
-                        workFlowUrl={row.workFlowUrl}
+                        projectUrl={row.project_icon}
+                        workFlowUrl={row.workflow_icon}
+                        handleDelete={()=>handleDelete(row.id)}
                         handleClick={event =>
                           handleClick(event, row.workFlowName)}
                       />
@@ -181,7 +206,7 @@ export default function WorkFlowPage() {
           />
         </Card>
       </Container>
-      <NewWorkflowModal openModal={openModal} setOpenModal={setOpenModal} />
+      <NewWorkflowModal openModal={openModal} setOpenModal={setOpenModal} initLoad={initLoad} />
     </React.Fragment>
   )
 }

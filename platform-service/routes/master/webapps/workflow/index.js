@@ -1,7 +1,9 @@
+const uuid = require("uuid")
 const pool = require("../../dbconfig")
 
 const ResponseClass = require("../../models/response")
 const tableName = "webapps_workflow"
+const tableDetailName = "webapps_workflow_design"
 
 const getData = (req, res) => {
   const response = new ResponseClass()
@@ -11,7 +13,7 @@ const getData = (req, res) => {
     response.status = true
     response.code = 200
     response.message = "Success"
-    response.data = results.rows
+    response.data = results
 
     res.status(200).json(response)
   })
@@ -20,35 +22,57 @@ const getData = (req, res) => {
 const getDataById = (req, res) => {
   const response = new ResponseClass()
   const id = req.params.id
-  pool.query(`SELECT * FROM ${tableName} WHERE id = ?`, [id], (err, results) => {
-    if (err) throw err
-
-    if (results.length == 0) {
-      response.status = true
-      response.code = 404
-      response.message = "User not found"
-      response.data = null
-    } else {
-      response.status = true
-      response.code = 200
-      response.message = "Success"
-      response.data = results[0]
-    }
-
-    res.status(200).json(response)
-  })
-}
-
-const createData = (req, res) => {
-  const { project_name, project_icon, workflow_icon, workflow_name, create_by, versions, status } = req.body
   pool.query(
-    `INSERT INTO ${tableName} 
-    (id, project_name, project_icon, workflow_icon, workflow_name, create_date, create_by, versions, status) 
-    VALUES (?, ?, ?, ?, now(), ?, ?, ?)`,
-    [id, project_name, project_icon, workflow_icon, workflow_name, create_by, versions, status],
+    `SELECT * FROM ${tableName} WHERE id = ?`,
+    [id],
     (err, results) => {
       if (err) throw err
 
+      if (results.length == 0) {
+        response.status = true
+        response.code = 404
+        response.message = "workflow not found"
+        response.data = null
+      } else {
+        response.status = true
+        response.code = 200
+        response.message = "Success"
+        response.data = results[0]
+      }
+
+      res.status(200).json(response)
+    }
+  )
+}
+
+const createData = (req, res) => {
+  const {
+    project_name,
+    project_icon,
+    workflow_icon,
+    workflow_name,
+    create_by,
+    versions,
+    status
+  } = req.body
+  pool.query(
+    `INSERT INTO ${tableName} 
+    (id, 
+    project_name, project_icon, workflow_icon, workflow_name, 
+    create_date, create_by, versions, status) 
+    VALUES (?, ?, ?, ?, ?, now(), ?, ?, ?)`,
+    [
+      uuid.v4(),
+      project_name,
+      project_icon,
+      workflow_icon,
+      workflow_name,
+      create_by,
+      versions,
+      status
+    ],
+    (err, results) => {
+      if (err) throw err
       res.status(201).send("Data added")
     }
   )
@@ -58,14 +82,31 @@ const updateData = (req, res) => {
   const id = req.params.id
   const response = new ResponseClass()
   try {
-    const { project_name, project_icon, workflow_icon, workflow_name, update_by, versions, status } = req.body
+    const {
+      project_name,
+      project_icon,
+      workflow_icon,
+      workflow_name,
+      update_by,
+      versions,
+      status
+    } = req.body
     pool.query(
       `UPDATE ${tableName} 
       SET project_name=?, project_icon=?, workflow_icon=?, workflow_name=?, 
       update_by=?, versions=?, status=? 
-      WHERE id = ?`, 
-      [project_name, project_icon, workflow_icon, workflow_name, 
-        update_by, versions, status, id], (err, results) => {
+      WHERE id = ?`,
+      [
+        project_name,
+        project_icon,
+        workflow_icon,
+        workflow_name,
+        update_by,
+        versions,
+        status,
+        id
+      ],
+      (err, results) => {
         if (err) throw err
 
         response.status = true
@@ -88,8 +129,14 @@ const deleteData = (req, res) => {
   const id = req.params.id
   pool.query(`DELETE FROM ${tableName} WHERE id = ?`, [id], (err, results) => {
     if (err) throw err
-
-    res.status(201).send("Data deleted")
+    pool.query(
+      `DELETE FROM ${tableDetailName} WHERE workflow_id=?`,
+      [id],
+      (err2, result2) => {
+        if (err2) throw err2
+        res.status(201).send(`Delete workflow id: ${id} success.`)
+      }
+    )
   })
 }
 

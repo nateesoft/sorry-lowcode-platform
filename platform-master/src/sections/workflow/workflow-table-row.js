@@ -28,6 +28,7 @@ export default function WorkFlowTableRow({
   projectUrl,
   workFlowUrl,
   handleClick,
+  handleDelete,
 }) {
   const [open, setOpen] = useState(null);
 
@@ -93,7 +94,7 @@ export default function WorkFlowTableRow({
           </MenuItem>
         </Link>
 
-        <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
+        <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
           Delete
         </MenuItem>

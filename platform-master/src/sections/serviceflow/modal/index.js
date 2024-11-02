@@ -32,7 +32,7 @@ const NewServiceflowModal = ({ openModal, setOpenModal, initLoad }) => {
   const [serviceflowName, setServiceFlowName] = useState("")
   const [updateDate] = useState(new Date())
   const [version, setVersion] = useState("0.1")
-  const [status, setStatus] = useState("InActive")
+  const [status, setStatus] = useState("N")
 
   function save() {
     axios
@@ -114,8 +114,8 @@ const NewServiceflowModal = ({ openModal, setOpenModal, initLoad }) => {
                 value={status}
                 onChange={(evt) => setStatus(evt.target.value)}
               >
-                <MenuItem value="InActive">In Active</MenuItem>
-                <MenuItem value="Active">Active</MenuItem>
+                <MenuItem value="N">In Active</MenuItem>
+                <MenuItem value="Y">Active</MenuItem>
               </Select>
             </FormControl>
           </Grid>

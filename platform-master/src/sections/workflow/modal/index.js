@@ -11,7 +11,7 @@ import {
   TextField,
   Typography
 } from "@mui/material"
-import { v4 as uuid } from "uuid"
+import axios from "axios"
 
 const style = {
   position: "absolute",
@@ -27,13 +27,34 @@ const style = {
   pb: 3
 }
 
-const NewWorkflowModal = ({ openModal, setOpenModal }) => {
-  const [id] = useState(uuid())
+const NewWorkflowModal = ({ openModal, setOpenModal, initLoad }) => {
   const [projectName, setProjectName] = useState("")
   const [workflowName, setWorkFlowName] = useState("")
   const [updateDate] = useState(new Date())
   const [version, setVersion] = useState("0.1")
-  const [status, setStatus] = useState("InActive")
+  const [status, setStatus] = useState("N")
+
+  function save() {
+    axios
+      .post("/api/master/webapps/workflow", {
+        project_name: projectName,
+        project_icon: "/assets/icons/navbar/ic_project.svg",
+        workflow_icon: "/assets/icons/navbar/ic_workflow.svg",
+        workflow_name: workflowName,
+        create_by: "natheep",
+        versions: version,
+        status
+      })
+      .then((response) => {
+        console.log("response:", response)
+        setOpenModal(false)
+        initLoad()
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
+
   return (
     <Modal
       open={openModal}
@@ -48,15 +69,6 @@ const NewWorkflowModal = ({ openModal, setOpenModal }) => {
           </Typography>
         </Box>
         <Grid container direction="column" spacing={2}>
-          <Grid item xs>
-            <TextField
-              value={id}
-              label="Id (Auto Generate)"
-              variant="outlined"
-              disabled
-              fullWidth
-            />
-          </Grid>
           <Grid item xs>
             <TextField
               value={projectName}
@@ -100,8 +112,8 @@ const NewWorkflowModal = ({ openModal, setOpenModal }) => {
                 value={status}
                 onChange={(evt) => setStatus(evt.target.value)}
               >
-                <MenuItem value="InActive">In Active</MenuItem>
-                <MenuItem value="Active">Active</MenuItem>
+                <MenuItem value="N">In Active</MenuItem>
+                <MenuItem value="Y">Active</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -115,7 +127,7 @@ const NewWorkflowModal = ({ openModal, setOpenModal }) => {
               >
                 Cancel
               </Button>
-              <Button variant="contained" color="primary">
+              <Button variant="contained" color="primary" onClick={() => save()}>
                 Save
               </Button>
             </Box>
