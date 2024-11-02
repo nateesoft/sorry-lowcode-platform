@@ -10,33 +10,38 @@ import ReactFlow, {
   MarkerType,
   Panel
 } from "reactflow"
-import { Button, Grid, Typography } from "@mui/material"
+import { Link } from "react-router-dom"
 import axios from "axios"
+import { Button, Grid } from "@mui/material"
 
 import "reactflow/dist/style.css"
 
 import LeftMenu from "./LeftMenu"
 import PropertyPanel from "./PropertyPanel"
+import PagePanel from "./PagePanel"
+
+import ActorNode from "./nodes/ActorNode"
 import StartNode from "./nodes/StartNode"
-import ProcessNode from "./nodes/ProcessNode"
-import PayloadNode from "./nodes/Payload"
-import ResponseNode from "./nodes/Response"
-import DecisionNode from "./nodes/DecisionNode"
 import EndNode from "./nodes/EndNode"
+import PageNode from "./nodes/PageNode"
+import MegessaNode from "./nodes/MessageNode"
+import DatabaseNode from "./nodes/DatabaseNode"
+import ServerNode from "./nodes/ServerNode"
 
 import "./index.css"
 
 const nodeTypes = {
+  actor: ActorNode,
   start: StartNode,
-  payload: PayloadNode,
-  response: ResponseNode,
-  decision: DecisionNode,
-  process: ProcessNode,
-  end: EndNode
+  end: EndNode,
+  page: PageNode,
+  message: MegessaNode,
+  database: DatabaseNode,
+  server: ServerNode
 }
 
-const ServiceFlow = (props) => {
-  const { serviceFlowId, template } = props
+const WorkFlowMain = (props) => {
+  const { workFlowId, template } = props
   const reactFlowWrapper = useRef(null)
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
@@ -44,7 +49,7 @@ const ServiceFlow = (props) => {
   const [property, setProperty] = useState({})
   const [showPage, setShowPage] = useState({})
 
-  console.log("ServiceFlowMain:", props)
+  console.log('WorkFlowMain:', props)
 
   const onConnect = useCallback(
     (params) =>
@@ -52,8 +57,7 @@ const ServiceFlow = (props) => {
         addEdge(
           {
             ...params,
-            label: "",
-            type: "smoothstep",
+            label: "connected",
             markerEnd: { type: MarkerType.Arrow }
           },
           eds
@@ -84,16 +88,18 @@ const ServiceFlow = (props) => {
       let label = ""
       if (type === "start") {
         label = "Start"
-      } else if (type === "payload") {
-        label = "Payload"
-      } else if (type === "response") {
-        label = "Response"
-      } else if (type === "decision") {
-        label = "X"
-      } else if (type === "process") {
-        label = "Process"
       } else if (type === "end") {
         label = "End"
+      } else if (type === "page") {
+        label = "Page"
+      } else if (type === "actor") {
+        label = "User"
+      } else if (type === "message") {
+        label = "Message"
+      } else if (type === "database") {
+        label = "Database"
+      } else if (type === "server") {
+        label = "Server"
       }
 
       const newNode = {
@@ -112,51 +118,26 @@ const ServiceFlow = (props) => {
     [reactFlowInstance, setNodes]
   )
 
-  // const findNodeInEdges1 = (nodeId) => edges.filter((edge) => edge.source===nodeId)
-  const findNodeInEdges = (nodeId) =>
-    edges.filter((edge) => {
-      return edge.source === nodeId
-    })
-
   const onNodeClick = () => {
     nodes.forEach((node) => {
       if (node.selected) {
-        const nextProcess = findNodeInEdges(node.id)
-        axios
-        .get(`/api/master/webapps/serviceflow-design/${node.id}`)
-        .then((response) => {
-          console.log(response)
-          if (response.data.code === 200) {
-            const data = response.data.data
-            const {editor_logic, next_process} = data
-            const editorLogic = editor_logic ? JSON.parse(editor_logic): "{}"
-            const nextProcess = next_process ? JSON.parse(next_process): []
-            setProperty({
-              id: node.id,
-              serviceFlowId: serviceFlowId,
-              boxName: data.box_name,
-              boxType: data.box_type,
-              folder: data.folder,
-              outputType: data.output_type,
-              component: "node",
-              action: "edit",
-              editorLogic: editorLogic,
-              editorType: data.editor_type,
-              nextProcess: nextProcess
-            })
-          } else {
-            setProperty({
-              id: node.id,
-              serviceFlowId: serviceFlowId,
-              boxName: node.data.label,
-              boxType: node.type,
-              folder: "",
-              outputType: "",
-              component: "node",
-              nextProcess,
-              action: "create"
-            })
-          }
+        console.log('onNodeClick:', node)
+        nodes.forEach(node=> {
+          node.style.border = ""
+          node.style.background = ""
+        })
+        node.style = { ...node.style,
+          border: "2px solid #5ba9de",
+          borderRadius: "10px",
+          background: "#5ba9de"
+         }
+        setNodes((nds) => nds.concat(node))
+
+        setProperty({
+          id: node.id,
+          label: node.data.label,
+          type: node.type,
+          component: "node"
         })
       }
     })
@@ -175,48 +156,7 @@ const ServiceFlow = (props) => {
     })
   }
 
-  const onSave = useCallback(() => {
-    if (reactFlowInstance) {
-      const flow = reactFlowInstance.toObject()
-      // localStorage.setItem(serviceFlowId, JSON.stringify(flow))
-      // save to api
-      axios
-        .put(`/api/master/webapps/serviceflow/${serviceFlowId}`, {
-          project_name: "POS Restuarant",
-          project_icon: "/assets/icons/navbar/ic_project.svg",
-          workflow_icon: "/assets/icons/navbar/ic_serviceflow.svg",
-          serviceflow_name: "ServiceFlow-01",
-          update_by: "natheep",
-          versions: "0.0.1",
-          status: "Y",
-          template: JSON.stringify(flow),
-          mapping_logic: "{}",
-          uri_path: "/login"
-        })
-        .then((response) => {
-          // setTemplate(response.data.products)
-          console.log(response.data)
-        })
-    }
-  }, [reactFlowInstance, serviceFlowId])
-
-  const onRestore = useCallback(() => {
-    const restoreFlow = async () => {
-      // const flow = JSON.parse(localStorage.getItem(serviceFlowId))
-      if (template) {
-        const flow = JSON.parse(template)
-        if (flow) {
-          setNodes(flow.nodes || [])
-          setEdges(flow.edges || [])
-        }
-      }
-    }
-
-    restoreFlow()
-  }, [template, setNodes, setEdges])
-
   const onPropertyChange = (props) => {
-    console.log('onPropertyChange:', props)
     if (props.component === "node") {
       nodes.forEach((node) => {
         if (node.selected) {
@@ -235,6 +175,60 @@ const ServiceFlow = (props) => {
     }
   }
 
+  const onSave = useCallback(() => {
+    if (reactFlowInstance) {
+      const flow = reactFlowInstance.toObject()
+      // localStorage.setItem(flowKey + "_" + workFlowId, JSON.stringify(flow))
+      // save to api
+      axios
+        .put(`/api/master/webapps/workflow/${workFlowId}`, {
+          project_name: "POS Restuarant",
+          project_icon: "/assets/icons/navbar/ic_project.svg",
+          workflow_icon: "/assets/icons/navbar/ic_workflow.svg",
+          workflow_name: "WorkFlow-01",
+          update_by: "natheep",
+          versions: "0.0.1",
+          status: "Y",
+          template: JSON.stringify(flow),
+          mapping_logic: "{}",
+          uri_path: "/login"
+        })
+        .then((response) => {
+          // setTemplate(response.data.products)
+          console.log(response.data)
+        })
+    }
+  }, [reactFlowInstance, workFlowId])
+
+  const onRestore = useCallback(() => {
+    const restoreFlow = async () => {
+      // const flow = JSON.parse(localStorage.getItem(flowKey + "_" + workFlowId))
+      if (template) {
+        const flow = JSON.parse(template)
+        if(flow){
+          setNodes(flow.nodes || [])
+          setEdges(flow.edges || [])
+        }
+      }
+    }
+
+    restoreFlow()
+  }, [template, setNodes, setEdges])
+
+  // const handlePreview = () => {
+  //   // window.open("http://localhost:3000/app1")
+  //   axios
+  //     .get("/api/frontend")
+  //     .then(({ data }) => {
+  //       if (data.redirectUrl) {
+  //         window.open(data.redirectUrl)
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       alert(error.message)
+  //     })
+  // }
+
   useEffect(() => {
     onRestore()
   }, [onRestore])
@@ -246,7 +240,7 @@ const ServiceFlow = (props) => {
         <div
           className="reactflow-wrapper"
           ref={reactFlowWrapper}
-          style={{ height: "80vh" }}
+          style={{ height: "88vh" }}
         >
           <ReactFlow
             nodes={nodes}
@@ -263,23 +257,6 @@ const ServiceFlow = (props) => {
             nodeTypes={nodeTypes}
             fitView
           >
-            <Panel position="bottom-center">
-              <Grid container spacing={1}>
-                <Grid item>
-                  <Typography
-                    variant="span"
-                    style={{
-                      backgroundColor: "#d0ffdb",
-                      padding: "20px",
-                      borderRadius: "10px",
-                      fontSize: "12px"
-                    }}
-                  >
-                    Login Service Flow
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Panel>
             <Panel position="top-right">
               <Grid container spacing={1}>
                 <Grid item>
@@ -302,6 +279,16 @@ const ServiceFlow = (props) => {
                     Restore
                   </Button>
                 </Grid>
+                <Grid item>
+                  <Link to="/demo/page_node_0t0udq" target="_blank">
+                    <Button
+                      variant="contained"
+                      color="success"
+                    >
+                      Publish
+                    </Button>
+                  </Link>
+                </Grid>
               </Grid>
             </Panel>
             <Controls />
@@ -312,15 +299,20 @@ const ServiceFlow = (props) => {
       </ReactFlowProvider>
       {!showPage.show && (
         <PropertyPanel
-          serviceFlowId={serviceFlowId}
           props={property}
           onComponentChange={onPropertyChange}
           onShowPage={setShowPage}
           display={setProperty}
         />
       )}
+      <PagePanel
+        condition={showPage}
+        property={setProperty}
+        onClose={() => setShowPage({ show: false, page: null })}
+        {...property}
+      />
     </div>
   )
 }
 
-export default ServiceFlow
+export default WorkFlowMain

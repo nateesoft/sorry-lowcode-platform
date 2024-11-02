@@ -89,13 +89,24 @@ const updateData = (req, res) => {
       workflow_name,
       update_by,
       versions,
-      status
+      status,
+      template,
+      mapping_logic,
+      uri_path
     } = req.body
     pool.query(
       `UPDATE ${tableName} 
-      SET project_name=?, project_icon=?, workflow_icon=?, workflow_name=?, 
-      update_by=?, versions=?, status=? 
-      WHERE id = ?`,
+        SET project_name=?, 
+        project_icon=?, 
+        workflow_icon=?, 
+        workflow_name=?, 
+        update_by=?, 
+        versions=?, 
+        status=?,
+        template=?, 
+        mapping_logic=?, 
+        uri_path=? 
+        WHERE id=?`,
       [
         project_name,
         project_icon,
@@ -104,6 +115,9 @@ const updateData = (req, res) => {
         update_by,
         versions,
         status,
+        template,
+        mapping_logic,
+        uri_path,
         id
       ],
       (err, results) => {

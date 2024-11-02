@@ -13,6 +13,8 @@ import {
 } from "@mui/material"
 import axios from "axios"
 
+import {initWorkflowTemplate} from '../../../initData/template'
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -43,7 +45,10 @@ const NewWorkflowModal = ({ openModal, setOpenModal, initLoad }) => {
         workflow_name: workflowName,
         create_by: "natheep",
         versions: version,
-        status
+        status,
+        template: JSON.stringify(initWorkflowTemplate),
+        mapping_logic: "{}",
+        uri_path: "/login"
       })
       .then((response) => {
         console.log("response:", response)

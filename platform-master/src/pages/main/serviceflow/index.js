@@ -3,6 +3,7 @@ import Box from "@mui/material/Box"
 import { useParams } from "react-router"
 import axios from "axios"
 
+import { initServiceflowTemplate } from '../../../initData/template'
 import ServiceFlow from "./ServiceFlow"
 
 const ServiceFlowMain = () => {
@@ -13,7 +14,11 @@ const ServiceFlowMain = () => {
     axios
       .get(`/api/master/webapps/serviceflow/${serviceFlowId}`)
       .then((response) => {
-        setTemplate(JSON.stringify(response.data.data.template))
+        if (response.data.code === 200) {
+          setTemplate(JSON.stringify(response.data.data.template))
+        } else {
+          setTemplate(JSON.stringify(initServiceflowTemplate))
+        }
       })
   }, [serviceFlowId])
 

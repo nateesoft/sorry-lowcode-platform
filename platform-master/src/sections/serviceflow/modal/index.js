@@ -13,6 +13,8 @@ import {
 } from "@mui/material"
 import axios from "axios"
 
+import {initServiceflowTemplate} from '../../../initData/template'
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -42,8 +44,7 @@ const NewServiceflowModal = ({ openModal, setOpenModal, initLoad }) => {
         workflow_icon: "/assets/icons/navbar/ic_serviceflow.svg",
         serviceflow_name: serviceflowName,
         create_by: "natheep",
-        template:
-          '{"nodes":[{"id":"node_wuy9r9","type":"start","position":{"x":69,"y":107},"data":{"label":"Start"},"style":{"width":80,"height":50},"width":80,"height":50,"selected":true,"positionAbsolute":{"x":69,"y":107},"dragging":false}],"edges":[],"viewport":{"x":17.5,"y":-60.5,"zoom":2}}',
+        template: JSON.stringify(initServiceflowTemplate),
         mapping_logic: "{}",
         uri_path: "/login"
       })
