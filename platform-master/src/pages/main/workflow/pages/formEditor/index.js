@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import {
   DefaultPaletteService,
   defaultSchemaDecorators,
@@ -24,16 +24,27 @@ function localLoad(pageKey, temp) {
 
 const FormEditor = (props) => {
   const { id } = props
-  const loadSchema = localLoad(id + "_template_schema", schema)
-  const loadUiSchema = localLoad(id + "_template_uischema", uischema)
-  const loadData = localLoad(id + "_template_data", data)
-
-  const schemaService = new ExampleSchemaService(loadSchema, loadUiSchema, loadData)
   const defaultPaletteService = new DefaultPaletteService()
   const defaultCategorizationService = new CategorizationServiceImpl()
-  console.log("FormEditor:", props)
+  
+  const [schemaService, setSchemaService] = useState(null)
+  const [loadSchema, setLoadSchema] = useState(null)
+  const [loadUiSchema, setLoadUiSchema] = useState(null)
+  const [loadData, setLoadData] = useState(null)
 
-  return (
+  const initLoad = useCallback(() => {
+    setLoadSchema(localLoad(id + "_template_schema", schema))
+    setLoadUiSchema(localLoad(id + "_template_schema", uischema))
+    setLoadData(localLoad(id + "_template_schema", data))
+  
+    setSchemaService(new ExampleSchemaService(loadSchema, loadUiSchema, loadData))
+  }, [id, loadData, loadSchema, loadUiSchema])
+
+  useEffect(()=> {
+    initLoad()
+  }, [initLoad])
+
+  return loadSchema && (
     <JsonFormPage
       {...props}
       schema={loadSchema}

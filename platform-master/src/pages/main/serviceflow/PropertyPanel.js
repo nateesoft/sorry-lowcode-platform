@@ -11,10 +11,10 @@ import ModalEditor from "./modal"
 const PropertyPanel = ({ props, onComponentChange }) => {
   console.log("PropertyPanel(props):", props)
   const { id, serviceFlowId, action } = props
-  const [boxName, setBoxName] = useState(props.boxName || "")
-  const [folder, setFolder] = useState(props.folder || "")
+  const [boxName, setBoxName] = useState(props.boxName)
+  const [folder, setFolder] = useState(props.folder)
   const [content] = useState("")
-  const [outputType, setOutputType] = useState(props.outputType || "")
+  const [outputType, setOutputType] = useState(props.outputType)
   const [language] = useState("javascript")
   const [editorOpen, setEditorOpen] = useState(false)
   const handleClose = () => setEditorOpen(false)
@@ -38,14 +38,15 @@ const PropertyPanel = ({ props, onComponentChange }) => {
       .get(`/api/master/webapps/serviceflow-design/${id}`)
       .then((response) => {
         console.log("initLoad: ", response.data)
-        setFolder("")
-        setBoxName("")
-        setOutputType("")
         if(response.data.code===200){
           const { folder, box_name, output_type } = response.data.data
           setFolder(folder)
           setBoxName(box_name)
           setOutputType(output_type)
+        }else{
+          setFolder("")
+          setBoxName("")
+          setOutputType("")
         }
       })
   }, [id])
@@ -76,13 +77,13 @@ const PropertyPanel = ({ props, onComponentChange }) => {
       axios
         .post(`/api/master/webapps/serviceflow-design`, itemData)
         .then((response) => {
-          console.log("initLoad: ", response.data)
+          console.log("handleSave(create): ", response.data)
         })
     } else {
       axios
         .put(`/api/master/webapps/serviceflow-design/${itemData.id}`, itemData)
         .then((response) => {
-          console.log("initLoad: ", response.data)
+          console.log("handleSave(update): ", response.data)
         })
     }
   }

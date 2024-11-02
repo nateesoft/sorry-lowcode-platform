@@ -118,26 +118,53 @@ const WorkFlowMain = (props) => {
     [reactFlowInstance, setNodes]
   )
 
+  const clearNodeStyle = () => {
+    nodes.forEach(node=> {
+      node.style.border = ""
+      node.style.background = ""
+    })
+  }
+
   const onNodeClick = () => {
     nodes.forEach((node) => {
       if (node.selected) {
-        console.log('onNodeClick:', node)
-        nodes.forEach(node=> {
-          node.style.border = ""
-          node.style.background = ""
-        })
+        console.log('nodeSelected:', node)
+        clearNodeStyle()
         node.style = { ...node.style,
           border: "2px solid #5ba9de",
           borderRadius: "10px",
           background: "#5ba9de"
          }
         setNodes((nds) => nds.concat(node))
-
-        setProperty({
-          id: node.id,
-          label: node.data.label,
-          type: node.type,
-          component: "node"
+        axios.get(`/api/master/webapps/workflow-design/${node.id}`)
+        .then((response) => {
+          console.log('workflow_onNodeClick:', response)
+          if (response.data.code === 200) {
+            const data = response.data.data
+            setProperty({
+              id: data.id,
+              boxName: data.box_name,
+              boxType: data.box_type,
+              folder: data.folder,
+              component: "node",
+              action: "edit",
+              uriPath: data.uri_path,
+              serviceFlow1: data.service_flow_1,
+              serviceFlow2: data.service_flow_2
+            })
+          } else {
+            setProperty({
+              id: node.id,
+              boxName: node.data.label,
+              boxType: node.type,
+              folder: "",
+              component: "node",
+              action: "create",
+              uriPath: "",
+              serviceFlow1: "",
+              serviceFlow2: ""
+            })
+          }
         })
       }
     })
@@ -299,6 +326,7 @@ const WorkFlowMain = (props) => {
       </ReactFlowProvider>
       {!showPage.show && (
         <PropertyPanel
+          workFlowId={workFlowId}
           props={property}
           onComponentChange={onPropertyChange}
           onShowPage={setShowPage}

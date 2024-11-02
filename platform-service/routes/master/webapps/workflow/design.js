@@ -30,7 +30,7 @@ const getDataById = (req, res) => {
       if (results.length == 0) {
         response.status = true
         response.code = 404
-        response.message = "User not found"
+        response.message = "Workflow not found"
         response.data = null
       } else {
         response.status = true
@@ -45,9 +45,12 @@ const getDataById = (req, res) => {
 }
 
 const createData = (req, res) => {
-  const newId = uuid.v4()
+  console.log('createData:', req.body)
   const {
-    name,
+    id,
+    box_name,
+    box_type,
+    folder,
     versions,
     workflow_id,
     template_uischema,
@@ -55,16 +58,23 @@ const createData = (req, res) => {
     template_data,
     mapping_logic,
     create_by,
-    uri_path
+    uri_path,
+    service_flow_1,
+    service_flow_2
   } = req.body
   pool.query(
     `INSERT INTO ${tableName} 
-    (id, name, versions, workflow_id, template_uischema, template_schema, template_data, mapping_logic, 
-    create_at, create_by, uri_path) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, now(), ?, ?)`,
+    (id, box_name, box_type, folder, versions, 
+    workflow_id, template_uischema, template_schema, template_data, mapping_logic, 
+    create_at, create_by, uri_path, service_flow_1, service_flow_2) 
+    VALUES (?, ?, ?, ?, ?, 
+    ?, ?, ?, ?, ?,
+    now(), ?, ?, ?, ?)`,
     [
-      newId,
-      name,
+      id,
+      box_name,
+      box_type,
+      folder,
       versions,
       workflow_id,
       template_uischema,
@@ -72,7 +82,9 @@ const createData = (req, res) => {
       template_data,
       mapping_logic,
       create_by,
-      uri_path
+      uri_path,
+      service_flow_1,
+      service_flow_2
     ],
     (err, results) => {
       if (err) throw err
@@ -87,7 +99,7 @@ const updateData = (req, res) => {
   const response = new ResponseClass()
   try {
     const {
-      name,
+      box_name,
       versions,
       workflow_id,
       template_uischema,
@@ -100,18 +112,20 @@ const updateData = (req, res) => {
     pool.query(
       `UPDATE ${tableName} 
         SET 
-        name=?,
+        box_name=?,
         versions=?,
         workflow_id=?,
         template_uischema=?,
         template_schema=?,
         template_data=?,
         mapping_logic=?,
-        create_by=?,
-        uri_path=? 
+        update_by=?,
+        uri_path=?,
+        service_flow_1=?,
+        service_flow_2=? 
         WHERE id = ?`,
       [
-        name,
+        box_name,
         versions,
         workflow_id,
         template_uischema,
@@ -120,6 +134,8 @@ const updateData = (req, res) => {
         mapping_logic,
         update_by,
         uri_path,
+        service_flow_1,
+        service_flow_2,
         id
       ],
       (err, results) => {
@@ -127,7 +143,7 @@ const updateData = (req, res) => {
 
         response.status = true
         response.code = 200
-        response.message = "User modification successed"
+        response.message = "Workflow modification successed"
         response.data = null
         res.status(200).send(response)
       }

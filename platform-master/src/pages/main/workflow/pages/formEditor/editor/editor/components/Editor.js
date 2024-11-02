@@ -19,16 +19,13 @@ const theme = createTheme({
 export const Editor = ({ editorRenderers, setUISchemaData }) => {
   const schema = useExportSchema()
   const uiSchema = useExportUiSchema()
-  console.log('Editor(schema):', schema)
-  console.log('Editor(uiSchema):', uiSchema)
 
   const handleChange = (evt) => {
-    console.log('Editor:handleChange:', uiSchema)
     setUISchemaData(JSON.stringify(uiSchema))
   }
 
   return uiSchema ? (
-    <Grid container sx={{height: "70vh", overflow: "scroll"}}>
+    <Grid container sx={{height: "60vh", overflow: "scroll"}}>
       <ThemeProvider theme={theme}>
         <JsonForms
           data={{}}

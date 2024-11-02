@@ -16,6 +16,7 @@ const dashboard = require('./webapps/dashboard')
 const datasource = require('./webapps/datasource')
 const datasourceTable = require('./webapps/datasourceTable')
 const externalServices = require('./webapps/externalServices')
+
 const serviceflow = require('./webapps/serviceflow')
 const serviceflowDesign = require('./webapps/serviceflow/design')
 
@@ -23,7 +24,9 @@ const shop = require('./webapps/shop')
 const usergroups = require('./webapps/usergroups')
 const users = require('./webapps/users')
 const usersRole = require('./webapps/usersRole')
+
 const workflow = require('./webapps/workflow')
+const workflowDesign = require('./webapps/workflow/design')
 
 router.get("/", (req, res)=> {
     res.send("Platform Service APIs")
@@ -172,6 +175,11 @@ router.get("/webapps/workflow/:id", workflow.getDataById);
 router.put("/webapps/workflow/:id", workflow.updateData);
 router.post("/webapps/workflow", workflow.createData);
 router.delete("/webapps/workflow/:id", workflow.deleteData);
+router.get("/webapps/workflow-design", workflowDesign.getData);
+router.get("/webapps/workflow-design/:id", workflowDesign.getDataById);
+router.put("/webapps/workflow-design/:id", workflowDesign.updateData);
+router.post("/webapps/workflow-design", workflowDesign.createData);
+router.delete("/webapps/workflow-design/:id", workflowDesign.deleteData);
 
 /* ###################### WEB APPLICATION ########################## */
 

@@ -125,7 +125,7 @@ const updateData = (req, res) => {
 
         response.status = true
         response.code = 200
-        response.message = "User modification successed"
+        response.message = "Workflow modification successed"
         response.data = null
         res.status(200).send(response)
       }

@@ -1,18 +1,24 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { memo, useEffect, useState, useCallback } from "react"
 import Button from "@mui/material/Button"
 import Modal from "@mui/material/Modal"
 import Grid from "@mui/material/Unstable_Grid2"
 import { Box, FormControl, TextField, Typography } from "@mui/material"
+import axios from "axios"
+import { useParams } from "react-router-dom"
 
 import JsonFormPage from "./pages/formEditor"
 import WorkflowLogic from "../modal"
 
 const PropertyPanel = memo(({ props, onComponentChange }) => {
-  const [label, setLabel] = useState("")
-  const [folder, setFolder] = useState("")
-  const [uri, setUri] = useState("")
-  const [serviceFlow1, setServiceFlow1] = useState("")
-  const [serviceFlow2, serServiceFlow2] = useState("")
+  console.log("Workflow=>PropertyPanel(props):", props)
+  const { id, action } = props
+  const { id: workFlowId } = useParams()
+  const [boxName, setBoxName] = useState(props.boxName)
+  const [boxType, setBoxType] = useState(props.boxType)
+  const [folder, setFolder] = useState(props.folder)
+  const [uriPath, setUriPath] = useState(props.uriPath)
+  const [serviceFlow1, setServiceFlow1] = useState(props.serviceFlow1)
+  const [serviceFlow2, setServiceFlow2] = useState(props.serviceFlow2)
   const [page, setPage] = useState("")
 
   const [open, setOpen] = useState(false)
@@ -25,22 +31,10 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
     if (evt.keyCode === 13) {
       onComponentChange({
         id: props.id,
-        label: label,
+        label: boxName,
         component: props.component
       })
     }
-  }
-
-  useEffect(() => {
-    if (props.label) {
-      setLabel(props.label)
-    } else {
-      setLabel("")
-    }
-  }, [props])
-
-  if (!props.id) {
-    return <></>
   }
 
   function handlePage(page) {
@@ -48,13 +42,76 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
     setPage(page)
   }
 
+  const initLoad = useCallback(() => {
+    const {boxName, boxType, folder, uriPath, serviceFlow1, serviceFlow2} = props
+    axios
+      .get(`/api/master/webapps/workflow-design/${id}`)
+      .then((response) => {
+        console.log("initLoad: ", response.data)
+        if (response.data.code === 200) {
+          const { folder, box_name, box_type, uri_path, service_flow_1, service_flow_2 } = response.data.data
+          setBoxType(box_type)
+          setBoxName(box_name)
+          setFolder(folder)
+          setUriPath(uri_path)
+          setServiceFlow1(service_flow_1)
+          setServiceFlow2(service_flow_2)
+        } else {
+          setBoxType(boxType)
+          setBoxName(boxName)
+          setFolder(folder)
+          setUriPath(uriPath)
+          setServiceFlow1(serviceFlow1)
+          setServiceFlow2(serviceFlow2)
+        }
+      })
+  }, [id, props])
+
   function handleSave() {
     console.log('Save source code to API')
+    const itemData = {
+      id: id,
+      box_name: boxName,
+      box_type: boxType,
+      folder: folder,
+      versions: "0.1",
+      workflow_id: workFlowId,
+      template_uischema: "{}",
+      template_schema: "{}",
+      template_data: "{}",
+      mapping_logic: "{}",
+      create_by: "nathee",
+      uri_path: "/",
+      service_flow_1: serviceFlow1,
+      service_flow_2: serviceFlow2
+    }
+    console.log('itemData:', itemData)
+    if ("create" === action) {
+      axios
+      .post(`/api/master/webapps/workflow-design`, itemData)
+      .then((response) => {
+        console.log("handleSave(create): ", response.data)
+      })
+    } else {
+      axios
+      .put(`/api/master/webapps/workflow-design`, itemData)
+      .then((response) => {
+        console.log("handleSave(update): ", response.data)
+      })
+    }
   }
 
   function handleServiceFlowOpen(id, callback) {
     setLogicId(id)
     callback(true)
+  }
+
+  useEffect(() => {
+    initLoad()
+  }, [initLoad])
+
+  if (!id) {
+    return <></>
   }
 
   return (
@@ -77,7 +134,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                 <Typography variant="caption">Index</Typography>
                 <TextField
                   variant="standard"
-                  value={props.type + "_" + props.id}
+                  value={props.id}
                 />
               </FormControl>
               <FormControl variant="standard">
@@ -93,21 +150,21 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                 <Typography variant="caption">Name</Typography>
                 <TextField
                  variant="standard"
-                  value={label}
-                  onChange={(data) => setLabel(data.target.value)}
+                  value={boxName}
+                  onChange={(data) => setBoxName(data.target.value)}
                   onKeyUp={handleKeyUp}
                 />
               </FormControl>
               <FormControl variant="standard">
                 <Typography variant="caption">Type</Typography>
-                <TextField variant="standard" value={props.type} />
+                <TextField variant="standard" value={boxType} />
               </FormControl>
               <FormControl variant="standard">
                 <Typography variant="caption">URI</Typography>
                 <TextField
                  variant="standard"
-                  value={uri}
-                  onChange={(data) => setUri(data.target.value)}
+                  value={uriPath}
+                  onChange={data => setUriPath(data.target.value)}
                   onKeyUp={handleKeyUp}
                 />
               </FormControl>
@@ -146,7 +203,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                     <TextField
                      variant="standard"
                       value={serviceFlow2}
-                      onChange={(data) => serServiceFlow2(data.target.value)}
+                      onChange={(data) => setServiceFlow2(data.target.value)}
                       onKeyUp={handleKeyUp}
                     />
                   </Grid>
@@ -177,7 +234,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
                   Save Source
                 </Button>
               </Grid>
-              {props.type === "page" && (
+              {props.boxType === "page" && (
                 <Grid item>
                   <Button
                     onClick={() => handlePage("jsonform")}
@@ -205,8 +262,8 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
               {page === "jsonform" && (
                 <JsonFormPage
                   onClose={handleClose}
-                  id={props.type + "_" + props.id} 
-                  label={label}
+                  id={props.id} 
+                  label={boxName}
                 />
               )}
             </Box>

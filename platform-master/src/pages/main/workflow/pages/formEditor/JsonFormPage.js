@@ -58,8 +58,6 @@ function JsonFormApp(props) {
     () => (editorSchema ? generateEmptyData(editorSchema) : {}),
     [editorSchema]
   )
-  console.log("JsonFormPage(schema):", newSchema)
-  console.log("JsonFormPage(uiSchema):", newUiSchema)
 
   const dispatch = useDispatch()
   const classes = useStyles()
@@ -80,55 +78,14 @@ function JsonFormApp(props) {
   const propsSchema = useSchema()
   const ajv = createAjv({ useDefaults: true })
 
-  // const validJsonSchema = (obj, data, callFunc) => {
-  //   const p1 = new Promise((resolve, reject) => {
-  //     let count = 0
-  //     Object.keys(obj).forEach((item) => {
-  //       const obj1 = obj[item]
-  //       if (
-  //         item === "type" &&
-  //         [
-  //           "string",
-  //           "number",
-  //           "integer",
-  //           "object",
-  //           "array",
-  //           "boolean",
-  //           "null"
-  //         ].indexOf(obj1) === -1
-  //       ) {
-  //         count = count + 1
-  //         return
-  //       }
-  //       if (obj1 instanceof Object) {
-  //         validJsonSchema(obj1)
-  //       }
-  //     })
-
-  //     resolve(count)
-  //   })
-
-  //   p1.then((result) => {
-  //     console.log("in promise:", result)
-  //     if (undefined === result) {
-  //       console.log("schema:change")
-  //       callFunc(data)
-  //     } else {
-  //       console.log("schema:failure")
-  //     }
-  //   })
-  // }
-
   const handleSave = async (data, callFunc, type) => {
     try {
       const dataObj = JSON.parse(data)
       if ("schema" === type) {
         callFunc(data)
-        // validJsonSchema(dataObj, data, callFunc)
       } else {
         callFunc(data)
       }
-      // console.log('handleSave:', data)
       if("schema" === type){
         dispatch(Actions.setSchema(dataObj))
       }
@@ -136,7 +93,7 @@ function JsonFormApp(props) {
         dispatch(Actions.setUiSchema(dataObj))
       }
     } catch (e) {
-      // console.error(e)
+      console.error(e)
     }
   }
 
@@ -221,7 +178,7 @@ function JsonFormApp(props) {
                 <Tab label="Preview" value="2" />
               </TabList>
             </Box>
-            <TabPanel value="1"  sx={{height: "70vh", overflow: "scroll"}}>
+            <TabPanel value="1"  sx={{height: "60vh", overflow: "scroll"}}>
               <UIElementsTree
                 title="Template"
                 className={classes.uiElementsTree}
@@ -240,7 +197,7 @@ function JsonFormApp(props) {
               <SchemaTreeView schema={propsSchema} />
             </TabPanel>
             <TabPanel value="2">
-              <Paper sx={{ height: "70vh", padding: "10px", overflow: "scroll" }}>
+              <Paper sx={{ height: "60vh", padding: "10px", overflow: "scroll" }}>
                 <JsonForms
                   ajv={ajv}
                   data={previewData}
@@ -272,7 +229,7 @@ function JsonFormApp(props) {
           </TabPanel>
           <TabPanel value="2">
             <Editor
-              height="70vh"
+              height="60vh"
               defaultLanguage="json"
               theme="vs-dark"
               value={uiSchemaData}
@@ -288,7 +245,7 @@ function JsonFormApp(props) {
           </TabPanel>
           <TabPanel value="3">
             <Editor
-              height="70vh"
+              height="60vh"
               defaultLanguage="json"
               theme="vs-dark"
               value={schemaData}
@@ -304,7 +261,7 @@ function JsonFormApp(props) {
           </TabPanel>
           <TabPanel value="4">
             <Editor
-              height="70vh"
+              height="60vh"
               defaultLanguage="json"
               theme="vs-dark"
               value={dataForm}
@@ -348,7 +305,7 @@ function JsonFormApp(props) {
           }}
         >
           <Button variant="contained" onClick={handleSaveLocalStorage}>
-            Save Page
+            Save Schema
           </Button>
           <Button variant="contained" onClick={handleCloseModal} color="error">
             Close
@@ -361,6 +318,7 @@ function JsonFormApp(props) {
 
 const JsonFormPage = (props) => {
   const { schemaService, paletteService, categorizationService } = props
+  console.log('JsonFormPage:', props)
   const [{ schema, uiSchema }, dispatch] = useReducer(
     editorReducer,
     {
