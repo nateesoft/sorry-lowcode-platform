@@ -72,7 +72,7 @@ function JsonFormApp(props) {
   const editorRef1 = useRef(null)
   const editorRef2 = useRef(null)
   const editorRef3 = useRef(null)
-  const [value, setValue] = useState("1")
+  const [value, setValue] = useState("2")
   const [valuePreview, setValuePreview] = useState("1")
 
   const propsSchema = useSchema()
@@ -143,7 +143,14 @@ function JsonFormApp(props) {
     onClose()
   }
 
-  function handleSaveLocalStorage() {
+  // function handleSaveLocalStorage() {
+  //   localStorage.setItem(id + "_template_schema", schemaData)
+  //   localStorage.setItem(id + "_template_uischema", uiSchemaData)
+  //   localStorage.setItem(id + "_template_data", dataForm)
+  //   onClose()
+  // }
+
+  function handleSaveApi() {
     localStorage.setItem(id + "_template_schema", schemaData)
     localStorage.setItem(id + "_template_uischema", uiSchemaData)
     localStorage.setItem(id + "_template_data", dataForm)
@@ -304,7 +311,7 @@ function JsonFormApp(props) {
             color: "white"
           }}
         >
-          <Button variant="contained" onClick={handleSaveLocalStorage}>
+          <Button variant="contained" onClick={handleSaveApi}>
             Save Schema
           </Button>
           <Button variant="contained" onClick={handleCloseModal} color="error">
