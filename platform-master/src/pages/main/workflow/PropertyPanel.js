@@ -3,9 +3,9 @@ import Button from "@mui/material/Button"
 import Modal from "@mui/material/Modal"
 import Grid from "@mui/material/Grid2"
 import { Box, FormControl, TextField, Typography } from "@mui/material"
-import axios from "axios"
 import { useParams } from "react-router-dom"
 
+import apiClient from '../../../httpRequest'
 import JsonFormPage from "./pages/formEditor"
 import WorkflowLogic from "../modal"
 
@@ -44,7 +44,7 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
 
   const initLoad = useCallback(() => {
     const {boxName, boxType, folder, uriPath, serviceFlow1, serviceFlow2} = props
-    axios
+    apiClient
       .get(`/api/master/webapps/workflow-design/${id}`)
       .then((response) => {
         console.log("initLoad: ", response.data)
@@ -87,13 +87,13 @@ const PropertyPanel = memo(({ props, onComponentChange }) => {
     }
     console.log('itemData:', itemData)
     if ("create" === action) {
-      axios
+      apiClient
       .post(`/api/master/webapps/workflow-design`, itemData)
       .then((response) => {
         console.log("handleSave(create): ", response.data)
       })
     } else {
-      axios
+      apiClient
       .put(`/api/master/webapps/workflow-design`, itemData)
       .then((response) => {
         console.log("handleSave(update): ", response.data)

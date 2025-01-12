@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react"
-import axios from "axios"
 
 import {
   DefaultPaletteService,
@@ -8,6 +7,7 @@ import {
   CategorizationServiceImpl
 } from "./editor"
 
+import apiClient from '../../../../../httpRequest'
 import { ExampleSchemaService } from "./core/schemaService"
 import JsonFormPage from "./JsonFormPage"
 
@@ -42,7 +42,7 @@ const FormEditor = (props) => {
   // }, [id, loadData, loadSchema, loadUiSchema])
 
   const initLoad = useCallback(() => {
-    axios.get(`/api/master/webapps/workflow-design/${id}`).then((response) => {
+    apiClient.get(`/api/master/webapps/workflow-design/${id}`).then((response) => {
       console.log("initLoad:", response)
 
       if (response.data.code === 200) {

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
 import Box from "@mui/material/Box"
 import { useParams } from "react-router"
-import axios from "axios"
 
+import apiClient from '../../../httpRequest'
 import ServiceFlow from "./ServiceFlow"
 
 const ServiceFlowMain = () => {
@@ -10,7 +10,7 @@ const ServiceFlowMain = () => {
   const [serviceInfo, setServiceInfo] = useState({})
 
   useEffect(() => {
-    axios
+    apiClient
       .get(`/api/master/webapps/serviceflow/${serviceFlowId}`)
       .then((response) => {
         if (response.data.code === 200) {

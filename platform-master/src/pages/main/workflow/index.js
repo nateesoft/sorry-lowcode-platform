@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
 import Box from "@mui/material/Box"
 import { useParams } from "react-router"
-import axios from "axios"
 
+import apiClient from '../../../httpRequest'
 import { initWorkflowTemplate } from '../../../initData/template'
 import WorkFlow from "./WorkFlow"
 
@@ -11,7 +11,7 @@ const WorkFlowMain = () => {
   const [template, setTemplate] = useState("")
 
   useEffect(() => {
-    axios
+    apiClient
       .get(`/api/master/webapps/workflow/${workFlowId}`)
       .then((response) => {
         if (response.data.code === 200) {

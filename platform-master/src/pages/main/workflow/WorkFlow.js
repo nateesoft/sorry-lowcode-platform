@@ -11,11 +11,11 @@ import ReactFlow, {
   Panel
 } from "reactflow"
 import { Link } from "react-router-dom"
-import axios from "axios"
 import { Button, Grid } from "@mui/material"
 
 import "reactflow/dist/style.css"
 
+import apiClient from '../../../httpRequest'
 import LeftMenu from "./LeftMenu"
 import PropertyPanel from "./PropertyPanel"
 import PagePanel from "./PagePanel"
@@ -138,7 +138,7 @@ const WorkFlowMain = (props) => {
     }
     setNodes((nds) => nds.concat(node))
     setCurrNode(node)
-    axios.get(`/api/master/webapps/workflow-design/${node.id}`)
+    apiClient.get(`/api/master/webapps/workflow-design/${node.id}`)
       .then((response) => {
         console.log('workflow_onNodeClick:', response)
         if (response.data.code === 200) {
@@ -196,7 +196,7 @@ const WorkFlowMain = (props) => {
       const flow = reactFlowInstance.toObject()
       // localStorage.setItem(flowKey + "_" + workFlowId, JSON.stringify(flow))
       // save to api
-      axios
+      apiClient
         .put(`/api/master/webapps/workflow/${workFlowId}`, {
           project_name: "POS Restuarant",
           project_icon: "/assets/icons/navbar/ic_project.svg",
@@ -233,7 +233,7 @@ const WorkFlowMain = (props) => {
 
   // const handlePreview = () => {
   //   // window.open("http://localhost:3000/app1")
-  //   axios
+  //   apiClient
   //     .get("/api/frontend")
   //     .then(({ data }) => {
   //       if (data.redirectUrl) {

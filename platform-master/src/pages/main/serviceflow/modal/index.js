@@ -2,8 +2,8 @@ import React, { useCallback, useState } from "react"
 import Box from "@mui/material/Box"
 import { Button, Grid2, IconButton, Typography } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
-import axios from "axios"
 
+import apiClient from '../../../../httpRequest'
 import PropertieEditor from "../PropertieEditor"
 
 export default function ModalEditor(props) {
@@ -21,7 +21,7 @@ export default function ModalEditor(props) {
     //   localStorage.setItem(id + "_props", JSON.stringify(propsData))
     //   props.onClose()
     // }
-    axios
+    apiClient
       .patch(`/api/master/webapps/serviceflow-design/${id}`, {
         id: id,
         next_process: JSON.stringify(data.nextProcess),

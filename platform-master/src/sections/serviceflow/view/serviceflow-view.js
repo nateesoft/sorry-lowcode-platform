@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"
-import axios from 'axios';
 
 import { Card, Stack, Table, Button, Container, TableBody, Typography, TableContainer, TablePagination } from "@mui/material"
 
@@ -13,6 +12,8 @@ import ServiceFlowTableToolbar from "../serviceflow-table-toolbar"
 import { emptyRows, applyFilter, getComparator } from "../utils"
 import NewServiceflowModal from "../modal"
 
+import apiClient from "../../../httpRequest"
+
 // ----------------------------------------------------------------------
 export default function ServiceFlowPage() {
   const [page, setPage] = useState(0)
@@ -25,7 +26,7 @@ export default function ServiceFlowPage() {
   const [openModal, setOpenModal] = useState(false)
 
   const initLoad = () => {
-    axios.get('/api/master/webapps/serviceflow')
+    apiClient.get('/api/master/webapps/serviceflow')
       .then(response => {
         setServiceFlows(response.data.data)
       })
@@ -56,7 +57,7 @@ export default function ServiceFlowPage() {
   }
 
   const handleDelete = (id) => {
-    axios.delete(`/api/master/webapps/serviceflow/${id}`)
+    apiClient.delete(`/api/master/webapps/serviceflow/${id}`)
       .then(response => {
         console.log('response:', response)
         initLoad()

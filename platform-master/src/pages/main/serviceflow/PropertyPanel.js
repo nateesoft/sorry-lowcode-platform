@@ -4,8 +4,8 @@ import { Select, MenuItem } from "@mui/material"
 import Grid from "@mui/material/Grid2"
 import { Box, FormControl, TextField, Typography } from "@mui/material"
 import Modal from "@mui/material/Modal"
-import axios from "axios"
 
+import apiClient from '../../../httpRequest'
 import ModalEditor from "./modal"
 
 const PropertyPanel = ({ props, onComponentChange }) => {
@@ -35,7 +35,7 @@ const PropertyPanel = ({ props, onComponentChange }) => {
 
   const initLoad = useCallback(() => {
     if (!id) return
-    axios
+    apiClient
       .get(`/api/master/webapps/serviceflow-design/${id}`)
       .then((response) => {
         console.log("initLoad: ", response.data)
@@ -75,13 +75,13 @@ const PropertyPanel = ({ props, onComponentChange }) => {
     }
     if ("create" === action) {
       console.log("create_", itemData)
-      axios
+      apiClient
         .post(`/api/master/webapps/serviceflow-design`, itemData)
         .then((response) => {
           console.log("handleSave(create): ", response.data)
         })
     } else {
-      axios
+      apiClient
         .put(`/api/master/webapps/serviceflow-design/${itemData.id}`, itemData)
         .then((response) => {
           console.log("handleSave(update): ", response.data)

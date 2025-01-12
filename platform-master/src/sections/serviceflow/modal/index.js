@@ -11,8 +11,8 @@ import {
   TextField,
   Typography
 } from "@mui/material"
-import axios from "axios"
 
+import apiClient from '../../../httpRequest'
 import {initServiceflowTemplate} from '../../../initData/template'
 
 const style = {
@@ -37,7 +37,7 @@ const NewServiceflowModal = ({ openModal, setOpenModal, initLoad }) => {
   const [status, setStatus] = useState("N")
 
   function save() {
-    axios
+    apiClient
       .post("/api/master/webapps/serviceflow", {
         project_name: projectName,
         project_icon: "/assets/icons/navbar/ic_project.svg",

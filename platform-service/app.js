@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const bodyParser = require('body-parser')
+const basicAuth = require('express-basic-auth')
 
 var indexRouter = require('./routes/index');
 var masterRouter = require('./routes/master');
@@ -15,6 +17,13 @@ var fronendAppRouter = require('./routes/frontend-app');
 var graphqlRouter = require('./routes/graphql');
 
 var app = express();
+
+// auth api
+const username = process.env.WEB_USER_AUTH
+const password = process.env.WEB_USER_PASS
+app.use(basicAuth({ users: { [username]: password }}))
+app.use(bodyParser.json({limit: '50mb'}))
+app.use(bodyParser.urlencoded( { extended: true, limit: '50mb' }))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

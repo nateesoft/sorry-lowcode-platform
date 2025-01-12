@@ -8,13 +8,14 @@ import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
 import Paper from "@mui/material/Paper"
 import { JsonFormsDispatch } from "@jsonforms/react"
-import axios from "axios"
+
+import apiClient from "../../../../../../../../../../httpRequest"
 
 async function callService(method, uri, payload = {}) {
   if (method === "get") {
-    return await axios.get(uri)
+    return await apiClient.get(uri)
   } else if (method === "post") {
-    return await axios.post(uri, payload)
+    return await apiClient.post(uri, payload)
   }
 }
 

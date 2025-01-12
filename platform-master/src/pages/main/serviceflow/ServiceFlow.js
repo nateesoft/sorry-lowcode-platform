@@ -11,11 +11,11 @@ import ReactFlow, {
   Panel
 } from "reactflow"
 import { Button, Grid2, Typography } from "@mui/material"
-import axios from "axios"
 import ArrowBack from '@mui/icons-material/ArrowBack'
 import RestoreIcon from '@mui/icons-material/Restore';
 import SaveIcon from '@mui/icons-material/Save';
 
+import apiClient from '../../../httpRequest'
 import "reactflow/dist/style.css"
 
 import LeftMenu from "./LeftMenu"
@@ -129,7 +129,7 @@ const ServiceFlow = (props) => {
     nodes.forEach((node) => {
       if (node.selected) {
         const nextProcess = findNodeInEdges(node.id)
-        axios
+        apiClient
         .get(`/api/master/webapps/serviceflow-design/${node.id}`)
         .then((response) => {
           console.log(response)
@@ -187,7 +187,7 @@ const ServiceFlow = (props) => {
       const flow = reactFlowInstance.toObject()
       // localStorage.setItem(serviceFlowId, JSON.stringify(flow))
       // save to api
-      axios
+      apiClient
         .put(`/api/master/webapps/serviceflow/${serviceFlowId}`, {
           project_name: "POS Restuarant",
           project_icon: "/assets/icons/navbar/ic_project.svg",

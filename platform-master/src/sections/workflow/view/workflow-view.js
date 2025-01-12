@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"
-import axios from 'axios';
 
 import Card from "@mui/material/Card"
 import Stack from "@mui/material/Stack"
@@ -21,6 +20,8 @@ import WorkFlowTableToolbar from "../workflow-table-toolbar"
 import { emptyRows, applyFilter, getComparator } from "../utils"
 import NewWorkflowModal from "../modal"
 
+import apiClient from "../../../httpRequest"
+
 // ----------------------------------------------------------------------
 
 export default function WorkFlowPage() {
@@ -34,7 +35,7 @@ export default function WorkFlowPage() {
   const [openModal, setOpenModal] = useState(false)
 
   const initLoad = () => {
-    axios.get('/api/master/webapps/workflow')
+    apiClient.get('/api/master/webapps/workflow')
     .then(response => {
       setWorkFlows(response.data.data)
     })
@@ -65,7 +66,7 @@ export default function WorkFlowPage() {
   }
 
   const handleDelete = (id) => {
-    axios.delete(`/api/master/webapps/workflow/${id}`)
+    apiClient.delete(`/api/master/webapps/workflow/${id}`)
       .then(response => {
         console.log('response:', response)
         initLoad()
