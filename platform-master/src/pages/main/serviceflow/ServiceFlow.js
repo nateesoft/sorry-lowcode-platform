@@ -10,7 +10,7 @@ import ReactFlow, {
   MarkerType,
   Panel
 } from "reactflow"
-import { Button, Grid, Grid2, Typography } from "@mui/material"
+import { Button, Grid2, Typography } from "@mui/material"
 import axios from "axios"
 import ArrowBack from '@mui/icons-material/ArrowBack'
 import RestoreIcon from '@mui/icons-material/Restore';
@@ -28,6 +28,7 @@ import DecisionNode from "./nodes/DecisionNode"
 import EndNode from "./nodes/EndNode"
 
 import "./index.css"
+import { useNavigate } from "react-router-dom"
 
 const nodeTypes = {
   start: StartNode,
@@ -39,13 +40,16 @@ const nodeTypes = {
 }
 
 const ServiceFlow = (props) => {
-  const { serviceFlowId, template } = props
+  const { id: serviceFlowId, template: templateInfo, serviceflow_name } = props.serviceInfo
+  const template = JSON.stringify(templateInfo)
   const reactFlowWrapper = useRef(null)
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const [reactFlowInstance, setReactFlowInstance] = useState(null)
   const [property, setProperty] = useState({})
   const [showPage, setShowPage] = useState({})
+
+  const navigate = useNavigate()
 
   console.log("ServiceFlowMain:", props)
 
@@ -218,6 +222,10 @@ const ServiceFlow = (props) => {
     restoreFlow()
   }, [template, setNodes, setEdges])
 
+  const onBackToHome = () => {
+    navigate('/serviceflows')
+  }
+
   const onPropertyChange = (props) => {
     console.log('onPropertyChange:', props)
     if (props.component === "node") {
@@ -267,8 +275,8 @@ const ServiceFlow = (props) => {
             fitView
           >
             <Panel position="bottom-center">
-              <Grid container spacing={1}>
-                <Grid item>
+              <Grid2 container spacing={1}>
+                <Grid2 item>
                   <Typography
                     variant="span"
                     style={{
@@ -278,10 +286,10 @@ const ServiceFlow = (props) => {
                       fontSize: "12px"
                     }}
                   >
-                    Login Service Flow
+                    {serviceflow_name}
                   </Typography>
-                </Grid>
-              </Grid>
+                </Grid2>
+              </Grid2>
             </Panel>
             <Panel position="top-right">
               <Grid2 container spacing={1}>
@@ -291,7 +299,7 @@ const ServiceFlow = (props) => {
                   <Button variant="contained" color="info" onClick={onRestore} endIcon={<RestoreIcon />}>
                     Restore
                   </Button>
-                  <Button variant="contained" onClick={onRestore} color="error" startIcon={<ArrowBack />}>
+                  <Button variant="contained" onClick={onBackToHome} color="error" startIcon={<ArrowBack />}>
                     ย้อนกลับ
                   </Button>
               </Grid2>

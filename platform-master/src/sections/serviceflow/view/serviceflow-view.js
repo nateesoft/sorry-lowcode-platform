@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react"
 import axios from 'axios';
 
-import Card from "@mui/material/Card"
-import Stack from "@mui/material/Stack"
-import Table from "@mui/material/Table"
-import Button from "@mui/material/Button"
-import Container from "@mui/material/Container"
-import TableBody from "@mui/material/TableBody"
-import Typography from "@mui/material/Typography"
-import TableContainer from "@mui/material/TableContainer"
-import TablePagination from "@mui/material/TablePagination"
+import { Card, Stack, Table, Button, Container, TableBody, Typography, TableContainer, TablePagination } from "@mui/material"
 
 import Iconify from "../../../components/iconify"
 import Scrollbar from "../../../components/scrollbar"
@@ -22,7 +14,6 @@ import { emptyRows, applyFilter, getComparator } from "../utils"
 import NewServiceflowModal from "../modal"
 
 // ----------------------------------------------------------------------
-
 export default function ServiceFlowPage() {
   const [page, setPage] = useState(0)
   const [order, setOrder] = useState("asc")
@@ -35,12 +26,12 @@ export default function ServiceFlowPage() {
 
   const initLoad = () => {
     axios.get('/api/master/webapps/serviceflow')
-    .then(response => {
-      setServiceFlows(response.data.data)
-    })
-    .catch(error => {
-      console.error(error);
-    });
+      .then(response => {
+        setServiceFlows(response.data.data)
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   useEffect(() => {
@@ -118,30 +109,14 @@ export default function ServiceFlowPage() {
   return (
     <React.Fragment>
       <Container>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          mb={5}
-        >
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4">ServiceFlows</Typography>
-          <Button
-            variant="contained"
-            color="inherit"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={()=>setOpenModal(true)}
-          >
-            New ServiceFlow
-          </Button>
+          <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}
+            onClick={() => setOpenModal(true)}>New ServiceFlow</Button>
         </Stack>
 
         <Card>
-          <ServiceFlowTableToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-          />
-
+          <ServiceFlowTableToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
           <Scrollbar>
             <TableContainer sx={{ overflow: "unset" }}>
               <Table sx={{ minWidth: 800 }}>
@@ -179,23 +154,20 @@ export default function ServiceFlowPage() {
                         status={row.status}
                         projectUrl={row.project_icon}
                         serviceFlowUrl={row.workflow_icon}
-                        handleDelete={()=>handleDelete(row.id)}
+                        handleDelete={() => handleDelete(row.id)}
                         handleClick={event =>
                           handleClick(event, row.serviceflow_name)}
                       />
                     )}
-
                   <TableEmptyRows
                     height={77}
                     emptyRows={emptyRows(page, rowsPerPage, serviceflows.length)}
                   />
-
                   {notFound && <TableNoData query={filterName} />}
                 </TableBody>
               </Table>
             </TableContainer>
           </Scrollbar>
-
           <TablePagination
             page={page}
             component="div"
