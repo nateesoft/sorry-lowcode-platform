@@ -1,24 +1,20 @@
-import React, { useState } from "react"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
-import CssBaseline from "@mui/material/CssBaseline"
+import React, { useCallback, useState } from "react"
 import Box from "@mui/material/Box"
-import { Button, Grid, IconButton, Typography } from "@mui/material"
+import { Button, Grid2, IconButton, Typography } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
 import axios from "axios"
 
 import PropertieEditor from "../PropertieEditor"
 
-const defaultTheme = createTheme()
-
 export default function ModalEditor(props) {
-  console.log("Modal Editor:", props)
-  const { id, data, language } = props
+  // console.log("Modal Editor:", props)
+  const { id, data, language, onClose } = props
 
-  const {editorLogic} = props.data
+  const { editorLogic } = props.data
   const [content, setContent] = useState(editorLogic || "")
 
-  function handleSave() {
-    // const propsData = JSON.parse(localStorage.getItem(id + "_props"))
+  const handleSave = useCallback(()=> {
+// const propsData = JSON.parse(localStorage.getItem(id + "_props"))
     // if (propsData) {
     //   propsData.content = content
     //   console.log("handleSave:", propsData)
@@ -26,23 +22,23 @@ export default function ModalEditor(props) {
     //   props.onClose()
     // }
     axios
-        .patch(`/api/master/webapps/serviceflow-design/${id}`, {
-          id: id,
-          next_process: JSON.stringify(data.nextProcess),
-          editor_logic: JSON.stringify(content),
-          editor_type: language,
-          update_by: "natheep"
-        })
-        .then((response) => {
-          console.log("handleSave: ", response.data)
-          props.onClose()
-        })
-  }
+      .patch(`/api/master/webapps/serviceflow-design/${id}`, {
+        id: id,
+        next_process: JSON.stringify(data.nextProcess),
+        editor_logic: JSON.stringify(content),
+        editor_type: language,
+        update_by: "natheep"
+      })
+      .then((response) => {
+        console.log("handleSave: ", response.data)
+        props.onClose()
+      })
+  }, [])
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Grid container>
-        <Grid item xs={10}>
+    <div>
+      <Grid2 container spacing={1}>
+        <Grid2 size={10}>
           <Box
             sx={{
               display: "flex",
@@ -53,8 +49,8 @@ export default function ModalEditor(props) {
               Modal Editor - {data.boxName} - {language}
             </Typography>
           </Box>
-        </Grid>
-        <Grid item xs={2}>
+        </Grid2>
+        <Grid2 size={2}>
           <Box
             sx={{
               display: "flex",
@@ -70,50 +66,26 @@ export default function ModalEditor(props) {
               <CloseIcon />
             </IconButton>
           </Box>
-        </Grid>
-      </Grid>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            overflow: "auto",
-            height: "70vh",
-            padding: "10px"
-          }}
-        >
-          <Box
-            component="main"
-            sx={{ flexGrow: 1, overflow: "auto", padding: "10px" }}
-          >
-            <PropertieEditor
-              id={props.id}
-              onClose={props.onClose}
-              language={props.language}
-              setContent={setContent}
-              content={content}
-              props={props}
-            />
-          </Box>
-        </Box>
-      </Box>
-      <Grid container spacing={1} padding={1} justifyContent="flex-end">
-        <Box padding={1}>
-          <Button variant="contained" onClick={() => handleSave()}>
-            Save
-          </Button>
-        </Box>
-        <Box padding={1}>
-          <Button variant="contained" color="error" onClick={props.onClose}>
-            Close
-          </Button>
-        </Box>
-      </Grid>
-    </ThemeProvider>
+        </Grid2>
+      </Grid2>
+      <Grid2 container>
+        <PropertieEditor
+          id={id}
+          onClose={onClose}
+          language={language}
+          setContent={setContent}
+          content={content}
+          props={props}
+        />
+      </Grid2>
+      <Grid2 container spacing={1} padding={1} justifyContent="flex-end">
+        <Button variant="contained" onClick={handleSave}>
+          Save
+        </Button>
+        <Button variant="contained" color="error" onClick={onClose}>
+          Close
+        </Button>
+      </Grid2>
+    </div>
   )
 }

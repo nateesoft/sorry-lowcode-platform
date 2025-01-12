@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState, useCallback } from "react"
 import Button from "@mui/material/Button"
 import Modal from "@mui/material/Modal"
-import Grid from "@mui/material/Unstable_Grid2"
+import Grid from "@mui/material/Grid2"
 import { Box, FormControl, TextField, Typography } from "@mui/material"
 import axios from "axios"
 import { useParams } from "react-router-dom"

@@ -49,6 +49,9 @@ const WorkFlowMain = (props) => {
   const [property, setProperty] = useState({})
   const [showPage, setShowPage] = useState({})
 
+  const [currNode, setCurrNode] = useState(null)
+  const [currEdge, setCurrEdge] = useState(null)
+
   console.log('WorkFlowMain:', props)
 
   const onConnect = useCallback(
@@ -119,86 +122,72 @@ const WorkFlowMain = (props) => {
   )
 
   const clearNodeStyle = () => {
-    nodes.forEach(node=> {
+    nodes.forEach(node => {
       node.style.border = ""
       node.style.background = ""
     })
   }
 
-  const onNodeClick = () => {
-    nodes.forEach((node) => {
-      if (node.selected) {
-        console.log('nodeSelected:', node)
-        clearNodeStyle()
-        node.style = { ...node.style,
-          border: "2px solid #5ba9de",
-          borderRadius: "10px",
-          background: "#5ba9de"
-         }
-        setNodes((nds) => nds.concat(node))
-        axios.get(`/api/master/webapps/workflow-design/${node.id}`)
-        .then((response) => {
-          console.log('workflow_onNodeClick:', response)
-          if (response.data.code === 200) {
-            const data = response.data.data
-            setProperty({
-              id: data.id,
-              boxName: data.box_name,
-              boxType: data.box_type,
-              folder: data.folder,
-              component: "node",
-              action: "edit",
-              uriPath: data.uri_path,
-              serviceFlow1: data.service_flow_1,
-              serviceFlow2: data.service_flow_2
-            })
-          } else {
-            setProperty({
-              id: node.id,
-              boxName: node.data.label,
-              boxType: node.type,
-              folder: "",
-              component: "node",
-              action: "create",
-              uriPath: "",
-              serviceFlow1: "",
-              serviceFlow2: ""
-            })
-          }
-        })
-      }
-    })
+  const onNodeClick = (event, node) => {
+    clearNodeStyle()
+    node.style = {
+      ...node.style,
+      border: "2px solid #5ba9de",
+      borderRadius: "10px",
+      background: "#5ba9de"
+    }
+    setNodes((nds) => nds.concat(node))
+    setCurrNode(node)
+    axios.get(`/api/master/webapps/workflow-design/${node.id}`)
+      .then((response) => {
+        console.log('workflow_onNodeClick:', response)
+        if (response.data.code === 200) {
+          const data = response.data.data
+          setProperty({
+            id: data.id,
+            boxName: data.box_name,
+            boxType: data.box_type,
+            folder: data.folder,
+            component: "node",
+            action: "edit",
+            uriPath: data.uri_path,
+            serviceFlow1: data.service_flow_1,
+            serviceFlow2: data.service_flow_2
+          })
+        } else {
+          setProperty({
+            id: node.id,
+            boxName: node.data.label,
+            boxType: node.type,
+            folder: "",
+            component: "node",
+            action: "create",
+            uriPath: "",
+            serviceFlow1: "",
+            serviceFlow2: ""
+          })
+        }
+      })
   }
 
-  const onEdgeClick = () => {
-    edges.forEach((edge) => {
-      if (edge.selected) {
-        setProperty({
-          id: edge.id,
-          label: edge.label,
-          type: edge.type,
-          component: "edge"
-        })
-      }
+  const onEdgeClick = (event, edge) => {
+    setCurrEdge(edge)
+    setProperty({
+      id: edge.id,
+      label: edge.label,
+      type: edge.type,
+      component: "edge"
     })
   }
 
   const onPropertyChange = (props) => {
     if (props.component === "node") {
-      nodes.forEach((node) => {
-        if (node.selected) {
-          const updNode = { ...node, data: { label: props.label } }
-          setNodes((nds) => nds.concat(updNode))
-        }
-      })
+        const updNode = { ...currNode, data: { label: props.label } }
+        setNodes((nds) => nds.concat(updNode))
     } else if (props.component === "edge") {
-      edges.forEach((edge) => {
-        if (edge.selected) {
-          const updEdge = { ...edge, label: props.label }
-          setEdges((eds) => eds.filter((item) => !item.selected))
-          setEdges((eds) => eds.concat(updEdge))
-        }
-      })
+        const updEdge = { ...currEdge, label: props.label }
+        setEdges((eds) => eds.filter((item) => !item.selected))
+        setEdges((eds) => eds.concat(updEdge))
     }
   }
 
@@ -232,7 +221,7 @@ const WorkFlowMain = (props) => {
       // const flow = JSON.parse(localStorage.getItem(flowKey + "_" + workFlowId))
       if (template) {
         const flow = JSON.parse(template)
-        if(flow){
+        if (flow) {
           setNodes(flow.nodes || [])
           setEdges(flow.edges || [])
         }

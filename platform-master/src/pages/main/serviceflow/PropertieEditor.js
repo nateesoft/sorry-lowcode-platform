@@ -1,18 +1,18 @@
 import React, { useState, useRef, memo, useEffect } from "react"
-import { Box, Grid, Typography } from "@mui/material"
+import { Box, Grid, Grid2, Typography } from "@mui/material"
 import Editor from "@monaco-editor/react"
 
-const PropertieEditor = memo(({language, setContent, content, props}) => {
+const PropertieEditor = memo(({ language, setContent, content, props }) => {
   console.log('PropertieEditor:', props)
   const editorRef = useRef(null)
   const [data, setData] = useState(content)
-  const {data: propData} = props
+  const { data: propData } = props
 
-  useEffect(()=> {
+  useEffect(() => {
     console.log('PropertieEditor(useEffect):', language)
   }, [language])
 
-  function handleContent (content) {
+  function handleContent(content) {
     setData(content)
     setContent(content)
   }
@@ -25,10 +25,11 @@ const PropertieEditor = memo(({language, setContent, content, props}) => {
   }
 
   return (
-    <Grid container>
-      <Grid item xs={6}>
+    <div>
+      <Box display="flex" flexDirection="row">
         <Editor
           height="70vh"
+          width="70vw"
           defaultLanguage={language}
           theme="vs-light"
           value={data}
@@ -38,24 +39,16 @@ const PropertieEditor = memo(({language, setContent, content, props}) => {
             formatOnPaste: true
           }}
         />
-      </Grid>
-      <Grid item xs={6}>
-        <Box>
-          <Typography variant="span">Component Name: </Typography>
-          <Typography variant="span">{propData.label}</Typography>
-        </Box>
-        <Box>
-          <Typography variant="span">Component Type: </Typography>
-          <Typography variant="span">{propData.type}</Typography>
-        </Box>
-        <Typography variant="span">Next Component: </Typography>
-        {propData.nextProcess && propData.nextProcess.map((item=>
-          <Box sx={{marginLeft: '10px'}}>
-            <Typography variant="span">{item.target}</Typography>
-          </Box>
-        ))}
-      </Grid>
-    </Grid>
+        <Grid2 container spacing={1} direction="column" padding={1}>
+          <Typography variant="span">Component Name: {propData.label}</Typography>
+          <Typography variant="span">Component Type: {propData.type}</Typography>
+          <Typography variant="span">Next Component: </Typography>
+          {propData && propData.nextProcess && propData.nextProcess.map((item =>
+            <Typography variant="span" sx={{ margin: "5px" }}>{item.target}</Typography>
+          ))}
+        </Grid2>
+      </Box>
+    </div>
   )
 })
 

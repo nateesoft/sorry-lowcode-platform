@@ -1,5 +1,5 @@
 const uuid = require("uuid")
-const pool = require("../../dbconfig")
+const pool = require("../../../../dbconfig")
 
 const ResponseClass = require("../../models/response")
 const tableName = "webapps_serviceflow_design"

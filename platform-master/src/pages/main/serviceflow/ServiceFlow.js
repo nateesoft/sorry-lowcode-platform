@@ -10,8 +10,11 @@ import ReactFlow, {
   MarkerType,
   Panel
 } from "reactflow"
-import { Button, Grid, Typography } from "@mui/material"
+import { Button, Grid, Grid2, Typography } from "@mui/material"
 import axios from "axios"
+import ArrowBack from '@mui/icons-material/ArrowBack'
+import RestoreIcon from '@mui/icons-material/Restore';
+import SaveIcon from '@mui/icons-material/Save';
 
 import "reactflow/dist/style.css"
 
@@ -281,28 +284,17 @@ const ServiceFlow = (props) => {
               </Grid>
             </Panel>
             <Panel position="top-right">
-              <Grid container spacing={1}>
-                <Grid item>
-                  <Button variant="contained" color="info" onClick={onSave}>
+              <Grid2 container spacing={1}>
+                  <Button variant="contained" color="primary" onClick={onSave} endIcon={<SaveIcon />}>
                     Save Layout
                   </Button>
-                </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    Click={onRestore}
-                    sx={{
-                      bgcolor: "snow",
-                      color: "black",
-                      ":hover": {
-                        bgcolor: "#eee"
-                      }
-                    }}
-                  >
+                  <Button variant="contained" color="info" onClick={onRestore} endIcon={<RestoreIcon />}>
                     Restore
                   </Button>
-                </Grid>
-              </Grid>
+                  <Button variant="contained" onClick={onRestore} color="error" startIcon={<ArrowBack />}>
+                    ย้อนกลับ
+                  </Button>
+              </Grid2>
             </Panel>
             <Controls />
             <MiniMap zoomable pannable />

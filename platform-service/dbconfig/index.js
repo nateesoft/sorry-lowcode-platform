@@ -2,7 +2,8 @@ require("dotenv").config()
 
 const mysql = require("mysql2")
 
-const pool = mysql.createPool({
+const util = require('util')
+const config = {
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
@@ -15,11 +16,17 @@ const pool = mysql.createPool({
   queueLimit: 0,
   enableKeepAlive: true,
   keepAliveInitialDelay: 0
-})
+}
+
+const pool = mysql.createConnection(config)
 
 pool.query("SELECT 1 + 1 AS solution", function (error, results, fields) {
   if (error) throw error
-  console.log("The solution is: ", results[0].solution)
+  console.log("Connect new mysql ip: ", config.host)
+  console.log("Connect new mysql version: ", results[0].solution)
+  console.log('##### ##### #####')
 })
+
+pool.query = util.promisify(pool.query)
 
 module.exports = pool

@@ -49,6 +49,9 @@ const ArchitectureOverview = (props) => {
   const [property, setProperty] = useState({})
   const [showPage, setShowPage] = useState({})
 
+  const [currNode, setCurrNode] = useState(null)
+  const [currEdge, setCurrEdge] = useState(null)
+
   console.log('ArchitectureOverview:', props)
 
   const onConnect = useCallback(
@@ -118,48 +121,34 @@ const ArchitectureOverview = (props) => {
     [reactFlowInstance, setNodes]
   )
 
-  const onNodeClick = () => {
-    nodes.forEach((node) => {
-      if (node.selected) {
-        setProperty({
-          id: node.id,
-          label: node.data.label,
-          type: node.type,
-          component: "node"
-        })
-      }
+  const onNodeClick = (event, node) => {
+    setCurrNode(node)
+    setProperty({
+      id: node.id,
+      label: node.data.label,
+      type: node.type,
+      component: "node"
     })
   }
 
-  const onEdgeClick = () => {
-    edges.forEach((edge) => {
-      if (edge.selected) {
-        setProperty({
-          id: edge.id,
-          label: edge.label,
-          type: edge.type,
-          component: "edge"
-        })
-      }
+  const onEdgeClick = (event, edge) => {
+    setCurrEdge(edge)
+    setProperty({
+      id: edge.id,
+      label: edge.label,
+      type: edge.type,
+      component: "edge"
     })
   }
 
   const onPropertyChange = (props) => {
     if (props.component === "node") {
-      nodes.forEach((node) => {
-        if (node.selected) {
-          const updNode = { ...node, data: { label: props.label } }
-          setNodes((nds) => nds.concat(updNode))
-        }
-      })
+      const updNode = { ...currNode, data: { label: props.label } }
+      setNodes((nds) => nds.concat(updNode))
     } else if (props.component === "edge") {
-      edges.forEach((edge) => {
-        if (edge.selected) {
-          const updEdge = { ...edge, label: props.label }
-          setEdges((eds) => eds.filter((item) => !item.selected))
-          setEdges((eds) => eds.concat(updEdge))
-        }
-      })
+      const updEdge = { ...currEdge, label: props.label }
+      setEdges((eds) => eds.filter((item) => !item.selected))
+      setEdges((eds) => eds.concat(updEdge))
     }
   }
 

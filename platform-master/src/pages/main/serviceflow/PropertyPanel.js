@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react"
 import Button from "@mui/material/Button"
 import { Select, MenuItem } from "@mui/material"
-import Grid from "@mui/material/Unstable_Grid2"
+import Grid from "@mui/material/Grid2"
 import { Box, FormControl, TextField, Typography } from "@mui/material"
 import Modal from "@mui/material/Modal"
 import axios from "axios"
@@ -34,6 +34,7 @@ const PropertyPanel = ({ props, onComponentChange }) => {
   }
 
   const initLoad = useCallback(() => {
+    if (!id) return
     axios
       .get(`/api/master/webapps/serviceflow-design/${id}`)
       .then((response) => {
@@ -90,7 +91,7 @@ const PropertyPanel = ({ props, onComponentChange }) => {
 
   useEffect(() => {
     initLoad()
-  }, [initLoad])
+  }, [])
 
   if (!id) {
     return <></>

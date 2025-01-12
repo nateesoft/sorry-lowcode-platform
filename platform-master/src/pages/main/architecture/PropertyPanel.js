@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react"
 import Button from "@mui/material/Button"
-import Grid from "@mui/material/Unstable_Grid2"
+import Grid from "@mui/material/Grid2"
 import { Box, FormControl, MenuItem, Select, TextField, Typography } from "@mui/material"
 
 const PropertyPanel = memo(({ props, onComponentChange }) => {
