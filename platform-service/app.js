@@ -1,22 +1,22 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const bodyParser = require('body-parser')
 const basicAuth = require('express-basic-auth')
 
-var indexRouter = require('./routes/index');
-var masterRouter = require('./routes/master');
+const indexRouter = require('./routes/index');
+const masterRouter = require('./routes/master');
 
-var exportAppsApiRouter = require('./routes/exportApps/service/index');
-var exportAppsUiRouter = require('./routes/exportApps/ui/index');
-var app01Router = require('./routes/app01');
-var app02Router = require('./routes/app02');
-var fronendAppRouter = require('./routes/frontend-app');
-var graphqlRouter = require('./routes/graphql');
+const exportAppsApiRouter = require('./routes/exportApps/service/index');
+const exportAppsUiRouter = require('./routes/exportApps/ui/index');
+const app01Router = require('./routes/app01');
+const app02Router = require('./routes/app02');
+const fronendAppRouter = require('./routes/frontend-app');
+const graphqlRouter = require('./routes/graphql');
 
-var app = express();
+const app = express();
 
 // auth api
 const username = process.env.WEB_USER_AUTH

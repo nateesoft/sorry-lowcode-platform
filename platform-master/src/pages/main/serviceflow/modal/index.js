@@ -2,6 +2,8 @@ import React, { useCallback, useState } from "react"
 import Box from "@mui/material/Box"
 import { Button, Grid2, IconButton, Typography } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 import apiClient from '../../../../httpRequest'
 import PropertieEditor from "../PropertieEditor"
@@ -79,10 +81,10 @@ export default function ModalEditor(props) {
         />
       </Grid2>
       <Grid2 container spacing={1} padding={1} justifyContent="flex-end">
-        <Button variant="contained" onClick={handleSave}>
+        <Button variant="contained" onClick={handleSave} startIcon={<SaveIcon />}>
           Save
         </Button>
-        <Button variant="contained" color="error" onClick={onClose}>
+        <Button variant="contained" color="error" startIcon={<CancelIcon />} onClick={onClose}>
           Close
         </Button>
       </Grid2>

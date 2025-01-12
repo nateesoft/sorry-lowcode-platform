@@ -1,16 +1,9 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Link as RouterLink } from "react-router-dom"
+import PropTypes from 'prop-types';
 import Link from "@mui/material/Link"
-
-import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
-import Popover from '@mui/material/Popover';
-import TableRow from '@mui/material/TableRow';
-import MenuItem from '@mui/material/MenuItem';
-import TableCell from '@mui/material/TableCell';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
+import { Stack, Avatar, Popover, TableRow, MenuItem, TableCell, Typography, IconButton } from '@mui/material';
+import Moment from 'react-moment';
 
 import Label from '../../components/label';
 import Iconify from '../../components/iconify';
@@ -65,8 +58,8 @@ export default function ServiceFlowTableRow({
           </Stack>
         </TableCell>
 
-        <TableCell>{createdDate}</TableCell>
-        <TableCell>{updatedDate}</TableCell>
+        <TableCell><Moment format='DD/MM/YYYY HH:mm:ss'>{createdDate}</Moment></TableCell>
+        <TableCell>{updatedDate && <Moment format='DD/MM/YYYY HH:mm:ss'>{updatedDate}</Moment>}</TableCell>
         <TableCell>{version}</TableCell>
         <TableCell>
           <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
@@ -87,7 +80,7 @@ export default function ServiceFlowTableRow({
         PaperProps={{
           sx: { width: 140 },
         }}
-      > 
+      >
         <Link component={RouterLink} to={`/serviceflows/${id}`} sx={{ textDecoration: 0 }}>
           <MenuItem>
             <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />

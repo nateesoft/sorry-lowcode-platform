@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react"
-import Button from "@mui/material/Button"
-import { Select, MenuItem } from "@mui/material"
-import Grid from "@mui/material/Grid2"
-import { Box, FormControl, TextField, Typography } from "@mui/material"
-import Modal from "@mui/material/Modal"
+import { Select, MenuItem, Box, FormControl, TextField, Typography, Modal, Button, Grid2 } from "@mui/material"
+import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode';
+import SaveIcon from '@mui/icons-material/Save';
 
 import apiClient from '../../../httpRequest'
 import ModalEditor from "./modal"
@@ -39,12 +37,12 @@ const PropertyPanel = ({ props, onComponentChange }) => {
       .get(`/api/master/webapps/serviceflow-design/${id}`)
       .then((response) => {
         console.log("initLoad: ", response.data)
-        if(response.data.code===200){
+        if (response.data.code === 200) {
           const { folder, box_name, output_type } = response.data.data
           setFolder(folder)
           setBoxName(box_name)
           setOutputType(output_type)
-        }else{
+        } else {
           setFolder("")
           setBoxName("")
           setOutputType("")
@@ -100,11 +98,11 @@ const PropertyPanel = ({ props, onComponentChange }) => {
   return (
     <>
       <div className="ppanel">
-        <Grid container direction="column" alignItems="center">
+        <Grid2 container direction="column" alignItems="center">
           <Typography variant="h5">Property</Typography>
-        </Grid>
+        </Grid2>
         {props && (
-          <Grid container justifyContent="flex-end">
+          <Grid2 container justifyContent="flex-end">
             <Box
               component="form"
               sx={{
@@ -157,47 +155,49 @@ const PropertyPanel = ({ props, onComponentChange }) => {
               </FormControl>
               {props.nextProcess &&
                 props.nextProcess.map((item, index) => (
-                  <Grid container direction="row">
-                    <Grid item xs={8}>
+                  <Grid2 container direction="row">
+                    <Grid2 item xs={8}>
                       <FormControl variant="standard">
                         <Typography variant="caption">
                           Condition ({item.label})
                         </Typography>
                         <TextField variant="standard" value={item.target} />
                       </FormControl>
-                    </Grid>
-                    <Grid item xs={4} alignContent="end">
+                    </Grid2>
+                    <Grid2 item xs={4} alignContent="end">
                       <Button
                         variant="outlined"
                         onClick={() => handleOpenModal({})}
                       >
                         Open
                       </Button>
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
                 ))}
             </Box>
-            <Grid container spacing={1} padding={1}>
-              <Grid item>
+            <Grid2 container spacing={1} padding={1}>
+              <Grid2 item>
                 <Button
                   onClick={() => handleSave()}
                   variant="contained"
                   color="success"
+                  startIcon={<SaveIcon />}
                 >
-                  Save Property
+                  Save
                 </Button>
-              </Grid>
-              <Grid item>
+              </Grid2>
+              <Grid2 item>
                 <Button
                   onClick={() => handleOpenModal({})}
                   variant="contained"
                   color="warning"
+                  startIcon={<ChromeReaderModeIcon />}
                 >
-                  Property Editor
+                  Editor
                 </Button>
-              </Grid>
-            </Grid>
-          </Grid>
+              </Grid2>
+            </Grid2>
+          </Grid2>
         )}
       </div>
 
@@ -207,8 +207,8 @@ const PropertyPanel = ({ props, onComponentChange }) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Grid container spacing={1} padding={5}>
-          <Grid xs={12}>
+        <Grid2 container spacing={1} padding={5}>
+          <Grid2 xs={12}>
             <Box sx={{ bgcolor: "snow" }}>
               <ModalEditor
                 onClose={handleClose}
@@ -218,8 +218,8 @@ const PropertyPanel = ({ props, onComponentChange }) => {
                 language={language}
               />
             </Box>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </Modal>
     </>
   )

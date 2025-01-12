@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
-
 import { Card, Stack, Table, Button, Container, TableBody, Typography, TableContainer, TablePagination } from "@mui/material"
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 import Iconify from "../../../components/iconify"
 import Scrollbar from "../../../components/scrollbar"
@@ -11,7 +11,6 @@ import TableEmptyRows from "../table-empty-rows"
 import ServiceFlowTableToolbar from "../serviceflow-table-toolbar"
 import { emptyRows, applyFilter, getComparator } from "../utils"
 import NewServiceflowModal from "../modal"
-
 import apiClient from "../../../httpRequest"
 
 // ----------------------------------------------------------------------
@@ -112,7 +111,7 @@ export default function ServiceFlowPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4">ServiceFlows</Typography>
-          <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}
+          <Button variant="contained" color="inherit" startIcon={<AddCircleOutlineIcon />}
             onClick={() => setOpenModal(true)}>New ServiceFlow</Button>
         </Stack>
 

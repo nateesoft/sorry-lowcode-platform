@@ -293,10 +293,10 @@ const ServiceFlow = (props) => {
             </Panel>
             <Panel position="top-right">
               <Grid2 container spacing={1}>
-                  <Button variant="contained" color="primary" onClick={onSave} endIcon={<SaveIcon />}>
+                  <Button variant="contained" color="primary" onClick={onSave} startIcon={<SaveIcon />}>
                     Save Layout
                   </Button>
-                  <Button variant="contained" color="info" onClick={onRestore} endIcon={<RestoreIcon />}>
+                  <Button variant="contained" color="info" onClick={onRestore} startIcon={<RestoreIcon />}>
                     Restore
                   </Button>
                   <Button variant="contained" onClick={onBackToHome} color="error" startIcon={<ArrowBack />}>
